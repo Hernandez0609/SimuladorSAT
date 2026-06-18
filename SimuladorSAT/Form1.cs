@@ -16,5 +16,10 @@ namespace SimuladorSAT
         {
             InitializeComponent();
         }
+
+        private void lblIconoArrendamiento_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
