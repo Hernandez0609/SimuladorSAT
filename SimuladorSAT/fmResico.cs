@@ -16,7 +16,11 @@ namespace SimuladorSAT
         {
             InitializeComponent();
         }
-
+        private void btn1_Click(object sender, EventArgs e)
+        {
+            fmDetalle detalle = new fmDetalle("Actividades gravadas a la tasa del 16%", "Junio");
+            detalle.ShowDialog();
+        }
         private void pnlContenedorPrincipal_Paint(object sender, PaintEventArgs e)
         {
 

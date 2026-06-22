@@ -413,6 +413,7 @@
             this.btn1.Size = new System.Drawing.Size(137, 28);
             this.btn1.TabIndex = 2;
             this.btn1.Text = "Ver detalle";
+            this.btn1.Click += new System.EventHandler(this.btn1_Click);
             // 
             // lbl2
             // 
