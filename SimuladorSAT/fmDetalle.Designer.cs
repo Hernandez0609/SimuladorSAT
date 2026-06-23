@@ -187,64 +187,74 @@
             this.dgvTabla1.ReadOnly = true;
             this.dgvTabla1.RowHeadersVisible = false;
             this.dgvTabla1.RowHeadersWidth = 51;
-            this.dgvTabla1.Size = new System.Drawing.Size(1313, 51);
+            this.dgvTabla1.Size = new System.Drawing.Size(1340, 65);
             this.dgvTabla1.TabIndex = 2;
-            this.dataGridViewTextBoxColumn7.Width = 60;
-            this.dataGridViewTextBoxColumn8.Width = 220;
-            this.dataGridViewTextBoxColumn9.Width = 205;
-            this.dataGridViewTextBoxColumn10.Width = 80;
-            this.dataGridViewTextBoxColumn11.Width = 90;
-            this.dataGridViewTextBoxColumn12.Width = 160;
-            this.dataGridViewTextBoxColumn13.Width = 260;
-            this.dataGridViewTextBoxColumn14.Width = 235;
+            this.dgvTabla1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewTextBoxColumn7.FillWeight = 6;    // Mes
+            this.dataGridViewTextBoxColumn8.FillWeight = 16;   // Núm. Canceladas
+            this.dataGridViewTextBoxColumn9.FillWeight = 14;   // Núm. Vigentes
+            this.dataGridViewTextBoxColumn10.FillWeight = 7;   // Subtotal
+            this.dataGridViewTextBoxColumn11.FillWeight = 7;   // Descuento
+            this.dataGridViewTextBoxColumn12.FillWeight = 11;  // Subtotal - Descuento
+            this.dataGridViewTextBoxColumn13.FillWeight = 20;  // Base IVA 16%
+            this.dataGridViewTextBoxColumn14.FillWeight = 18;  // IVA 16%
             // 
             // dataGridViewTextBoxColumn7
             // 
             this.dataGridViewTextBoxColumn7.HeaderText = "Mes";
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            this.dataGridViewTextBoxColumn7.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn8
             // 
             this.dataGridViewTextBoxColumn8.HeaderText = "Número de facturas Canceladas";
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn9
             // 
             this.dataGridViewTextBoxColumn9.HeaderText = "Número de facturas Vigentes";
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            this.dataGridViewTextBoxColumn9.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn10
             // 
             this.dataGridViewTextBoxColumn10.HeaderText = "Subtotal";
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
+
+            this.dataGridViewTextBoxColumn10.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn11
             // 
             this.dataGridViewTextBoxColumn11.HeaderText = "Descuento";
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
             this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            this.dataGridViewTextBoxColumn11.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn12
             // 
             this.dataGridViewTextBoxColumn12.HeaderText = "Subtotal - Descuento";
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            this.dataGridViewTextBoxColumn12.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn13
             // 
             this.dataGridViewTextBoxColumn13.HeaderText = "Impuestos trasladados Base IVA 16%";
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
             this.dataGridViewTextBoxColumn13.ReadOnly = true;
+            this.dataGridViewTextBoxColumn13.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn14
             // 
             this.dataGridViewTextBoxColumn14.HeaderText = "Impuestos trasladados IVA 16%";
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
             this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            this.dataGridViewTextBoxColumn14.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // lblTextoTabla2
             // 
@@ -285,50 +295,57 @@
             this.dgvTabla2.ReadOnly = true;
             this.dgvTabla2.RowHeadersVisible = false;
             this.dgvTabla2.RowHeadersWidth = 51;
-            this.dgvTabla2.Size = new System.Drawing.Size(1313, 51);
+            this.dgvTabla2.Size = new System.Drawing.Size(1340, 65);
             this.dgvTabla2.TabIndex = 4;
-            this.dataGridViewTextBoxColumn1.Width = 60;
-            this.dataGridViewTextBoxColumn2.Width = 230;
-            this.dataGridViewTextBoxColumn3.Width = 230;
-            this.dataGridViewTextBoxColumn4.Width = 240;
-            this.dataGridViewTextBoxColumn5.Width = 290;
-            this.dataGridViewTextBoxColumn6.Width = 260;
+            this.dgvTabla2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewTextBoxColumn1.FillWeight = 6;    // Mes
+            this.dataGridViewTextBoxColumn2.FillWeight = 16;   // Núm. Canceladas
+            this.dataGridViewTextBoxColumn3.FillWeight = 16;   // Núm. Vigentes
+            this.dataGridViewTextBoxColumn4.FillWeight = 22;   // Ingresos cobrados
+            this.dataGridViewTextBoxColumn5.FillWeight = 22;   // Base IVA 16%
+            this.dataGridViewTextBoxColumn6.FillWeight = 22;   // IVA 16%
             // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.HeaderText = "Mes";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "Número de facturas Canceladas";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.HeaderText = "Número de facturas Vigentes";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.HeaderText = "Ingresos cobrados sin impuestos";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.HeaderText = "Impuestos trasladados Base IVA 16%";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // dataGridViewTextBoxColumn6
             // 
             this.dataGridViewTextBoxColumn6.HeaderText = "Impuestos trasladados IVA 16%";
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             // 
             // lblCampo1
             // 

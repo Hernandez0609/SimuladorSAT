@@ -30,5 +30,12 @@ namespace SimuladorSAT
         {
 
         }
+
+        private void btn3_Click(object sender, EventArgs e)
+        {
+            // Llamamos exactamente al mismo formulario, pero con parámetros diferentes
+            fmDetalle detalle = new fmDetalle("Actividades exentas", "Abril");
+            detalle.ShowDialog();
+        }
     }
 }

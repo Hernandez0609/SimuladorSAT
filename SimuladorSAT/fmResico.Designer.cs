@@ -474,6 +474,7 @@
             this.btn3.Size = new System.Drawing.Size(137, 28);
             this.btn3.TabIndex = 8;
             this.btn3.Text = "Ver detalle";
+            this.btn3.Click += new System.EventHandler(this.btn3_Click);
             // 
             // lbl4
             // 
