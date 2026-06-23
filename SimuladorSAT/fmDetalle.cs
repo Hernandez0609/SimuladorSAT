@@ -66,6 +66,22 @@ namespace SimuladorSAT
                 this.lblCampo2.Text = "Base IVA exento de facturas emitidas de tipo pago";
                 this.lblCampo3.Text = "Actividades exentas";
             }
+            else if (titulo.Contains("no objeto") || titulo.Contains("No objeto"))
+            {
+                this.lblDescripcion.Text =
+                    "A continuación se muestra el detalle de prellenado de las actividades no objeto del impuesto, " +
+                    "este detalle lo puedes consultar en el visor de facturas emitidas y recibidas.";
+
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn13"].HeaderText = "Impuestos trasladados base no objeto";
+                this.dgvTabla2.Columns["dataGridViewTextBoxColumn5"].HeaderText = "Impuestos trasladados base no objeto";
+
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn14"].Visible = false;
+                this.dgvTabla2.Columns["dataGridViewTextBoxColumn6"].Visible = false;
+
+                this.lblCampo1.Text = "Base IVA no objeto de facturas emitidas de tipo ingreso";
+                this.lblCampo2.Text = "Base IVA no objeto de facturas emitidas de tipo pago";
+                this.lblCampo3.Text = "Actividades no objeto del impuesto";
+            }
             else
             {
                 this.lblDescripcion.Text =

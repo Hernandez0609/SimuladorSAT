@@ -37,5 +37,11 @@ namespace SimuladorSAT
             fmDetalle detalle = new fmDetalle("Actividades exentas", "Abril");
             detalle.ShowDialog();
         }
+
+        private void btn4_Click(object sender, EventArgs e)
+        {
+            fmDetalle detalle = new fmDetalle("Actividades no objeto del impuesto", "Junio");
+            detalle.ShowDialog();
+        }
     }
 }
