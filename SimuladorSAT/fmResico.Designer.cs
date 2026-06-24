@@ -600,6 +600,7 @@
             this.btn7.Size = new System.Drawing.Size(137, 28);
             this.btn7.TabIndex = 20;
             this.btn7.Text = "Ver detalle";
+            this.btn7.Click += new System.EventHandler(this.btn7_Click);
             // 
             // lbl8
             // 
@@ -640,6 +641,7 @@
             this.btn8.Size = new System.Drawing.Size(137, 28);
             this.btn8.TabIndex = 24;
             this.btn8.Text = "Ver detalle";
+            this.btn8.Click += new System.EventHandler(this.btn8_Click);
             // 
             // lbl9
             // 
@@ -722,6 +724,7 @@
             this.btn10.Size = new System.Drawing.Size(137, 28);
             this.btn10.TabIndex = 31;
             this.btn10.Text = "Ver detalle";
+            this.btn10.Click += new System.EventHandler(this.btn10_Click);
             // 
             // lbl11
             // 

@@ -43,5 +43,23 @@ namespace SimuladorSAT
             fmDetalle detalle = new fmDetalle("Actividades no objeto del impuesto", "Junio");
             detalle.ShowDialog();
         }
+
+        private void btn7_Click(object sender, EventArgs e)
+        {
+            fmDetalle detalle = new fmDetalle("IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas", "Junio");
+            detalle.ShowDialog();
+        }
+
+        private void btn8_Click(object sender, EventArgs e)
+        {
+            fmDetalle detalle = new fmDetalle("IVA retenido", "Junio");
+            detalle.ShowDialog();
+        }
+
+        private void btn10_Click(object sender, EventArgs e)
+        {
+            fmDetalle detalle = new fmDetalle("IVA por devoluciones, descuentos y bonificaciones en gastos", "Junio");
+            detalle.ShowDialog();
+        }
     }
 }

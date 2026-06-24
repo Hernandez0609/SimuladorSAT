@@ -82,6 +82,96 @@ namespace SimuladorSAT
                 this.lblCampo2.Text = "Base IVA no objeto de facturas emitidas de tipo pago";
                 this.lblCampo3.Text = "Actividades no objeto del impuesto";
             }
+            else if (titulo.Contains("devoluciones") || titulo.Contains("Devoluciones"))
+            {
+                this.lblDescripcion.Text =
+                    "A continuación se muestra el detalle de prellenado de IVA no cobrado por devoluciones, " +
+                    "descuentos y bonificaciones de ventas, este detalle lo puedes consultar en el visor " +
+                    "de facturas emitidas y recibidas.";
+
+                // Cambia el texto de la tabla 1 a "tipo egreso"
+                this.lblTextoTabla1.Text = "Suma de facturas emitidas de tipo egreso del mes con método de pago " +
+                    "\"Pago en una sola exhibición\" (PUE).";
+
+                // Cambia encabezados de las columnas finales de tabla 1
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn13"].HeaderText = "Impuestos Trasladados IVA 8%";
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn14"].HeaderText = "Impuestos Trasladados IVA 16%";
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn14"].Visible = true;
+
+                // Ocultar tabla 2 completa y su label
+                this.dgvTabla2.Visible = false;
+                this.lblTextoTabla2.Visible = false;
+
+                // Labels de abajo
+                this.lblCampo1.Text = "IVA 8% de facturas emitidas de tipo egreso";
+                this.lblCampo2.Text = "IVA 16% de facturas emitidas de tipo egreso";
+                this.lblCampo3.Text = "IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas";
+
+                // Subir los campos de abajo porque falta la tabla 2
+                this.lblCampo1.Location = new System.Drawing.Point(30, 230);
+                this.txtCampo1.Location = new System.Drawing.Point(700, 227);
+                this.lblCampo2.Location = new System.Drawing.Point(30, 270);
+                this.lblSigno2.Location = new System.Drawing.Point(660, 273);
+                this.txtCampo2.Location = new System.Drawing.Point(700, 269);
+                this.lblCampo3.Location = new System.Drawing.Point(30, 310);
+                this.lblSigno3.Location = new System.Drawing.Point(660, 313);
+                this.txtCampo3.Location = new System.Drawing.Point(700, 309);
+
+                // Botón Cerrar también sube
+                this.btnCerrar.Location = new System.Drawing.Point(1260, 540);
+
+                // Reducir altura del form
+                this.Size = new System.Drawing.Size(1400, 510);
+            }
+            else if (titulo.Contains("IVA retenido") || titulo.Contains("iva retenido"))
+            {
+                this.lblDescripcion.Text =
+                    "A continuación se muestra el detalle de prellenado de IVA retenido, " +
+                    "este detalle lo puedes consultar en el visor de facturas emitidas y recibidas.";
+
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn13"].HeaderText = "Impuestos retenidos IVA";
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn14"].Visible = false;
+
+                this.dgvTabla2.Columns["dataGridViewTextBoxColumn5"].HeaderText = "Impuestos retenidos IVA";
+                this.dgvTabla2.Columns["dataGridViewTextBoxColumn6"].Visible = false;
+
+                this.lblCampo1.Text = "IVA retenido de facturas emitidas de tipo ingreso";
+                this.lblCampo2.Text = "IVA retenido de facturas emitidas de tipo pago";
+                this.lblCampo3.Text = "IVA retenido";
+            }
+            else if (titulo.Contains("bonificaciones en gastos") || titulo.Contains("Bonificaciones en gastos"))
+            {
+                this.lblDescripcion.Text =
+                    "A continuación se muestra el detalle de prellenado de IVA no acreditable por devoluciones, " +
+                    "descuentos y bonificaciones en gastos, este detalle lo puedes consultar en el visor " +
+                    "de facturas emitidas y recibidas.";
+
+                this.lblTextoTabla1.Text = "Suma de facturas emitidas de tipo egreso del mes con método de pago " +
+                    "\"Pago en una sola exhibición\" (PUE).";
+
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn13"].HeaderText = "Impuestos trasladados IVA 8%";
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn14"].HeaderText = "Impuestos trasladados IVA 16%";
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn14"].Visible = true;
+
+                this.dgvTabla2.Visible = false;
+                this.lblTextoTabla2.Visible = false;
+
+                this.lblCampo1.Text = "IVA 8% de facturas recibidas de tipo egreso";
+                this.lblCampo2.Text = "IVA 16% de facturas recibidas de tipo egreso";
+                this.lblCampo3.Text = "IVA por devoluciones, descuentos y bonificaciones en gastos";
+
+                this.lblCampo1.Location = new System.Drawing.Point(30, 280);
+                this.txtCampo1.Location = new System.Drawing.Point(700, 277);
+                this.lblCampo2.Location = new System.Drawing.Point(30, 320);
+                this.lblSigno2.Location = new System.Drawing.Point(660, 323);
+                this.txtCampo2.Location = new System.Drawing.Point(700, 319);
+                this.lblCampo3.Location = new System.Drawing.Point(30, 360);
+                this.lblSigno3.Location = new System.Drawing.Point(660, 363);
+                this.txtCampo3.Location = new System.Drawing.Point(700, 359);
+
+                this.btnCerrar.Location = new System.Drawing.Point(1265, 420);
+                this.Size = new System.Drawing.Size(1400, 510);
+            }
             else
             {
                 this.lblDescripcion.Text =
