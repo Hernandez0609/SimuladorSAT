@@ -444,6 +444,7 @@
             this.btn2.Size = new System.Drawing.Size(137, 28);
             this.btn2.TabIndex = 5;
             this.btn2.Text = "Capturar";
+            this.btn2.Click += new System.EventHandler(this.btn2_Click);
             // 
             // lbl3
             // 
@@ -684,6 +685,7 @@
             this.btn9.Size = new System.Drawing.Size(137, 28);
             this.btn9.TabIndex = 28;
             this.btn9.Text = "Capturar";
+            this.btn9.Click += new System.EventHandler(this.btn9_Click);
             // 
             // lbl10
             // 

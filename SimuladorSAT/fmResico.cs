@@ -61,5 +61,17 @@ namespace SimuladorSAT
             fmDetalle detalle = new fmDetalle("IVA por devoluciones, descuentos y bonificaciones en gastos", "Junio");
             detalle.ShowDialog();
         }
+
+        private void btn2_Click(object sender, EventArgs e)
+        {
+            fmCapturar ventana = new fmCapturar("Tasa0");
+            ventana.ShowDialog();
+        }
+
+        private void btn9_Click(object sender, EventArgs e)
+        {
+            fmCapturar ventana = new fmCapturar("IvaAcreditable"); 
+            ventana.ShowDialog();
+        }
     }
 }

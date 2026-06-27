@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fmCapturar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmCapturar.Designer.cs">
+      <DependentUpon>fmCapturar.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmDetalle.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="fmCapturar.resx">
+      <DependentUpon>fmCapturar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmDetalle.resx">
       <DependentUpon>fmDetalle.cs</DependentUpon>
     </EmbeddedResource>

@@ -172,6 +172,26 @@ namespace SimuladorSAT
                 this.btnCerrar.Location = new System.Drawing.Point(1265, 420);
                 this.Size = new System.Drawing.Size(1400, 510);
             }
+            else if (titulo.Contains("tasa del 0%") || titulo.Contains("Tasa del 0%"))
+            {
+                // 1. Texto de descripción superior igual a la captura
+                this.lblDescripcion.Text =
+                    "A continuación se muestra el detalle de prellenado de IVA de las actividades gravadas a la tasa del 0%, " +
+                    "este detalle lo puedes consultar en el visor de facturas emitidas y recibidas.";
+
+                // 2. Modificar los encabezados de las últimas columnas para indicar Base 0%
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn13"].HeaderText = "Impuestos trasladados Base 0%";
+                this.dgvTabla2.Columns["dataGridViewTextBoxColumn5"].HeaderText = "Impuestos trasladados Base 0%";
+
+                // 3. Ocultar las columnas de impuesto determinado (ya que a tasa 0% el impuesto calculado es $0)
+                this.dgvTabla1.Columns["dataGridViewTextBoxColumn14"].Visible = false;
+                this.dgvTabla2.Columns["dataGridViewTextBoxColumn6"].Visible = false;
+
+                // 4. Personalizar las etiquetas del resumen inferior
+                this.lblCampo1.Text = "Bases IVA 0% de facturas emitidas de tipo ingreso";
+                this.lblCampo2.Text = "Bases IVA 0% de facturas emitidas de tipo pago";
+                this.lblCampo3.Text = "Actividades gravadas a la tasa del 0%";
+            }
             else
             {
                 this.lblDescripcion.Text =
