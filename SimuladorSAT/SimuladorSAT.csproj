@@ -46,6 +46,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fmAdminDeclaracion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmAdminDeclaracion.Designer.cs">
+      <DependentUpon>fmAdminDeclaracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmCapturaDetalleGenerico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmCapturaDetalleGenerico.Designer.cs">
+      <DependentUpon>fmCapturaDetalleGenerico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmCapturaListaGenerica.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmCapturaListaGenerica.Designer.cs">
+      <DependentUpon>fmCapturaListaGenerica.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmCapturar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +75,18 @@
     </Compile>
     <Compile Include="fmDetalle.Designer.cs">
       <DependentUpon>fmDetalle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmPagoIVA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmPagoIVA.Designer.cs">
+      <DependentUpon>fmPagoIVA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmPresentarDeclaracion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmPresentarDeclaracion.Designer.cs">
+      <DependentUpon>fmPresentarDeclaracion.cs</DependentUpon>
     </Compile>
     <Compile Include="fmResico.cs">
       <SubType>Form</SubType>
@@ -72,11 +102,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="fmAdminDeclaracion.resx">
+      <DependentUpon>fmAdminDeclaracion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmCapturar.resx">
       <DependentUpon>fmCapturar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmDetalle.resx">
       <DependentUpon>fmDetalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmPresentarDeclaracion.resx">
+      <DependentUpon>fmPresentarDeclaracion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmResico.resx">
       <DependentUpon>fmResico.cs</DependentUpon>

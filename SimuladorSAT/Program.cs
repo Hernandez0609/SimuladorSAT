@@ -16,7 +16,7 @@ namespace SimuladorSAT
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fmResico());
+            Application.Run(new Form1());
         }
     }
 }
