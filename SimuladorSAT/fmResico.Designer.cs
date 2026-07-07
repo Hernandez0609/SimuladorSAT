@@ -138,7 +138,7 @@
             this.lblDatosIzquierda.Name = "lblDatosIzquierda";
             this.lblDatosIzquierda.Size = new System.Drawing.Size(343, 59);
             this.lblDatosIzquierda.TabIndex = 0;
-            this.lblDatosIzquierda.Text = "RFC: xxxxxxxxx | FULANO PEREZ PEREZ\r\nVersión - 24.0.0";
+            this.lblDatosIzquierda.Text = "RFC: xxxxxxxxx | FULANO PEREZ\r\nPEREZ";
             // 
             // lblDatosCentro
             // 
@@ -148,7 +148,7 @@
             this.lblDatosCentro.Name = "lblDatosCentro";
             this.lblDatosCentro.Size = new System.Drawing.Size(571, 59);
             this.lblDatosCentro.TabIndex = 1;
-            this.lblDatosCentro.Text = "Declaración Provisional o Definitiva de Impuestos Federales";
+            this.lblDatosCentro.Text = "Declaración Provisional o Definitiva de Impuestos\r\nFederales";
             this.lblDatosCentro.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblDatosDerecha
@@ -296,6 +296,7 @@
             this.btnTabPago.TabIndex = 4;
             this.btnTabPago.Text = "PAGO";
             this.btnTabPago.UseVisualStyleBackColor = false;
+            this.btnTabPago.Click += new System.EventHandler(this.btnTabPago_Click);
             // 
             // pnlContenedorTabla
             // 
@@ -807,6 +808,7 @@
             this.Name = "fmResico";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Simulador SAT - RESICO";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.pnlLogosBlancos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogoUthh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEscudoUthh)).EndInit();

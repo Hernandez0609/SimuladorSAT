@@ -6,200 +6,215 @@ namespace SimuladorSAT
 {
     public partial class fmPagoIVA : Form
     {
-        private decimal _montoACargo = 0;
-        private decimal _totalCompensaciones = 0;
-        private decimal _totalEstimulos = 0;
+        private double impuestoACargoInicial = 195.0;
+        private double montoCompensaciones = 0.0;
+        private double montoEstimulos = 0.0;
+        private bool esCargaInicial = true;
+        private Form _overlayForm;
 
-        public fmPagoIVA(decimal montoACargo = 0)
+        public fmPagoIVA()
         {
             InitializeComponent();
-            _montoACargo = montoACargo;
 
-            cmbCompensaciones.SelectedIndexChanged += CmbCompensaciones_SelectedIndexChanged;
-            cmbEstimulos.SelectedIndexChanged += CmbEstimulos_SelectedIndexChanged;
+            // Enlazar eventos de selección
+            cmbCompensaciones.SelectedIndexChanged += (s, e) => EjecutarLogicaSATElastica();
+            cmbEstimulos.SelectedIndexChanged += (s, e) => EjecutarLogicaSATElastica();
 
-            btnCapturarComp.Click += BtnCapturarComp_Click;
-            btnCapturarEst.Click += BtnCapturarEst_Click;
+            btnTabDeterminacion.Click += btnTabDeterminacion_Click;
 
-            CargarValoresIniciales();
-        }
+            btnCapturarComp.Click += InterfazCapturaCompensacion;
+            btnCapturarEst.Click += InterfazCapturaEstimulo;
 
-        private void CargarValoresIniciales()
-        {
-            txtACargo.Text = _montoACargo.ToString("N0");
-            txtTotalContrib1.Text = _montoACargo.ToString("N0");
-            txtTotalContrib2.Text = _montoACargo.ToString("N0");
-
+            // Valores por defecto en "No" como solicita la interfaz de Figma
             cmbCompensaciones.SelectedIndex = 0;
             cmbEstimulos.SelectedIndex = 0;
-
-            RecalcularTotales();
-            ReorganizarPosiciones();
         }
 
-        private void RecalcularTotales()
+        private void fmPagoIVA_Load(object sender, EventArgs e)
         {
-            decimal totalAplicaciones = _totalCompensaciones + _totalEstimulos;
-
-            txtTotalAplicaciones1.Text = totalAplicaciones.ToString("N0");
-            txtTotalAplicaciones2.Text = totalAplicaciones.ToString("N0");
-
-            decimal cantidadACargo = _montoACargo - totalAplicaciones;
-            if (cantidadACargo < 0) cantidadACargo = 0;
-
-            txtCantidadACargo.Text = cantidadACargo.ToString("N0");
-            txtCantidadAPagar.Text = cantidadACargo.ToString("N0");
+            esCargaInicial = false;
+            EjecutarLogicaSATElastica();
         }
 
-        private void CmbCompensaciones_SelectedIndexChanged(object sender, EventArgs e)
+        private void EjecutarLogicaSATElastica()
         {
-            bool tieneComp = cmbCompensaciones.SelectedItem?.ToString() == "Si";
+            bool esSiCompensaciones = (cmbCompensaciones.SelectedItem?.ToString() == "Si");
+            bool esSiEstimulos = (cmbEstimulos.SelectedItem?.ToString() == "Si");
 
-            lblCompensaciones.Visible = tieneComp;
-            lblMasComp.Visible = tieneComp;
-            txtCompensaciones.Visible = tieneComp;
-            btnCapturarComp.Visible = tieneComp;
+            if (!esSiCompensaciones) montoCompensaciones = 0.0;
+            if (!esSiEstimulos) montoEstimulos = 0.0;
 
-            if (!tieneComp)
+            // --- Lógica de Despliegue Elástico Dinámico Sincronizado ---
+            // Fila 3 (Compensaciones): Si es "Si" mide 35, si es "No" se reduce a 0
+            tlpCamposPago.RowStyles[3] = esSiCompensaciones ? new RowStyle(SizeType.Absolute, 35F) : new RowStyle(SizeType.Absolute, 0F);
+            lblCompensaciones.Visible = esSiCompensaciones;
+            lblSignoComp.Visible = esSiCompensaciones;
+            txtCompensaciones.Visible = esSiCompensaciones;
+            btnCapturarComp.Visible = esSiCompensaciones;
+
+            // SOLUCIÓN AL BUG DEL DESIGNER: Forzamos el alto real cuando es visible
+            if (esSiCompensaciones)
             {
-                _totalCompensaciones = 0;
+                btnCapturarComp.Height = 25;
+                txtCompensaciones.Height = 25;
+            }
+
+            // Fila 5 (Estímulos): Si es "Si" mide 35, si es "No" se reduce a 0
+            tlpCamposPago.RowStyles[5] = esSiEstimulos ? new RowStyle(SizeType.Absolute, 35F) : new RowStyle(SizeType.Absolute, 0F);
+            lblEstimulos.Visible = esSiEstimulos;
+            lblSignoEst.Visible = esSiEstimulos;
+            txtEstimulos.Visible = esSiEstimulos;
+            btnCapturarEst.Visible = esSiEstimulos;
+
+            // SOLUCIÓN AL BUG DEL DESIGNER: Forzamos el alto real cuando es visible
+            if (esSiEstimulos)
+            {
+                btnCapturarEst.Height = 25;
+                txtEstimulos.Height = 25;
+            }
+
+            // Operaciones matemáticas de determinación de saldos
+            double totalAplicaciones = montoCompensaciones + montoEstimulos;
+            double cantidadCargo = impuestoACargoInicial - totalAplicaciones;
+            if (cantidadCargo < 0) cantidadCargo = 0;
+
+            if (esCargaInicial)
+            {
+                txtACargo.Text = "";
+                txtTotalContrib1.Text = "";
+                txtTotalContrib2.Text = "";
                 txtCompensaciones.Text = "";
-                RecalcularTotales();
-            }
-            else if (_totalCompensaciones == 0)
-            {
-                txtCompensaciones.Text = "";
-            }
-
-            ReorganizarPosiciones();
-        }
-
-        private void CmbEstimulos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            bool tieneEst = cmbEstimulos.SelectedItem?.ToString() == "Si";
-
-            lblEstimulos.Visible = tieneEst;
-            lblMasEst.Visible = tieneEst;
-            txtEstimulos.Visible = tieneEst;
-            btnCapturarEst.Visible = tieneEst;
-
-            if (!tieneEst)
-            {
-                _totalEstimulos = 0;
                 txtEstimulos.Text = "";
-                RecalcularTotales();
+                txtTotalApl1.Text = "";
+                txtTotalApl2.Text = "";
+                txtCantACargo.Text = "";
+                txtCantAPagar.Text = "";
             }
-            else if (_totalEstimulos == 0)
+            else
             {
-                txtEstimulos.Text = "";
+                txtACargo.Text = impuestoACargoInicial.ToString("N0");
+                txtTotalContrib1.Text = impuestoACargoInicial.ToString("N0");
+                txtTotalContrib2.Text = impuestoACargoInicial.ToString("N0");
+                txtCompensaciones.Text = montoCompensaciones.ToString("N0");
+                txtEstimulos.Text = montoEstimulos.ToString("N0");
+                txtTotalApl1.Text = totalAplicaciones.ToString("N0");
+                txtTotalApl2.Text = totalAplicaciones.ToString("N0");
+                txtCantACargo.Text = cantidadCargo.ToString("N0");
+                txtCantAPagar.Text = cantidadCargo.ToString("N0");
+            }
+        }
+        private void InterfazCapturaCompensacion(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1. Calculamos el límite real actual disponible para compensar
+                decimal limiteDisponible = (decimal)(impuestoACargoInicial - montoEstimulos);
+                if (limiteDisponible < 0) limiteDisponible = 0;
+
+                // 2. Creamos y mostramos el Overlay oscuro encima de fmPagoIVA
+                _overlayForm = new Form();
+                _overlayForm.FormBorderStyle = FormBorderStyle.None;
+                _overlayForm.BackColor = Color.Black;
+                _overlayForm.Opacity = 0.50; // 50% de opacidad oscura (efecto Figma)
+                _overlayForm.ShowInTaskbar = false;
+                _overlayForm.StartPosition = FormStartPosition.Manual;
+                _overlayForm.Bounds = this.Bounds; // Cubre exactamente toda la pantalla padre
+                _overlayForm.Owner = this;
+                _overlayForm.Show();
+
+                // 3. Abrimos el detalle flotante de compensaciones usando el constructor correcto
+                using (fmCapturaDetalleGenerico fDetalle = new fmCapturaDetalleGenerico(TipoCapturaEnum.Compensacion, limiteDisponible))
+                {
+                    // IMPORTANTE: Pasamos '_overlayForm' como dueño. Esto bloquea el fondo sin emitir sonidos ni parpadeos
+                    if (fDetalle.ShowDialog(_overlayForm) == DialogResult.OK)
+                    {
+                        // Extraemos el monto directamente de la propiedad pública que ya programaste
+                        montoCompensaciones = (double)fDetalle.MontoCapturado;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al abrir Compensaciones: " + ex.Message, "Sistemas", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // 4. Pase lo que pase (incluso con errores o cancelaciones), disolvemos el overlay y recuperamos el brillo
+                if (_overlayForm != null)
+                {
+                    _overlayForm.Close();
+                    _overlayForm.Dispose();
+                    _overlayForm = null;
+                }
             }
 
-            ReorganizarPosiciones();
+            // 5. Recalcula la tabla elástica con el nuevo valor capturado
+            EjecutarLogicaSATElastica();
         }
 
-        private void BtnCapturarComp_Click(object sender, EventArgs e)
+        private void InterfazCapturaEstimulo(object sender, EventArgs e)
         {
-            // Reemplazar con llamada real a tu Formulario Emergente de Captura
-            // Ejemplo:
-            // using (var frm = new fmCapturaCompensaciones()) {
-            //     if(frm.ShowDialog() == DialogResult.OK) { _totalCompensaciones = frm.MontoTotal; }
-            // }
-
-            // Mock de prueba para validar interfaz:
-            _totalCompensaciones = 5000;
-            txtCompensaciones.Text = _totalCompensaciones.ToString("N0");
-            RecalcularTotales();
-        }
-
-        private void BtnCapturarEst_Click(object sender, EventArgs e)
-        {
-            // Reemplazar con llamada real a tu Formulario Emergente de Captura
-
-            // Mock de prueba para validar interfaz:
-            _totalEstimulos = 2500;
-            txtEstimulos.Text = _totalEstimulos.ToString("N0");
-            RecalcularTotales();
-        }
-
-        private void ReorganizarPosiciones()
-        {
-            int colLabel = 25;
-            int colOper = 590;
-            int colCampo = 620;
-            int rowH = 38;
-            int y = 45;
-
-            // Fila 1: A Cargo
-            lblACargo.Location = new Point(colLabel, y + 4);
-            txtACargo.Location = new Point(colCampo, y);
-
-            // Fila 2: Total Contribuciones 1
-            y += rowH;
-            lblTotalContrib1.Location = new Point(colLabel, y + 4);
-            lblMas1.Location = new Point(colOper, y + 4);
-            txtTotalContrib1.Location = new Point(colCampo, y);
-
-            // Fila 3: ¿Tienes Compensaciones?
-            y += rowH;
-            lblPregCompensaciones.Location = new Point(colLabel, y + 4);
-            cmbCompensaciones.Location = new Point(colCampo, y);
-
-            // Fila 4: Detalle Compensaciones (Condicional)
-            if (cmbCompensaciones.SelectedItem?.ToString() == "Si")
+            try
             {
-                y += rowH;
-                lblCompensaciones.Location = new Point(40, y + 4);
-                lblMasComp.Location = new Point(colOper, y + 4);
-                txtCompensaciones.Location = new Point(colCampo, y);
-                btnCapturarComp.Location = new Point(855, y - 1);
+                // 1. Creamos y mostramos el Overlay oscuro encima de fmPagoIVA
+                _overlayForm = new Form();
+                _overlayForm.FormBorderStyle = FormBorderStyle.None;
+                _overlayForm.BackColor = Color.Black;
+                _overlayForm.Opacity = 0.50; // 50% de opacidad oscura (efecto Figma)
+                _overlayForm.ShowInTaskbar = false;
+                _overlayForm.StartPosition = FormStartPosition.Manual;
+                _overlayForm.Bounds = this.Bounds; // Cubre exactamente al padre
+                _overlayForm.Owner = this;
+                _overlayForm.Show();
+
+                // Usamos 'using' para asegurar que el formulario se destruya correctamente al cerrar
+                using (fmCapturaListaGenerica fLista = new fmCapturaListaGenerica())
+                {
+                    // 2. Configura los títulos, el modo y el límite antes de mostrarlo
+                    fLista.ConfigurarInterfaz("Estímulos", "Estímulos al impuesto a cargo", "0");
+
+                    // 3. Abre la interfaz flotante usando el OVERLAY como dueño para bloquear el fondo limpiamente
+                    fLista.ShowDialog(_overlayForm);
+
+                    // 4. Al cerrar, extrae el monto calculado de forma segura
+                    Control[] c = fLista.Controls.Find("txtMontoPorAplicar", true);
+                    if (c.Length > 0 && c[0] is TextBox tb)
+                    {
+                        double.TryParse(tb.Text, out montoEstimulos);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al abrir Estímulos: " + ex.Message, "Sistemas", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // 5. Pase lo que pase al cerrar, destruimos la cortina negra y regresamos el brillo original
+                if (_overlayForm != null)
+                {
+                    _overlayForm.Close();
+                    _overlayForm.Dispose();
+                    _overlayForm = null;
+                }
             }
 
-            // Fila 5: ¿Tienes Estímulos?
-            y += rowH;
-            lblPregEstimulos.Location = new Point(colLabel, y + 4);
-            cmbEstimulos.Location = new Point(colCampo, y);
+            // Recalcula la tabla elástica tras cerrar la captura
+            EjecutarLogicaSATElastica();
+        }
 
-            // Fila 6: Detalle Estímulos (Condicional)
-            if (cmbEstimulos.SelectedItem?.ToString() == "Si")
-            {
-                y += rowH;
-                lblEstimulos.Location = new Point(40, y + 4);
-                lblMasEst.Location = new Point(colOper, y + 4);
-                txtEstimulos.Location = new Point(colCampo, y);
-                btnCapturarEst.Location = new Point(855, y - 1);
-            }
+        private void btnTabDeterminacion_Click(object sender, EventArgs e)
+        {
+            fmResico ventanaDeterminacion = new fmResico();
+            ventanaDeterminacion.FormClosed += (s, args) => this.Close();
+            ventanaDeterminacion.WindowState = FormWindowState.Maximized;
+            ventanaDeterminacion.Show();
+            this.Hide();
+        }
 
-            // Separador Intermedio
-            y += rowH + 10;
-            pnlSeparador.Location = new Point(colLabel, y);
+        private void tlpCamposPago_Paint(object sender, PaintEventArgs e)
+        {
 
-            // Fila 7: Total Aplicaciones 1
-            y += 15;
-            lblTotalAplicaciones1.Location = new Point(colLabel, y + 4);
-            lblMasApl1.Location = new Point(colOper, y + 4);
-            txtTotalAplicaciones1.Location = new Point(colCampo, y);
-
-            // Fila 8: Total Contribuciones 2
-            y += rowH;
-            lblTotalContrib2.Location = new Point(colLabel, y + 4);
-            txtTotalContrib2.Location = new Point(colCampo, y);
-
-            // Fila 9: Total Aplicaciones 2
-            y += rowH;
-            lblTotalAplicaciones2.Location = new Point(colLabel, y + 4);
-            lblMenosApl2.Location = new Point(593, y + 4);
-            txtTotalAplicaciones2.Location = new Point(colCampo, y);
-
-            // Fila 10: Cantidad a cargo
-            y += rowH;
-            lblCantidadACargo.Location = new Point(colLabel, y + 4);
-            lblMasCant.Location = new Point(colOper, y + 4);
-            txtCantidadACargo.Location = new Point(colCampo, y);
-
-            // Fila 11: Cantidad a pagar
-            y += rowH;
-            lblCantidadAPagar.Location = new Point(colLabel, y + 4);
-            txtCantidadAPagar.Location = new Point(colCampo, y);
         }
     }
 }

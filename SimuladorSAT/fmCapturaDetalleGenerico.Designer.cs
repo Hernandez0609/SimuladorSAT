@@ -15,7 +15,10 @@
 
         private void InitializeComponent()
         {
+            this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
+            this.lblTotalMonto = new System.Windows.Forms.Label();
+            this.pnlFormularioCaptura = new System.Windows.Forms.Panel();
             this.lblTipo = new System.Windows.Forms.Label();
             this.cmbTipo = new System.Windows.Forms.ComboBox();
             this.lblPeriodicidad = new System.Windows.Forms.Label();
@@ -34,7 +37,6 @@
             this.txtSaldoAplicar = new System.Windows.Forms.TextBox();
             this.btnContinuar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
-            this.pnlSep = new System.Windows.Forms.Panel();
             this.lblTipoDecl = new System.Windows.Forms.Label();
             this.txtTipoDecl = new System.Windows.Forms.TextBox();
             this.lblNumOp2 = new System.Windows.Forms.Label();
@@ -48,190 +50,240 @@
             this.lblRemanAct = new System.Windows.Forms.Label();
             this.txtRemanAct = new System.Windows.Forms.TextBox();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnAgregar = new System.Windows.Forms.Button();
+            this.btnTerminar = new System.Windows.Forms.Button();
             this.lblTipoEstimulo = new System.Windows.Forms.Label();
             this.cmbTipoEstimulo = new System.Windows.Forms.ComboBox();
             this.lblPorAplicar = new System.Windows.Forms.Label();
             this.txtPorAplicar = new System.Windows.Forms.TextBox();
+            this.pnlHeader.SuspendLayout();
+            this.pnlFormularioCaptura.SuspendLayout();
             this.SuspendLayout();
 
             // ==========================================
-            // TITULO
+            // PANEL CABECERA (ESTILO FIGMA AZUL OSCURO)
             // ==========================================
-            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTitulo.Location = new System.Drawing.Point(20, 15);
-            this.lblTitulo.Size = new System.Drawing.Size(400, 25);
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(68)))), ((int)(((byte)(83)))));
+            this.pnlHeader.Controls.Add(this.lblTitulo);
+            this.pnlHeader.Controls.Add(this.lblTotalMonto);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Size = new System.Drawing.Size(950, 75);
+
+            // Título Principal
             this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Georgia", 14F);
+            this.lblTitulo.ForeColor = System.Drawing.Color.White;
+            this.lblTitulo.Location = new System.Drawing.Point(40, 25);
+            this.lblTitulo.Size = new System.Drawing.Size(150, 25);
+            this.lblTitulo.Text = "Compensaciones";
 
-            // ==========================================
-            // MODO ESTIMULOS
-            // ==========================================
-            this.lblTipoEstimulo.Text = "*Tipo de estímulo";
-            this.lblTipoEstimulo.Location = new System.Drawing.Point(20, 60);
-            this.lblTipoEstimulo.Size = new System.Drawing.Size(150, 20);
+            // Total Acumulado Derecho
+            this.lblTotalMonto.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblTotalMonto.Font = new System.Drawing.Font("Georgia", 14F);
+            this.lblTotalMonto.ForeColor = System.Drawing.Color.White;
+            this.lblTotalMonto.Location = new System.Drawing.Point(750, 25);
+            this.lblTotalMonto.Size = new System.Drawing.Size(160, 25);
+            this.lblTotalMonto.Text = "Total: $0";
+            this.lblTotalMonto.TextAlign = System.Drawing.ContentAlignment.TopRight;
 
-            this.cmbTipoEstimulo.Location = new System.Drawing.Point(200, 57);
-            this.cmbTipoEstimulo.Size = new System.Drawing.Size(450, 25);
-            this.cmbTipoEstimulo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTipoEstimulo.Items.AddRange(new object[] { "--- Seleccione ---", "Estímulo fronterizo", "Estímulo diésel para maquinaria", "Otros estímulos autorizados" });
-            this.cmbTipoEstimulo.SelectedIndex = 0;
+            // ====================================================================
+            // PANEL CONTENEDOR DESPLEGABLE (Escondido al abrir por primera vez)
+            // ====================================================================
+            this.pnlFormularioCaptura.BackColor = System.Drawing.Color.White;
+            this.pnlFormularioCaptura.Controls.AddRange(new System.Windows.Forms.Control[] {
+                this.lblTipo, this.cmbTipo, this.lblPeriodicidad, this.txtPeriodicidad, this.lblPeriodo, this.txtPeriodo, this.lblEjercicio, this.txtEjercicio,
+                this.lblFechaCausacion, this.txtFechaCausacion, this.lblNumOp1, this.txtNumOp1, this.lblConcepto, this.txtConcepto, this.lblSaldoAplicar, this.txtSaldoAplicar,
+                this.btnContinuar, this.btnEliminar,
+                this.lblTipoDecl, this.txtTipoDecl, this.lblNumOp2, this.txtNumOp2, this.lblMontoSaldo, this.txtMontoSaldo,
+                this.lblRemanHist, this.txtRemanHist, this.lblFechaDecl, this.txtFechaDecl, this.lblRemanAct, this.txtRemanAct
+            });
+            this.pnlFormularioCaptura.Location = new System.Drawing.Point(20, 90);
+            this.pnlFormularioCaptura.Size = new System.Drawing.Size(910, 340);
+            this.pnlFormularioCaptura.Visible = false; // CRÍTICO: Inicia limpio estilo Figma
 
-            this.lblPorAplicar.Text = "*Por aplicar en el periodo";
-            this.lblPorAplicar.Location = new System.Drawing.Point(20, 100);
-            this.lblPorAplicar.Size = new System.Drawing.Size(150, 20);
-
-            this.txtPorAplicar.Location = new System.Drawing.Point(200, 97);
-            this.txtPorAplicar.Size = new System.Drawing.Size(150, 25);
-            this.txtPorAplicar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-
-            // ==========================================
-            // MODO COMPENSACIONES (Sección Izquierda)
-            // ==========================================
-            this.lblTipo.Text = "*Tipo";
-            this.lblTipo.Location = new System.Drawing.Point(20, 60);
-            this.lblTipo.Size = new System.Drawing.Size(150, 20);
-
-            this.cmbTipo.Location = new System.Drawing.Point(200, 57);
-            this.cmbTipo.Size = new System.Drawing.Size(250, 25);
+            // --- FILA 1 DE CAPTURA (4 Columnas) ---
+            // Columna 1: Tipo
+            this.lblTipo.Text = "Tipo";
+            this.lblTipo.Location = new System.Drawing.Point(20, 10);
+            this.lblTipo.Size = new System.Drawing.Size(180, 20);
+            this.cmbTipo.Location = new System.Drawing.Point(20, 35);
+            this.cmbTipo.Size = new System.Drawing.Size(200, 25);
             this.cmbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTipo.Items.AddRange(new object[] { "--- Seleccione ---", "IVA Saldo a Favor" });
-            this.cmbTipo.SelectedIndex = 0;
 
+            // Columna 2: Periodicidad
             this.lblPeriodicidad.Text = "Periodicidad";
-            this.lblPeriodicidad.Location = new System.Drawing.Point(20, 95);
-            this.lblPeriodicidad.Size = new System.Drawing.Size(150, 20);
-            this.txtPeriodicidad.Location = new System.Drawing.Point(200, 92);
-            this.txtPeriodicidad.Size = new System.Drawing.Size(150, 25);
+            this.lblPeriodicidad.Location = new System.Drawing.Point(240, 10);
+            this.lblPeriodicidad.Size = new System.Drawing.Size(180, 20);
+            this.txtPeriodicidad.Location = new System.Drawing.Point(240, 35);
+            this.txtPeriodicidad.Size = new System.Drawing.Size(200, 25);
 
+            // Columna 3: Periodo
             this.lblPeriodo.Text = "Periodo";
-            this.lblPeriodo.Location = new System.Drawing.Point(20, 130);
-            this.lblPeriodo.Size = new System.Drawing.Size(150, 20);
-            this.txtPeriodo.Location = new System.Drawing.Point(200, 127);
-            this.txtPeriodo.Size = new System.Drawing.Size(150, 25);
+            this.lblPeriodo.Location = new System.Drawing.Point(460, 10);
+            this.lblPeriodo.Size = new System.Drawing.Size(180, 20);
+            this.txtPeriodo.Location = new System.Drawing.Point(460, 35);
+            this.txtPeriodo.Size = new System.Drawing.Size(200, 25);
 
+            // Columna 4: Ejercicio
             this.lblEjercicio.Text = "Ejercicio";
-            this.lblEjercicio.Location = new System.Drawing.Point(20, 165);
-            this.lblEjercicio.Size = new System.Drawing.Size(150, 20);
-            this.txtEjercicio.Location = new System.Drawing.Point(200, 162);
-            this.txtEjercicio.Size = new System.Drawing.Size(150, 25);
+            this.lblEjercicio.Location = new System.Drawing.Point(680, 10);
+            this.lblEjercicio.Size = new System.Drawing.Size(180, 20);
+            this.txtEjercicio.Location = new System.Drawing.Point(680, 35);
+            this.txtEjercicio.Size = new System.Drawing.Size(200, 25);
 
-            this.lblFechaCausacion.Text = "Fecha de causación";
-            this.lblFechaCausacion.Location = new System.Drawing.Point(20, 200);
-            this.lblFechaCausacion.Size = new System.Drawing.Size(150, 20);
-            this.txtFechaCausacion.Location = new System.Drawing.Point(200, 197);
-            this.txtFechaCausacion.Size = new System.Drawing.Size(150, 25);
+            // --- FILA 2 DE CAPTURA (4 Columnas) ---
+            // Columna 1: Fecha de causación
+            this.lblFechaCausacion.Text = "Fecha de causación (dd-mm-aaaa)";
+            this.lblFechaCausacion.Location = new System.Drawing.Point(20, 75);
+            this.lblFechaCausacion.Size = new System.Drawing.Size(210, 20);
+            this.txtFechaCausacion.Location = new System.Drawing.Point(20, 100);
+            this.txtFechaCausacion.Size = new System.Drawing.Size(200, 25);
 
-            this.lblNumOp1.Text = "Número de operación";
-            this.lblNumOp1.Location = new System.Drawing.Point(20, 235);
-            this.lblNumOp1.Size = new System.Drawing.Size(150, 20);
-            this.txtNumOp1.Location = new System.Drawing.Point(200, 232);
-            this.txtNumOp1.Size = new System.Drawing.Size(150, 25);
+            // Columna 2: Número de operación
+            this.lblNumOp1.Text = "Numero de operación";
+            this.lblNumOp1.Location = new System.Drawing.Point(240, 75);
+            this.lblNumOp1.Size = new System.Drawing.Size(180, 20);
+            this.txtNumOp1.Location = new System.Drawing.Point(240, 100);
+            this.txtNumOp1.Size = new System.Drawing.Size(200, 25);
 
+            // Columna 3: Concepto
             this.lblConcepto.Text = "Concepto";
-            this.lblConcepto.Location = new System.Drawing.Point(20, 270);
-            this.lblConcepto.Size = new System.Drawing.Size(150, 20);
-            this.txtConcepto.Location = new System.Drawing.Point(200, 267);
-            this.txtConcepto.Size = new System.Drawing.Size(150, 25);
+            this.lblConcepto.Location = new System.Drawing.Point(460, 75);
+            this.lblConcepto.Size = new System.Drawing.Size(180, 20);
+            this.txtConcepto.Location = new System.Drawing.Point(460, 100);
+            this.txtConcepto.Size = new System.Drawing.Size(200, 25);
 
-            this.lblSaldoAplicar.Text = "*Saldo a aplicar";
-            this.lblSaldoAplicar.Location = new System.Drawing.Point(20, 305);
-            this.lblSaldoAplicar.Size = new System.Drawing.Size(150, 20);
-            this.txtSaldoAplicar.Location = new System.Drawing.Point(200, 302);
-            this.txtSaldoAplicar.Size = new System.Drawing.Size(150, 25);
+            // Columna 4: Saldo a aplicar
+            this.lblSaldoAplicar.Text = "Saldo a aplicar";
+            this.lblSaldoAplicar.Location = new System.Drawing.Point(680, 75);
+            this.lblSaldoAplicar.Size = new System.Drawing.Size(180, 20);
+            this.txtSaldoAplicar.Location = new System.Drawing.Point(680, 100);
+            this.txtSaldoAplicar.Size = new System.Drawing.Size(200, 25);
             this.txtSaldoAplicar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 
+            // --- BOTONES INTERMEDIOS DE FLUJO ---
+            // Continuar (Rojo sólido institucional del SAT)
             this.btnContinuar.Text = "Continuar";
-            this.btnContinuar.Location = new System.Drawing.Point(200, 340);
-            this.btnContinuar.Size = new System.Drawing.Size(90, 30);
+            this.btnContinuar.BackColor = System.Drawing.Color.Red;
+            this.btnContinuar.ForeColor = System.Drawing.Color.Black;
+            this.btnContinuar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnContinuar.Location = new System.Drawing.Point(20, 140);
+            this.btnContinuar.Size = new System.Drawing.Size(110, 32);
 
+            // Eliminar (Blanco con borde gris)
             this.btnEliminar.Text = "Eliminar";
-            this.btnEliminar.Location = new System.Drawing.Point(300, 340);
-            this.btnEliminar.Size = new System.Drawing.Size(90, 30);
+            this.btnEliminar.BackColor = System.Drawing.Color.White;
+            this.btnEliminar.Location = new System.Drawing.Point(140, 140);
+            this.btnEliminar.Size = new System.Drawing.Size(110, 32);
 
-            // ==========================================
-            // SEPARADOR VISUAL
-            // ==========================================
-            this.pnlSep.BackColor = System.Drawing.Color.LightGray;
-            this.pnlSep.Location = new System.Drawing.Point(470, 55);
-            this.pnlSep.Size = new System.Drawing.Size(1, 315);
-
-            // ==========================================
-            // COMPENSACIONES (Sección Derecha - Saldo Original)
-            // ==========================================
+            // --- SEGUNDO BLOQUE DE DATOS: SALDO A FAVOR (2 Columnas anchas) ---
+            // Columna Izquierda
             this.lblTipoDecl.Text = "Tipo de declaración";
-            this.lblTipoDecl.Location = new System.Drawing.Point(490, 60);
-            this.lblTipoDecl.Size = new System.Drawing.Size(150, 20);
-            this.txtTipoDecl.Location = new System.Drawing.Point(670, 57);
-            this.txtTipoDecl.Size = new System.Drawing.Size(150, 25);
+            this.lblTipoDecl.Location = new System.Drawing.Point(20, 195);
+            this.lblTipoDecl.Size = new System.Drawing.Size(260, 20);
+            this.txtTipoDecl.Location = new System.Drawing.Point(290, 192);
+            this.txtTipoDecl.Size = new System.Drawing.Size(200, 25);
 
+            this.lblMontoSaldo.Text = "Monto del saldo a favor original";
+            this.lblMontoSaldo.Location = new System.Drawing.Point(20, 230);
+            this.lblMontoSaldo.Size = new System.Drawing.Size(260, 20);
+            this.txtMontoSaldo.Location = new System.Drawing.Point(290, 227);
+            this.txtMontoSaldo.Size = new System.Drawing.Size(200, 25);
+
+            this.lblFechaDecl.Text = "Fecha en que se presentó la declaración del saldo a favor (dd-mm-aaaa)";
+            this.lblFechaDecl.Location = new System.Drawing.Point(20, 265);
+            this.lblFechaDecl.Size = new System.Drawing.Size(260, 40); // Doble renglón por texto largo
+            this.txtFechaDecl.Location = new System.Drawing.Point(290, 262);
+            this.txtFechaDecl.Size = new System.Drawing.Size(200, 25);
+
+            // Columna Derecha
             this.lblNumOp2.Text = "Número de operación";
-            this.lblNumOp2.Location = new System.Drawing.Point(490, 95);
-            this.lblNumOp2.Size = new System.Drawing.Size(150, 20);
-            this.txtNumOp2.Location = new System.Drawing.Point(670, 92);
-            this.txtNumOp2.Size = new System.Drawing.Size(150, 25);
+            this.lblNumOp2.Location = new System.Drawing.Point(520, 195);
+            this.lblNumOp2.Size = new System.Drawing.Size(180, 20);
+            this.txtNumOp2.Location = new System.Drawing.Point(710, 192);
+            this.txtNumOp2.Size = new System.Drawing.Size(180, 25);
 
-            this.lblMontoSaldo.Text = "Monto del saldo a favor";
-            this.lblMontoSaldo.Location = new System.Drawing.Point(490, 130);
-            this.lblMontoSaldo.Size = new System.Drawing.Size(150, 20);
-            this.txtMontoSaldo.Location = new System.Drawing.Point(670, 127);
-            this.txtMontoSaldo.Size = new System.Drawing.Size(150, 25);
+            this.lblRemanHist.Text = "Remanente histórico antes de la aplicación";
+            this.lblRemanHist.Location = new System.Drawing.Point(520, 230);
+            this.lblRemanHist.Size = new System.Drawing.Size(180, 20);
+            this.txtRemanHist.Location = new System.Drawing.Point(710, 227);
+            this.txtRemanHist.Size = new System.Drawing.Size(180, 25);
 
-            this.lblRemanHist.Text = "Remanente histórico";
-            this.lblRemanHist.Location = new System.Drawing.Point(490, 165);
-            this.lblRemanHist.Size = new System.Drawing.Size(150, 20);
-            this.txtRemanHist.Location = new System.Drawing.Point(670, 162);
-            this.txtRemanHist.Size = new System.Drawing.Size(150, 25);
+            this.lblRemanAct.Text = "Remanente actualizado antes de la aplicación";
+            this.lblRemanAct.Location = new System.Drawing.Point(520, 265);
+            this.lblRemanAct.Size = new System.Drawing.Size(180, 20);
+            this.txtRemanAct.Location = new System.Drawing.Point(710, 262);
+            this.txtRemanAct.Size = new System.Drawing.Size(180, 25);
 
-            this.lblFechaDecl.Text = "Fecha de presentación";
-            this.lblFechaDecl.Location = new System.Drawing.Point(490, 200);
-            this.lblFechaDecl.Size = new System.Drawing.Size(150, 20);
-            this.txtFechaDecl.Location = new System.Drawing.Point(670, 197);
-            this.txtFechaDecl.Size = new System.Drawing.Size(150, 25);
-
-            this.lblRemanAct.Text = "Remanente actualizado";
-            this.lblRemanAct.Location = new System.Drawing.Point(490, 235);
-            this.lblRemanAct.Size = new System.Drawing.Size(150, 20);
-            this.txtRemanAct.Location = new System.Drawing.Point(670, 232);
-            this.txtRemanAct.Size = new System.Drawing.Size(150, 25);
-
-            // ==========================================
-            // BOTONES DE CONTROL DE ABAJO
-            // ==========================================
+            // ====================================================================
+            // PANEL INFERIOR FIJO: BOTONES DE ACCIÓN DE LA VENTANA
+            // ====================================================================
+            // Cancelar (Izquierda del grupo)
             this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.Location = new System.Drawing.Point(630, 400);
-            this.btnCancelar.Size = new System.Drawing.Size(90, 30);
+            this.btnCancelar.BackColor = System.Drawing.Color.White;
+            this.btnCancelar.Location = new System.Drawing.Point(620, 445);
+            this.btnCancelar.Size = new System.Drawing.Size(95, 32);
 
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.Location = new System.Drawing.Point(730, 400);
-            this.btnGuardar.Size = new System.Drawing.Size(90, 30);
+            // Agregar (Fondo azul oscuro oficial del simulador)
+            this.btnAgregar.Text = "Agregar";
+            this.btnAgregar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(68)))), ((int)(((byte)(83)))));
+            this.btnAgregar.ForeColor = System.Drawing.Color.White;
+            this.btnAgregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAgregar.Location = new System.Drawing.Point(725, 445);
+            this.btnAgregar.Size = new System.Drawing.Size(95, 32);
+
+            // Terminar (Borde gris, fondo blanco)
+            this.btnTerminar.Text = "Terminar";
+            this.btnTerminar.BackColor = System.Drawing.Color.White;
+            this.btnTerminar.Location = new System.Drawing.Point(830, 445);
+            this.btnTerminar.Size = new System.Drawing.Size(95, 32);
 
             // ==========================================
-            // PROPIEDADES DEL FORMULARIO
+            // CONFIGURACIÓN PROPIEDADES DE VENTANA DIÁLOGO MODAL FLOATING
             // ==========================================
-            this.ClientSize = new System.Drawing.Size(850, 450);
-            this.Text = "Captura Detalle";
+            this.ClientSize = new System.Drawing.Size(950, 500);
+            this.Text = "";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog; // Activa la sombra nativa
+            this.ShowInTaskbar = false;
+            this.ControlBox = false;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.BackColor = System.Drawing.Color.White;
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.Font = new System.Drawing.Font("Georgia", 10F); // Tipografía Georgia corporativa del SAT
 
-            this.Controls.AddRange(new System.Windows.Forms.Control[] {
-                this.lblTitulo, this.lblTipoEstimulo, this.cmbTipoEstimulo, this.lblPorAplicar, this.txtPorAplicar,
-                this.lblTipo, this.cmbTipo, this.lblPeriodicidad, this.txtPeriodicidad, this.lblPeriodo, this.txtPeriodo,
-                this.lblEjercicio, this.txtEjercicio, this.lblFechaCausacion, this.txtFechaCausacion, this.lblNumOp1, this.txtNumOp1,
-                this.lblConcepto, this.txtConcepto, this.lblSaldoAplicar, this.txtSaldoAplicar, this.btnContinuar, this.btnEliminar,
-                this.pnlSep, this.lblTipoDecl, this.txtTipoDecl, this.lblNumOp2, this.txtNumOp2, this.lblMontoSaldo, this.txtMontoSaldo,
-                this.lblRemanHist, this.txtRemanHist, this.lblFechaDecl, this.txtFechaDecl, this.lblRemanAct, this.txtRemanAct,
-                this.btnCancelar, this.btnGuardar
-            });
+            // Registro general de las capas en el Formulario
+            this.Controls.Add(this.pnlFormularioCaptura);
+            this.Controls.Add(this.btnCancelar);
+            this.Controls.Add(this.btnAgregar);
+            this.Controls.Add(this.btnTerminar);
+            this.Controls.Add(this.pnlHeader);
+
+            // Controles fantasmas no utilizados pero declarados
+            this.Controls.Add(this.lblTipoEstimulo);
+            this.Controls.Add(this.cmbTipoEstimulo);
+            this.Controls.Add(this.lblPorAplicar);
+            this.Controls.Add(this.txtPorAplicar);
+
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.pnlFormularioCaptura.ResumeLayout(false);
+            this.pnlFormularioCaptura.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
 
         #endregion
 
+        // Componentes nativos reestructurados
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblTotalMonto;
+        private System.Windows.Forms.Panel pnlFormularioCaptura;
+        private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.Button btnTerminar;
+
+        // Variables de control originales mapeadas perfectamente
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblTipo;
         private System.Windows.Forms.ComboBox cmbTipo;
@@ -251,7 +303,6 @@
         private System.Windows.Forms.TextBox txtSaldoAplicar;
         private System.Windows.Forms.Button btnContinuar;
         private System.Windows.Forms.Button btnEliminar;
-        private System.Windows.Forms.Panel pnlSep;
         private System.Windows.Forms.Label lblTipoDecl;
         private System.Windows.Forms.TextBox txtTipoDecl;
         private System.Windows.Forms.Label lblNumOp2;
@@ -265,7 +316,6 @@
         private System.Windows.Forms.Label lblRemanAct;
         private System.Windows.Forms.TextBox txtRemanAct;
         private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Label lblTipoEstimulo;
         private System.Windows.Forms.ComboBox cmbTipoEstimulo;
         private System.Windows.Forms.Label lblPorAplicar;

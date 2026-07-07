@@ -93,7 +93,7 @@
             this.lblTituloModal.Name = "lblTituloModal";
             this.lblTituloModal.Size = new System.Drawing.Size(1200, 60);
             this.lblTituloModal.TabIndex = 0;
-            this.lblTituloModal.Text = "Actividades gravadas a la tasa del 16%";
+            this.lblTituloModal.Text = "";
             this.lblTituloModal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnCerrarX
@@ -456,7 +456,8 @@
             this.ClientSize = new System.Drawing.Size(1400, 700);
             this.Controls.Add(this.pnlCuerpoBlanco);
             this.Controls.Add(this.pnlTituloAzul);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ControlBox = false;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "fmDetalle";

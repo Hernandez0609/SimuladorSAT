@@ -14,6 +14,7 @@ namespace SimuladorSAT
     {
         // Almacena la ventana padre que se ocultó
         private Form _ventanaAnterior;
+        private Form _overlayForm;
 
         // Constructor base por si el Designer lo requiere de respaldo
         public fmResico()
@@ -27,13 +28,38 @@ namespace SimuladorSAT
             InitializeComponent();
             _ventanaAnterior = ventanaAnterior;
 
-            // Vinculamos el evento de cierre nativo del Form (por si usan la "X" superior de la ventana)
+            // Vinculamos el evento de cierre nativo del Form
             this.FormClosing += FmResico_FormClosing;
+        }
+
+        // ====================================================================
+        // GESTIÓN ELÁSTICA DEL OVERLAY OSCURO (Efecto Figma Lightbox)
+        // ====================================================================
+        private void ActivarCortinaOscura()
+        {
+            _overlayForm = new Form();
+            _overlayForm.FormBorderStyle = FormBorderStyle.None;
+            _overlayForm.BackColor = Color.Black;
+            _overlayForm.Opacity = 0.50; // 50% de oscuridad
+            _overlayForm.ShowInTaskbar = false;
+            _overlayForm.StartPosition = FormStartPosition.Manual;
+            _overlayForm.Bounds = this.Bounds; // Cubre RESICO por completo
+            _overlayForm.Owner = this;
+            _overlayForm.Show();
+        }
+
+        private void DesactivarCortinaOscura()
+        {
+            if (_overlayForm != null)
+            {
+                _overlayForm.Close();
+                _overlayForm.Dispose();
+                _overlayForm = null;
+            }
         }
 
         private void FmResico_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Si el usuario cierra esta ventana voluntariamente y existe una anterior oculta, la encendemos de nuevo
             if (_ventanaAnterior != null && !e.Cancel)
             {
                 _ventanaAnterior.Location = this.Location;
@@ -42,69 +68,132 @@ namespace SimuladorSAT
             }
         }
 
-        // --- AGREGA ESTE MÉTODO EN EL EVENTO CLICK DE TU BOTÓN DE 'INICIO' O 'REGRESAR' EN FMRESICO ---
         private void btnRegresarAdmin_Click(object sender, EventArgs e)
         {
-            // Al cerrar la ventana actual, el evento FormClosing configurado arriba se encargará de mostrar la anterior
             this.Close();
         }
 
+        // ====================================================================
+        // BOTONES DE DETALLE (USANDO EL OVERLAY OSCURO)
+        // ====================================================================
         private void btn1_Click(object sender, EventArgs e)
         {
-            fmDetalle detalle = new fmDetalle("Actividades gravadas a la tasa del 16%", "Junio");
-            detalle.ShowDialog();
-        }
-
-        private void pnlContenedorPrincipal_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void picEscudoUthh_Click(object sender, EventArgs e)
-        {
+            try
+            {
+                ActivarCortinaOscura();
+                fmDetalle detalle = new fmDetalle("Actividades gravadas a la tasa del 16%", "Junio");
+                detalle.ShowDialog(_overlayForm); // Flota sobre el overlay sin ruidos
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
         private void btn3_Click(object sender, EventArgs e)
         {
-            fmDetalle detalle = new fmDetalle("Actividades exentas", "Abril");
-            detalle.ShowDialog();
+            try
+            {
+                ActivarCortinaOscura();
+                fmDetalle detalle = new fmDetalle("Actividades exentas", "Abril");
+                detalle.ShowDialog(_overlayForm);
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
         private void btn4_Click(object sender, EventArgs e)
         {
-            fmDetalle detalle = new fmDetalle("Actividades no objeto del impuesto", "Junio");
-            detalle.ShowDialog();
+            try
+            {
+                ActivarCortinaOscura();
+                fmDetalle detalle = new fmDetalle("Actividades no objeto del impuesto", "Junio");
+                detalle.ShowDialog(_overlayForm);
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
         private void btn7_Click(object sender, EventArgs e)
         {
-            fmDetalle detalle = new fmDetalle("IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas", "Junio");
-            detalle.ShowDialog();
+            try
+            {
+                ActivarCortinaOscura();
+                fmDetalle detalle = new fmDetalle("IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas", "Junio");
+                detalle.ShowDialog(_overlayForm);
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
         private void btn8_Click(object sender, EventArgs e)
         {
-            fmDetalle detalle = new fmDetalle("IVA retenido", "Junio");
-            detalle.ShowDialog();
+            try
+            {
+                ActivarCortinaOscura();
+                fmDetalle detalle = new fmDetalle("IVA retenido", "Junio");
+                detalle.ShowDialog(_overlayForm);
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
         private void btn10_Click(object sender, EventArgs e)
         {
-            fmDetalle detalle = new fmDetalle("IVA por devoluciones, descuentos y bonificaciones en gastos", "Junio");
-            detalle.ShowDialog();
+            try
+            {
+                ActivarCortinaOscura();
+                fmDetalle detalle = new fmDetalle("IVA por devoluciones, descuentos y bonificaciones en gastos", "Junio");
+                detalle.ShowDialog(_overlayForm);
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
+        // ====================================================================
+        // BOTONES DE CAPTURA (USANDO EL OVERLAY OSCURO)
+        // ====================================================================
         private void btn2_Click(object sender, EventArgs e)
         {
-            fmCapturar ventana = new fmCapturar("Tasa0");
-            ventana.ShowDialog();
+            try
+            {
+                ActivarCortinaOscura();
+                fmCapturar ventana = new fmCapturar("Tasa0");
+                ventana.ShowDialog(_overlayForm);
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
         private void btn9_Click(object sender, EventArgs e)
         {
-            fmCapturar ventana = new fmCapturar("IvaAcreditable");
-            ventana.ShowDialog();
+            try
+            {
+                ActivarCortinaOscura();
+                fmCapturar ventana = new fmCapturar("IvaAcreditable");
+                ventana.ShowDialog(_overlayForm);
+            }
+            finally
+            {
+                DesactivarCortinaOscura();
+            }
         }
 
+        // ====================================================================
+        // FLUJOS GENERALES DE NAVEGACIÓN
+        // ====================================================================
         private void btnInicio_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -114,5 +203,17 @@ namespace SimuladorSAT
         {
             this.Close();
         }
+
+        private void btnTabPago_Click(object sender, EventArgs e)
+        {
+            fmPagoIVA ventanaPago = new fmPagoIVA();
+            ventanaPago.FormClosed += (s, args) => this.Close();
+            ventanaPago.WindowState = FormWindowState.Maximized;
+            ventanaPago.Show();
+            this.Hide();
+        }
+
+        private void pnlContenedorPrincipal_Paint(object sender, PaintEventArgs e) { }
+        private void picEscudoUthh_Click(object sender, EventArgs e) { }
     }
 }

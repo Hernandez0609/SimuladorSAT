@@ -111,6 +111,9 @@
     <EmbeddedResource Include="fmDetalle.resx">
       <DependentUpon>fmDetalle.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="fmPagoIVA.resx">
+      <DependentUpon>fmPagoIVA.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmPresentarDeclaracion.resx">
       <DependentUpon>fmPresentarDeclaracion.cs</DependentUpon>
     </EmbeddedResource>

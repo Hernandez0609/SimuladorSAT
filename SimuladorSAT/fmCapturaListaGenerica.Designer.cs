@@ -17,193 +17,260 @@
         {
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblTotal = new System.Windows.Forms.Label();
-
+            this.lblBotonCerrarX = new System.Windows.Forms.Label();
             this.pnlContenido = new System.Windows.Forms.Panel();
             this.lblLimite = new System.Windows.Forms.Label();
             this.txtLimite = new System.Windows.Forms.TextBox();
             this.btnAgregar = new System.Windows.Forms.Button();
 
+            // Panel Desplegable de Captura (Figma Mockup 2)
+            this.pnlCapturaDesplegable = new System.Windows.Forms.Panel();
+            this.lblAsteriscoTipo = new System.Windows.Forms.Label();
+            this.lblPorAplicarPeriodo = new System.Windows.Forms.Label();
+            this.cmbTipoEstimulo = new System.Windows.Forms.ComboBox();
+            this.txtMontoPorAplicar = new System.Windows.Forms.TextBox();
+            this.btnGuardarCaptura = new System.Windows.Forms.Button();
+            this.btnCancelarCaptura = new System.Windows.Forms.Button();
+
+            // Grid y Sección Inferior
             this.dgvRegistros = new System.Windows.Forms.DataGridView();
             this.colTipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPorAplicar = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEliminar = new System.Windows.Forms.DataGridViewButtonColumn();
-
             this.lblTotalRegistros = new System.Windows.Forms.Label();
             this.lblPagina = new System.Windows.Forms.Label();
-            this.lblMensaje = new System.Windows.Forms.Label();
+            this.lblMensajeAlerta = new System.Windows.Forms.Label();
+            this.lblIconoAlerta = new System.Windows.Forms.Label();
 
             this.pnlBotones = new System.Windows.Forms.Panel();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnTerminar = new System.Windows.Forms.Button();
+            this.btnCerrarForm = new System.Windows.Forms.Button();
 
             this.pnlHeader.SuspendLayout();
             this.pnlContenido.SuspendLayout();
+            this.pnlCapturaDesplegable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRegistros)).BeginInit();
             this.pnlBotones.SuspendLayout();
             this.SuspendLayout();
 
             // =============================================
-            // FORM
+            // FORM (Estilo Flotante Limpio sin Bordes de Windows)
             // =============================================
-            this.ClientSize = new System.Drawing.Size(900, 520);
-            this.Text = "Captura";
+            this.ClientSize = new System.Drawing.Size(950, 500);
+            this.Text = "";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.ShowInTaskbar = false;
+            this.ControlBox = false;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.BackColor = System.Drawing.Color.White;
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.Font = new System.Drawing.Font("Georgia", 10F); // Tipografía Serif solicitada
 
             // =============================================
-            // HEADER (teal oscuro)
+            // HEADER (Teal Oscuro Figma)
             // =============================================
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(27, 107, 114);
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(68)))), ((int)(((byte)(82)))));
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Height = 50;
+            this.pnlHeader.Height = 55;
             this.pnlHeader.Controls.Add(this.lblTitulo);
-            this.pnlHeader.Controls.Add(this.lblTotal);
+            this.pnlHeader.Controls.Add(this.lblBotonCerrarX);
 
-            this.lblTitulo.Text = "Compensaciones";
+            this.lblTitulo.Text = "Estímulos al impuesto a cargo";
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
-            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.Font = new System.Drawing.Font("Georgia", 13F);
             this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Location = new System.Drawing.Point(20, 13);
+            this.lblTitulo.Location = new System.Drawing.Point(25, 16);
 
-            this.lblTotal.Text = "Total: $0";
-            this.lblTotal.ForeColor = System.Drawing.Color.White;
-            this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Location = new System.Drawing.Point(750, 15);
+            // Botón X blanco de la esquina superior derecha
+            this.lblBotonCerrarX.Text = "X";
+            this.lblBotonCerrarX.ForeColor = System.Drawing.Color.White;
+            this.lblBotonCerrarX.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
+            this.lblBotonCerrarX.AutoSize = true;
+            this.lblBotonCerrarX.Location = new System.Drawing.Point(905, 16);
+            this.lblBotonCerrarX.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblBotonCerrarX.Click += new System.EventHandler(this.lblBotonCerrarX_Click);
 
             // =============================================
-            // PANEL BOTONES ABAJO
+            // PANEL DE ACCIÓN INFERIOR
             // =============================================
             this.pnlBotones.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBotones.Height = 55;
+            this.pnlBotones.Height = 50;
             this.pnlBotones.BackColor = System.Drawing.Color.White;
-            this.pnlBotones.Controls.Add(this.btnCancelar);
-            this.pnlBotones.Controls.Add(this.btnTerminar);
+            this.pnlBotones.Controls.Add(this.btnCerrarForm);
 
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(110, 32);
-            this.btnCancelar.Location = new System.Drawing.Point(660, 11);
-            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelar.BackColor = System.Drawing.Color.White;
-            this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(27, 107, 114);
-            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(27, 107, 114);
-            this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
-
-            this.btnTerminar.Text = "Terminar";
-            this.btnTerminar.Size = new System.Drawing.Size(110, 32);
-            this.btnTerminar.Location = new System.Drawing.Point(780, 11);
-            this.btnTerminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTerminar.BackColor = System.Drawing.Color.FromArgb(27, 107, 114);
-            this.btnTerminar.ForeColor = System.Drawing.Color.White;
-            this.btnTerminar.FlatAppearance.BorderSize = 0;
-            this.btnTerminar.Cursor = System.Windows.Forms.Cursors.Hand;
+            // Botón Cerrar Único (Abajo a la derecha)
+            this.btnCerrarForm.Text = "Cerrar";
+            this.btnCerrarForm.Size = new System.Drawing.Size(90, 28);
+            this.btnCerrarForm.Location = new System.Drawing.Point(835, 10);
+            this.btnCerrarForm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCerrarForm.BackColor = System.Drawing.Color.White;
+            this.btnCerrarForm.ForeColor = System.Drawing.Color.Black;
+            this.btnCerrarForm.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
+            this.btnCerrarForm.Font = new System.Drawing.Font("Georgia", 9.5F);
+            this.btnCerrarForm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCerrarForm.Click += new System.EventHandler(this.btnCerrarForm_Click);
 
             // =============================================
-            // PANEL CONTENIDO
+            // PANEL CONTENIDO PRINCIPAL
             // =============================================
             this.pnlContenido.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContenido.BackColor = System.Drawing.Color.White;
-            this.pnlContenido.Padding = new System.Windows.Forms.Padding(25, 15, 25, 10);
+            this.pnlContenido.Controls.Add(this.lblLimite);
+            this.pnlContenido.Controls.Add(this.txtLimite);
+            this.pnlContenido.Controls.Add(this.btnAgregar);
+            this.pnlContenido.Controls.Add(this.pnlCapturaDesplegable);
+            this.pnlContenido.Controls.Add(this.dgvRegistros);
+            this.pnlContenido.Controls.Add(this.lblTotalRegistros);
+            this.pnlContenido.Controls.Add(this.lblPagina);
+            this.pnlContenido.Controls.Add(this.lblMensajeAlerta);
+            this.pnlContenido.Controls.Add(this.lblIconoAlerta);
 
-            // Límite a aplicar (solo para Estímulos)
-            this.lblLimite.Text = "Límite a aplicar";
+            // Límite a aplicar central
+            this.lblLimite.Text = "Limite a aplicar";
+            this.lblLimite.Font = new System.Drawing.Font("Georgia", 12F);
             this.lblLimite.AutoSize = true;
-            this.lblLimite.Location = new System.Drawing.Point(25, 20);
-            this.lblLimite.Visible = false;
+            this.lblLimite.Location = new System.Drawing.Point(25, 15);
 
-            this.txtLimite.Location = new System.Drawing.Point(200, 17);
-            this.txtLimite.Size = new System.Drawing.Size(120, 26);
+            this.txtLimite.Location = new System.Drawing.Point(424, 25);
+            this.txtLimite.Size = new System.Drawing.Size(120, 23);
             this.txtLimite.ReadOnly = true;
             this.txtLimite.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtLimite.BackColor = System.Drawing.Color.FromArgb(220, 220, 220);
-            this.txtLimite.Visible = false;
+            this.txtLimite.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            this.txtLimite.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLimite.Text = "0";
 
-            // Botón Agregar
+            // Botón Agregar de Figma (Bordes redondeados, fondo blanco)
             this.btnAgregar.Text = "Agregar";
-            this.btnAgregar.Size = new System.Drawing.Size(100, 30);
-            this.btnAgregar.Location = new System.Drawing.Point(25, 20);
+            this.btnAgregar.Size = new System.Drawing.Size(90, 28);
+            this.btnAgregar.Location = new System.Drawing.Point(25, 55);
             this.btnAgregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAgregar.BackColor = System.Drawing.Color.FromArgb(27, 107, 114);
-            this.btnAgregar.ForeColor = System.Drawing.Color.White;
-            this.btnAgregar.FlatAppearance.BorderSize = 0;
+            this.btnAgregar.BackColor = System.Drawing.Color.White;
+            this.btnAgregar.ForeColor = System.Drawing.Color.Black;
+            this.btnAgregar.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
             this.btnAgregar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
 
-            // DataGridView
-            this.dgvRegistros.Location = new System.Drawing.Point(25, 65);
-            this.dgvRegistros.Size = new System.Drawing.Size(850, 280);
+            // =============================================
+            // PANEL DESPLEGABLE DE CAPTURA (Figma Mockup 2)
+            // =============================================
+            this.pnlCapturaDesplegable.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlCapturaDesplegable.Location = new System.Drawing.Point(25, 55);
+            this.pnlCapturaDesplegable.Size = new System.Drawing.Size(900, 135);
+            this.pnlCapturaDesplegable.BackColor = System.Drawing.Color.White;
+            this.pnlCapturaDesplegable.Visible = false; // Oculto inicialmente como pide Figma 1
+            this.pnlCapturaDesplegable.Controls.Add(this.lblAsteriscoTipo);
+            this.pnlCapturaDesplegable.Controls.Add(this.lblPorAplicarPeriodo);
+            this.pnlCapturaDesplegable.Controls.Add(this.cmbTipoEstimulo);
+            this.pnlCapturaDesplegable.Controls.Add(this.txtMontoPorAplicar);
+            this.pnlCapturaDesplegable.Controls.Add(this.btnGuardarCaptura);
+            this.pnlCapturaDesplegable.Controls.Add(this.btnCancelarCaptura);
+
+            this.lblAsteriscoTipo.Text = "*Tipo de estimulo";
+            this.lblAsteriscoTipo.Location = new System.Drawing.Point(15, 18);
+            this.lblAsteriscoTipo.AutoSize = true;
+
+            this.cmbTipoEstimulo.Location = new System.Drawing.Point(400, 15);
+            this.cmbTipoEstimulo.Size = new System.Drawing.Size(120, 23);
+            this.cmbTipoEstimulo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTipoEstimulo.Items.AddRange(new object[] { "Selecciona", "Estímulo Fronterizo", "Estímulo Diésel" });
+            this.cmbTipoEstimulo.SelectedIndex = 0;
+
+            this.lblPorAplicarPeriodo.Text = "Por aplicar en el periodo";
+            this.lblPorAplicarPeriodo.Location = new System.Drawing.Point(15, 53);
+            this.lblPorAplicarPeriodo.AutoSize = true;
+
+            this.txtMontoPorAplicar.Location = new System.Drawing.Point(400, 50);
+            this.txtMontoPorAplicar.Size = new System.Drawing.Size(120, 23);
+            this.txtMontoPorAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            this.txtMontoPorAplicar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+
+            // Botones del panel interno
+            this.btnGuardarCaptura.Text = "Guardar";
+            this.btnGuardarCaptura.Size = new System.Drawing.Size(90, 28);
+            this.btnGuardarCaptura.Location = new System.Drawing.Point(340, 95);
+            this.btnGuardarCaptura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardarCaptura.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
+            this.btnGuardarCaptura.BackColor = System.Drawing.Color.White;
+            this.btnGuardarCaptura.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGuardarCaptura.Click += new System.EventHandler(this.btnGuardarCaptura_Click);
+
+            this.btnCancelarCaptura.Text = "Cancelar";
+            this.btnCancelarCaptura.Size = new System.Drawing.Size(90, 28);
+            this.btnCancelarCaptura.Location = new System.Drawing.Point(450, 95);
+            this.btnCancelarCaptura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelarCaptura.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
+            this.btnCancelarCaptura.BackColor = System.Drawing.Color.White;
+            this.btnCancelarCaptura.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelarCaptura.Click += new System.EventHandler(this.btnCancelarCaptura_Click);
+
+            // =============================================
+            // DATAGRIDVIEW (Alineado dinámicamente)
+            // =============================================
+            this.dgvRegistros.Location = new System.Drawing.Point(25, 100); // Cambia dinámicamente en el código
+            this.dgvRegistros.Size = new System.Drawing.Size(900, 160);
             this.dgvRegistros.BackgroundColor = System.Drawing.Color.White;
-            this.dgvRegistros.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.dgvRegistros.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvRegistros.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvRegistros.AllowUserToAddRows = false;
             this.dgvRegistros.AllowUserToDeleteRows = false;
-            this.dgvRegistros.ReadOnly = false;
             this.dgvRegistros.RowHeadersVisible = false;
             this.dgvRegistros.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRegistros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvRegistros.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(27, 107, 114);
-            this.dgvRegistros.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvRegistros.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+
+            // Estilos de los encabezados idénticos a los bloques limpios de Figma
+            this.dgvRegistros.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.White;
+            this.dgvRegistros.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            this.dgvRegistros.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Georgia", 11F);
+            this.dgvRegistros.ColumnHeadersDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dgvRegistros.ColumnHeadersHeight = 35;
+            this.dgvRegistros.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvRegistros.EnableHeadersVisualStyles = false;
 
-            // Columnas del grid
-            this.colTipo.HeaderText = "Tipo";
+            this.colTipo.HeaderText = "Tipo de estimulo";
             this.colTipo.Name = "colTipo";
             this.colTipo.ReadOnly = true;
-            this.colTipo.FillWeight = 50;
+            this.colTipo.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 
             this.colPorAplicar.HeaderText = "Por aplicar en el periodo";
             this.colPorAplicar.Name = "colPorAplicar";
             this.colPorAplicar.ReadOnly = true;
-            this.colPorAplicar.FillWeight = 35;
+            this.colPorAplicar.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 
             this.colEliminar.HeaderText = "Eliminar";
             this.colEliminar.Name = "colEliminar";
-            this.colEliminar.Text = "Eliminar";
-            this.colEliminar.UseColumnTextForButtonValue = true;
-            this.colEliminar.FillWeight = 15;
+            this.colEliminar.ReadOnly = true;
+            this.colEliminar.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 
-            this.dgvRegistros.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                this.colTipo,
-                this.colPorAplicar,
-                this.colEliminar
-            });
-
-            // Total de registros y paginación
-            this.lblTotalRegistros.Text = "Total de registros     0";
-            this.lblTotalRegistros.AutoSize = true;
-            this.lblTotalRegistros.Location = new System.Drawing.Point(25, 360);
-            this.lblTotalRegistros.ForeColor = System.Drawing.Color.DimGray;
-
-            this.lblPagina.Text = "< Pagina 1 de 0 >";
-            this.lblPagina.AutoSize = true;
-            this.lblPagina.Location = new System.Drawing.Point(380, 360);
-            this.lblPagina.ForeColor = System.Drawing.Color.DimGray;
-
-            // Mensaje de validación (en rojo)
-            this.lblMensaje.Text = "Debes capturar al menos un registro dando clic en el botón \"Agregar\".";
-            this.lblMensaje.ForeColor = System.Drawing.Color.Red;
-            this.lblMensaje.AutoSize = true;
-            this.lblMensaje.Location = new System.Drawing.Point(25, 390);
-            this.lblMensaje.Visible = false;
-
-            this.pnlContenido.Controls.AddRange(new System.Windows.Forms.Control[]
-            {
-                this.lblLimite,
-                this.txtLimite,
-                this.btnAgregar,
-                this.dgvRegistros,
-                this.lblTotalRegistros,
-                this.lblPagina,
-                this.lblMensaje
-            });
+            this.dgvRegistros.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.colTipo, this.colPorAplicar, this.colEliminar });
 
             // =============================================
-            // AGREGAR AL FORM
+            // CONTADORES Y ADVERTENCIA DE FIGMA
+            // =============================================
+            this.lblTotalRegistros.Text = "Total de registros            0";
+            this.lblTotalRegistros.Location = new System.Drawing.Point(25, 275);
+            this.lblTotalRegistros.AutoSize = true;
+
+            this.lblPagina.Text = "< Pagina 1 de 0 >";
+            this.lblPagina.Location = new System.Drawing.Point(400, 275);
+            this.lblPagina.AutoSize = true;
+
+            // Letrero Rojo Obligatorio de Figma
+            this.lblMensajeAlerta.Text = "Debes capturar al menos un registro dando clic en el boton \"Agregar\".";
+            this.lblMensajeAlerta.ForeColor = System.Drawing.Color.Red;
+            this.lblMensajeAlerta.Location = new System.Drawing.Point(25, 330);
+            this.lblMensajeAlerta.Font = new System.Drawing.Font("Georgia", 10.5F);
+            this.lblMensajeAlerta.AutoSize = true;
+
+            // Icono Exclamación (!) Rojo con fondo Negro
+            this.lblIconoAlerta.Text = " ! ";
+            this.lblIconoAlerta.ForeColor = System.Drawing.Color.White;
+            this.lblIconoAlerta.BackColor = System.Drawing.Color.Red;
+            this.lblIconoAlerta.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.lblIconoAlerta.Location = new System.Drawing.Point(50, 330);
+            this.lblIconoAlerta.AutoSize = true;
+
+            // =============================================
+            // COMPOSICIÓN FINAL DEL FORMULARIO
             // =============================================
             this.Controls.Add(this.pnlContenido);
             this.Controls.Add(this.pnlBotones);
@@ -213,6 +280,8 @@
             this.pnlHeader.PerformLayout();
             this.pnlContenido.ResumeLayout(false);
             this.pnlContenido.PerformLayout();
+            this.pnlCapturaDesplegable.ResumeLayout(false);
+            this.pnlCapturaDesplegable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRegistros)).EndInit();
             this.pnlBotones.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -222,20 +291,30 @@
 
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblTitulo;
-        private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.Label lblBotonCerrarX;
         private System.Windows.Forms.Panel pnlContenido;
         private System.Windows.Forms.Label lblLimite;
         private System.Windows.Forms.TextBox txtLimite;
         private System.Windows.Forms.Button btnAgregar;
+
+        // Controles agregados para el comportamiento dinámico de Figma
+        private System.Windows.Forms.Panel pnlCapturaDesplegable;
+        private System.Windows.Forms.Label lblAsteriscoTipo;
+        private System.Windows.Forms.Label lblPorAplicarPeriodo;
+        private System.Windows.Forms.ComboBox cmbTipoEstimulo;
+        private System.Windows.Forms.TextBox txtMontoPorAplicar;
+        private System.Windows.Forms.Button btnGuardarCaptura;
+        private System.Windows.Forms.Button btnCancelarCaptura;
+
         private System.Windows.Forms.DataGridView dgvRegistros;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTipo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPorAplicar;
         private System.Windows.Forms.DataGridViewButtonColumn colEliminar;
         private System.Windows.Forms.Label lblTotalRegistros;
         private System.Windows.Forms.Label lblPagina;
-        private System.Windows.Forms.Label lblMensaje;
+        private System.Windows.Forms.Label lblMensajeAlerta;
+        private System.Windows.Forms.Label lblIconoAlerta;
         private System.Windows.Forms.Panel pnlBotones;
-        private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Button btnTerminar;
+        private System.Windows.Forms.Button btnCerrarForm;
     }
 }

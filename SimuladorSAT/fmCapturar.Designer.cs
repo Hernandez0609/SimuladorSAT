@@ -267,7 +267,8 @@
             this.ClientSize = new System.Drawing.Size(1400, 430);
             this.Controls.Add(this.pnlCuerpo);
             this.Controls.Add(this.pnlTituloAzul);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ControlBox = false;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "fmCapturar";
