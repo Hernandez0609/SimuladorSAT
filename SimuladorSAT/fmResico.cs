@@ -12,24 +12,18 @@ namespace SimuladorSAT
 {
     public partial class fmResico : Form
     {
-        // Almacena la ventana padre que se ocultó
         private Form _ventanaAnterior;
         private Form _overlayForm;
 
-        // Constructor base por si el Designer lo requiere de respaldo
         public fmResico()
         {
             InitializeComponent();
         }
 
-        // Constructor principal que recibe la interfaz de Administración de Declaración
         public fmResico(Form ventanaAnterior)
         {
             InitializeComponent();
             _ventanaAnterior = ventanaAnterior;
-
-            // Vinculamos el evento de cierre nativo del Form
-            this.FormClosing += FmResico_FormClosing;
         }
 
         // ====================================================================
@@ -40,10 +34,10 @@ namespace SimuladorSAT
             _overlayForm = new Form();
             _overlayForm.FormBorderStyle = FormBorderStyle.None;
             _overlayForm.BackColor = Color.Black;
-            _overlayForm.Opacity = 0.50; // 50% de oscuridad
+            _overlayForm.Opacity = 0.50;
             _overlayForm.ShowInTaskbar = false;
             _overlayForm.StartPosition = FormStartPosition.Manual;
-            _overlayForm.Bounds = this.Bounds; // Cubre RESICO por completo
+            _overlayForm.Bounds = this.Bounds;
             _overlayForm.Owner = this;
             _overlayForm.Show();
         }
@@ -58,19 +52,24 @@ namespace SimuladorSAT
             }
         }
 
-        private void FmResico_FormClosing(object sender, FormClosingEventArgs e)
+        // Regresa a Administración, marcando el módulo como completado
+        private void RegresarAAdmin()
         {
-            if (_ventanaAnterior != null && !e.Cancel)
+            if (_ventanaAnterior is fmAdminDeclaracion admin)
             {
-                _ventanaAnterior.Location = this.Location;
+                admin.MarcarIvaSimplificadoCompletado(195); // Valor simulado
+            }
+            if (_ventanaAnterior != null)
+            {
                 _ventanaAnterior.WindowState = this.WindowState;
                 _ventanaAnterior.Show();
             }
+            this.Hide();
         }
 
         private void btnRegresarAdmin_Click(object sender, EventArgs e)
         {
-            this.Close();
+            RegresarAAdmin();
         }
 
         // ====================================================================
@@ -82,7 +81,7 @@ namespace SimuladorSAT
             {
                 ActivarCortinaOscura();
                 fmDetalle detalle = new fmDetalle("Actividades gravadas a la tasa del 16%", "Junio");
-                detalle.ShowDialog(_overlayForm); // Flota sobre el overlay sin ruidos
+                detalle.ShowDialog(_overlayForm);
             }
             finally
             {
@@ -196,20 +195,24 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Program.formPresentar.WindowState = this.WindowState;
+            Program.formPresentar.Show();
+            this.Hide();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            RegresarAAdmin();
         }
 
         private void btnTabPago_Click(object sender, EventArgs e)
         {
-            fmPagoIVA ventanaPago = new fmPagoIVA();
-            ventanaPago.FormClosed += (s, args) => this.Close();
-            ventanaPago.WindowState = FormWindowState.Maximized;
-            ventanaPago.Show();
+            if (Program.formPagoIva == null || Program.formPagoIva.IsDisposed)
+            {
+                Program.formPagoIva = new fmPagoIVA();
+            }
+            Program.formPagoIva.WindowState = FormWindowState.Maximized;
+            Program.formPagoIva.Show();
             this.Hide();
         }
 

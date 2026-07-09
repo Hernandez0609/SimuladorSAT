@@ -188,6 +188,7 @@
             this.btnNavInicio.Size = new System.Drawing.Size(95, 48);
             this.btnNavInicio.TabIndex = 1;
             this.btnNavInicio.Text = "Inicio";
+            this.btnNavInicio.Click += new System.EventHandler(this.btnNavInicio_Click);
             // 
             // btnNavCerrar
             // 
@@ -202,6 +203,7 @@
             this.btnNavCerrar.Size = new System.Drawing.Size(95, 48);
             this.btnNavCerrar.TabIndex = 2;
             this.btnNavCerrar.Text = "Cerrar";
+            this.btnNavCerrar.Click += new System.EventHandler(this.btnNavCerrar_Click);
             // 
             // pnlContenedorPrincipal
             // 

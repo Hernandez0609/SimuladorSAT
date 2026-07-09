@@ -19,23 +19,27 @@ namespace SimuladorSAT
 
         private void lblIconoArrendamiento_Click(object sender, EventArgs e)
         {
-
         }
 
         private void lblIconoConfianza_Click(object sender, EventArgs e)
         {
-            var form = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
-            form.Show();
-            this.Hide();
-            form.FormClosed += (s, args) => this.Show();
+            IrAPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
         }
 
         private void lblTextoConfianza_Click(object sender, EventArgs e)
         {
-            var form = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
-            form.Show();
+            IrAPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
+        }
+
+        private void IrAPresentarDeclaracion(TipoRegimen regimen)
+        {
+            if (Program.formPresentar == null || Program.formPresentar.IsDisposed)
+            {
+                Program.formPresentar = new fmPresentarDeclaracion(regimen);
+            }
+            Program.formPresentar.WindowState = this.WindowState;
+            Program.formPresentar.Show();
             this.Hide();
-            form.FormClosed += (s, args) => this.Show();
         }
     }
 }

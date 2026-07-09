@@ -76,6 +76,18 @@
     <Compile Include="fmDetalle.Designer.cs">
       <DependentUpon>fmDetalle.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmIsrRetencionesSalarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmIsrRetencionesSalarios.Designer.cs">
+      <DependentUpon>fmIsrRetencionesSalarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmPagoISR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmPagoISR.Designer.cs">
+      <DependentUpon>fmPagoISR.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmPagoIVA.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +122,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="fmDetalle.resx">
       <DependentUpon>fmDetalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmIsrRetencionesSalarios.resx">
+      <DependentUpon>fmIsrRetencionesSalarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmPagoISR.resx">
+      <DependentUpon>fmPagoISR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmPagoIVA.resx">
       <DependentUpon>fmPagoIVA.cs</DependentUpon>

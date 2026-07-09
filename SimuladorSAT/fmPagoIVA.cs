@@ -205,16 +205,34 @@ namespace SimuladorSAT
 
         private void btnTabDeterminacion_Click(object sender, EventArgs e)
         {
-            fmResico ventanaDeterminacion = new fmResico();
-            ventanaDeterminacion.FormClosed += (s, args) => this.Close();
-            ventanaDeterminacion.WindowState = FormWindowState.Maximized;
-            ventanaDeterminacion.Show();
+            if (Program.formResico != null && !Program.formResico.IsDisposed)
+            {
+                Program.formResico.WindowState = this.WindowState;
+                Program.formResico.Show();
+            }
             this.Hide();
         }
 
         private void tlpCamposPago_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnNavInicio_Click(object sender, EventArgs e)
+        {
+            Program.formPresentar.WindowState = this.WindowState;
+            Program.formPresentar.Show();
+            this.Hide();
+        }
+
+        private void btnNavCerrar_Click(object sender, EventArgs e)
+        {
+            if (Program.formResico != null && !Program.formResico.IsDisposed)
+            {
+                Program.formResico.WindowState = this.WindowState;
+                Program.formResico.Show();
+            }
+            this.Hide();
         }
     }
 }

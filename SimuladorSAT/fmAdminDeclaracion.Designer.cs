@@ -60,7 +60,7 @@
             this.pnlHeaderBlanco.Controls.Add(this.picLogoDerecho);
             this.pnlHeaderBlanco.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeaderBlanco.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeaderBlanco.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlHeaderBlanco.Margin = new System.Windows.Forms.Padding(4);
             this.pnlHeaderBlanco.Name = "pnlHeaderBlanco";
             this.pnlHeaderBlanco.Size = new System.Drawing.Size(1344, 105);
             this.pnlHeaderBlanco.TabIndex = 8;
@@ -69,7 +69,7 @@
             // 
             this.picLogoIzquierdo.Image = global::SimuladorSAT.Properties.Resources.logouthh;
             this.picLogoIzquierdo.Location = new System.Drawing.Point(27, 10);
-            this.picLogoIzquierdo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.picLogoIzquierdo.Margin = new System.Windows.Forms.Padding(4);
             this.picLogoIzquierdo.Name = "picLogoIzquierdo";
             this.picLogoIzquierdo.Size = new System.Drawing.Size(453, 94);
             this.picLogoIzquierdo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -81,7 +81,7 @@
             this.picLogoDerecho.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picLogoDerecho.Image = global::SimuladorSAT.Properties.Resources.escudo;
             this.picLogoDerecho.Location = new System.Drawing.Point(1208, 6);
-            this.picLogoDerecho.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.picLogoDerecho.Margin = new System.Windows.Forms.Padding(4);
             this.picLogoDerecho.Name = "picLogoDerecho";
             this.picLogoDerecho.Size = new System.Drawing.Size(109, 94);
             this.picLogoDerecho.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -96,7 +96,7 @@
             this.pnlHeaderGris.Controls.Add(this.lblInfoDerecha);
             this.pnlHeaderGris.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeaderGris.Location = new System.Drawing.Point(0, 105);
-            this.pnlHeaderGris.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlHeaderGris.Margin = new System.Windows.Forms.Padding(4);
             this.pnlHeaderGris.Name = "pnlHeaderGris";
             this.pnlHeaderGris.Size = new System.Drawing.Size(1344, 98);
             this.pnlHeaderGris.TabIndex = 7;
@@ -144,7 +144,7 @@
             this.pnlMenuVerde.Controls.Add(this.btnCerrar);
             this.pnlMenuVerde.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlMenuVerde.Location = new System.Drawing.Point(0, 203);
-            this.pnlMenuVerde.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlMenuVerde.Margin = new System.Windows.Forms.Padding(4);
             this.pnlMenuVerde.Name = "pnlMenuVerde";
             this.pnlMenuVerde.Size = new System.Drawing.Size(1344, 59);
             this.pnlMenuVerde.TabIndex = 6;
@@ -204,12 +204,12 @@
             // 
             // pnlInstrucciones
             // 
-            this.pnlInstrucciones.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.pnlInstrucciones.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlInstrucciones.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlInstrucciones.Controls.Add(this.lblInstruccionesText);
             this.pnlInstrucciones.Location = new System.Drawing.Point(60, 338);
-            this.pnlInstrucciones.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlInstrucciones.Margin = new System.Windows.Forms.Padding(4);
             this.pnlInstrucciones.Name = "pnlInstrucciones";
             this.pnlInstrucciones.Size = new System.Drawing.Size(1223, 178);
             this.pnlInstrucciones.TabIndex = 4;
@@ -236,7 +236,7 @@
             this.pnlIconosSecciones.Controls.Add(this.btnIvaSimplificado);
             this.pnlIconosSecciones.Controls.Add(this.lblIvaSimplificado);
             this.pnlIconosSecciones.Location = new System.Drawing.Point(102, 542);
-            this.pnlIconosSecciones.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlIconosSecciones.Margin = new System.Windows.Forms.Padding(4);
             this.pnlIconosSecciones.Name = "pnlIconosSecciones";
             this.pnlIconosSecciones.Size = new System.Drawing.Size(1140, 160);
             this.pnlIconosSecciones.TabIndex = 3;
@@ -247,7 +247,7 @@
             this.btnIsrFisicas.FlatAppearance.BorderSize = 0;
             this.btnIsrFisicas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnIsrFisicas.Location = new System.Drawing.Point(120, 12);
-            this.btnIsrFisicas.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnIsrFisicas.Margin = new System.Windows.Forms.Padding(4);
             this.btnIsrFisicas.Name = "btnIsrFisicas";
             this.btnIsrFisicas.Size = new System.Drawing.Size(73, 68);
             this.btnIsrFisicas.TabIndex = 0;
@@ -269,10 +269,11 @@
             this.btnIsrSalarios.FlatAppearance.BorderSize = 0;
             this.btnIsrSalarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnIsrSalarios.Location = new System.Drawing.Point(533, 12);
-            this.btnIsrSalarios.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnIsrSalarios.Margin = new System.Windows.Forms.Padding(4);
             this.btnIsrSalarios.Name = "btnIsrSalarios";
             this.btnIsrSalarios.Size = new System.Drawing.Size(73, 68);
             this.btnIsrSalarios.TabIndex = 2;
+            this.btnIsrSalarios.Click += new System.EventHandler(this.btnIsrSalarios_Click);
             // 
             // lblIsrSalarios
             // 
@@ -291,7 +292,7 @@
             this.btnIvaSimplificado.FlatAppearance.BorderSize = 0;
             this.btnIvaSimplificado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnIvaSimplificado.Location = new System.Drawing.Point(946, 12);
-            this.btnIvaSimplificado.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnIvaSimplificado.Margin = new System.Windows.Forms.Padding(4);
             this.btnIvaSimplificado.Name = "btnIvaSimplificado";
             this.btnIvaSimplificado.Size = new System.Drawing.Size(73, 68);
             this.btnIvaSimplificado.TabIndex = 4;
@@ -313,7 +314,7 @@
             this.pnlTotalPagar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlTotalPagar.Controls.Add(this.lblTotalPagar);
             this.pnlTotalPagar.Location = new System.Drawing.Point(339, 700);
-            this.pnlTotalPagar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlTotalPagar.Margin = new System.Windows.Forms.Padding(4);
             this.pnlTotalPagar.Name = "pnlTotalPagar";
             this.pnlTotalPagar.Size = new System.Drawing.Size(666, 61);
             this.pnlTotalPagar.TabIndex = 2;
@@ -341,7 +342,7 @@
             this.btnVistaPrevia.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.btnVistaPrevia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(110)))), ((int)(((byte)(110)))), ((int)(((byte)(110)))));
             this.btnVistaPrevia.Location = new System.Drawing.Point(453, 765);
-            this.btnVistaPrevia.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnVistaPrevia.Margin = new System.Windows.Forms.Padding(4);
             this.btnVistaPrevia.Name = "btnVistaPrevia";
             this.btnVistaPrevia.Size = new System.Drawing.Size(200, 49);
             this.btnVistaPrevia.TabIndex = 1;
@@ -358,7 +359,7 @@
             this.btnEnviarDeclaracion.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.btnEnviarDeclaracion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(110)))), ((int)(((byte)(110)))), ((int)(((byte)(110)))));
             this.btnEnviarDeclaracion.Location = new System.Drawing.Point(680, 765);
-            this.btnEnviarDeclaracion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnEnviarDeclaracion.Margin = new System.Windows.Forms.Padding(4);
             this.btnEnviarDeclaracion.Name = "btnEnviarDeclaracion";
             this.btnEnviarDeclaracion.Size = new System.Drawing.Size(240, 49);
             this.btnEnviarDeclaracion.TabIndex = 0;
@@ -380,7 +381,7 @@
             this.Controls.Add(this.pnlMenuVerde);
             this.Controls.Add(this.pnlHeaderGris);
             this.Controls.Add(this.pnlHeaderBlanco);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "fmAdminDeclaracion";
             this.Text = "Simulator SAT - Administración de la Declaración";
             this.pnlHeaderBlanco.ResumeLayout(false);
