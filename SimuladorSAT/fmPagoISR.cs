@@ -10,6 +10,9 @@ namespace SimuladorSAT
         public fmPagoISR()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
             CargarImagenesCabecera();
             AsignarEventosNavegacion();
         }

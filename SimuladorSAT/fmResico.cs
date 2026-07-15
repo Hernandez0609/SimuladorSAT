@@ -23,6 +23,9 @@ namespace SimuladorSAT
         public fmResico(Form ventanaAnterior)
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
             _ventanaAnterior = ventanaAnterior;
         }
 

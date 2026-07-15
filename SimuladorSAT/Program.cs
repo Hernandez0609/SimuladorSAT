@@ -15,17 +15,32 @@ namespace SimuladorSAT
         public static fmResico formResico;
         public static fmPagoIVA formPagoIva;
         public static fmPagoISR formPagoIsr;
-        /// <summary>
-        /// Punto de entrada principal para la aplicación.
-        /// </summary>
+        public static ModeloIsrPersonasFisicas modeloIsrFisicas = new ModeloIsrPersonasFisicas();
+
+        // NUEVA — instancia del formulario de Ingresos
+        public static fmIsrFisicasIngresos formIsrFisicasIngresos;
+        public static fmIsrFisicasDeterminacion formIsrFisicasDeterminacion;
+        public static fmIsrFisicasPago formIsrFisicasPago;
+
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             form1 = new Form1();
+            formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
+            formAdmin = new fmAdminDeclaracion();
+            formIsrSalarios = new fmIsrRetencionesSalarios();
+            formPagoIsr = new fmPagoISR();
+            formPagoIva = new fmPagoIVA();
+            formResico = new fmResico(formAdmin);
+            // NUEVA
+            formIsrFisicasIngresos = new fmIsrFisicasIngresos();
+            formIsrFisicasDeterminacion = new fmIsrFisicasDeterminacion();
+            formIsrFisicasPago = new fmIsrFisicasPago();
+
             Application.Run(form1);
         }
-
     }
 }

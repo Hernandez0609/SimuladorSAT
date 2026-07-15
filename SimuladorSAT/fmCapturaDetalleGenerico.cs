@@ -14,18 +14,21 @@ namespace SimuladorSAT
     {
         public string TipoSeleccionado { get; private set; } = "";
         public decimal MontoCapturado { get; private set; } = 0;
-
         private TipoCapturaEnum _modo;
         private decimal _limiteAplicar;
 
         public fmCapturaDetalleGenerico(TipoCapturaEnum modo, decimal limiteAplicar)
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint, true);
             _modo = modo;
             _limiteAplicar = limiteAplicar;
-
+            this.SuspendLayout();
             ConfigurarSegunModo();
             AsignarEventosFormulario();
+            this.ResumeLayout(true);
         }
 
         // ====================================================================
@@ -47,25 +50,19 @@ namespace SimuladorSAT
         /// </summary>
         private void AsignarEventosFormulario()
         {
-            // Botón Agregar de Figma: Muestra el panel
             if (btnAgregar != null)
             {
                 btnAgregar.Click += (s, e) => {
                     if (pnlFormularioCaptura != null) pnlFormularioCaptura.Visible = true;
                 };
             }
-
-            // El botón Terminar ahora procesa y guarda todo
             if (btnTerminar != null) btnTerminar.Click += BtnTerminar_Click;
-
             if (btnContinuar != null) btnContinuar.Click += BtnContinuar_Click;
             if (btnEliminar != null) btnEliminar.Click += BtnEliminar_Click;
-
             if (btnCancelar != null)
             {
                 btnCancelar.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
             }
-
             if (txtSaldoAplicar != null)
             {
                 txtSaldoAplicar.BackColor = Color.FromArgb(254, 243, 243);
@@ -76,22 +73,17 @@ namespace SimuladorSAT
         private void ConfigurarSegunModo()
         {
             bool esEstimulo = (_modo == TipoCapturaEnum.Estimulo);
-
-            // Al abrir por primera vez la pantalla debe estar vacía sin campos expuestos
             if (pnlFormularioCaptura != null)
             {
                 pnlFormularioCaptura.Visible = false;
             }
-
-            // Control de visibilidad de componentes auxiliares
             if (lblTipoEstimulo != null) lblTipoEstimulo.Visible = esEstimulo;
             if (cmbTipoEstimulo != null) cmbTipoEstimulo.Visible = esEstimulo;
             if (lblPorAplicar != null) lblPorAplicar.Visible = esEstimulo;
             if (txtPorAplicar != null) txtPorAplicar.Visible = esEstimulo;
-
             string titulo = esEstimulo ? "Estímulos al impuesto a cargo" : "Compensaciones";
             if (lblTitulo != null) lblTitulo.Text = titulo;
-            if (lblTotalMonto != null) lblTotalMonto.Text = "Total: $0"; // Inicializador del acumulador en el Header azul
+            if (lblTotalMonto != null) lblTotalMonto.Text = "Total: $0";
             this.Text = "";
         }
 
@@ -114,7 +106,6 @@ namespace SimuladorSAT
 
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            // Limpieza integral y elástica de todos los cuadros de texto
             if (cmbTipo != null) cmbTipo.SelectedIndex = 0;
             if (txtPeriodicidad != null) txtPeriodicidad.Clear();
             if (txtPeriodo != null) txtPeriodo.Clear();
@@ -137,45 +128,36 @@ namespace SimuladorSAT
         /// </summary>
         private void BtnTerminar_Click(object sender, EventArgs e)
         {
-            // Si el panel de captura ni siquiera se abrió, cerramos de inmediato como una consulta limpia
             if (pnlFormularioCaptura != null && !pnlFormularioCaptura.Visible)
             {
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
                 return;
             }
-
             if (cmbTipo != null && cmbTipo.SelectedIndex <= 0)
             {
                 MessageBox.Show("Seleccione el Tipo de impuesto de la compensación.", "Campo requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             string txt = txtSaldoAplicar != null ? txtSaldoAplicar.Text : "0";
             if (!decimal.TryParse(txt, out decimal monto) || monto <= 0)
             {
                 MessageBox.Show("Ingrese un Saldo a aplicar válido.", "Campo requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             if (monto > _limiteAplicar)
             {
                 MessageBox.Show($"El saldo a aplicar no puede exceder el remanente del impuesto disponible (${_limiteAplicar:N0}).", "Límite Excedido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // Asignación de variables de salida y actualización en tiempo real de la cabecera
             TipoSeleccionado = cmbTipo.SelectedItem?.ToString() ?? "Compensación IVA";
             MontoCapturado = monto;
-
             if (lblTotalMonto != null)
             {
-                lblTotalMonto.Text = $"Total: ${MontoCapturado:N0}"; // Refleja el monto guardado en el pnlHeader azul
+                lblTotalMonto.Text = $"Total: ${MontoCapturado:N0}";
             }
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-
     }
 }

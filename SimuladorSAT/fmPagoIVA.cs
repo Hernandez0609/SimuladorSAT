@@ -15,6 +15,9 @@ namespace SimuladorSAT
         public fmPagoIVA()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
 
             // Enlazar eventos de selección
             cmbCompensaciones.SelectedIndexChanged += (s, e) => EjecutarLogicaSATElastica();

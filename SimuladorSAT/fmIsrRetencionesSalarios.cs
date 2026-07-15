@@ -8,6 +8,9 @@ namespace SimuladorSAT
         public fmIsrRetencionesSalarios()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
             AsignarEventosNavegacion();
         }
 

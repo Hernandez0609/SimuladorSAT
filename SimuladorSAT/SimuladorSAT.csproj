@@ -76,6 +76,54 @@
     <Compile Include="fmDetalle.Designer.cs">
       <DependentUpon>fmDetalle.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmDetalleDescuentosIngreso.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmDetalleDescuentosIngreso.Designer.cs">
+      <DependentUpon>fmDetalleDescuentosIngreso.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmDetalleIngresosAdicionales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmDetalleIngresosAdicionales.Designer.cs">
+      <DependentUpon>fmDetalleIngresosAdicionales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmDetalleIngresosADisminuir.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmDetalleIngresosADisminuir.Designer.cs">
+      <DependentUpon>fmDetalleIngresosADisminuir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmDetalleIsrRetenido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmDetalleIsrRetenido.Designer.cs">
+      <DependentUpon>fmDetalleIsrRetenido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmDetalleTotalIngresosPercibidos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmDetalleTotalIngresosPercibidos.Designer.cs">
+      <DependentUpon>fmDetalleTotalIngresosPercibidos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmIsrFisicasDeterminacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmIsrFisicasDeterminacion.Designer.cs">
+      <DependentUpon>fmIsrFisicasDeterminacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmIsrFisicasIngresos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmIsrFisicasIngresos.Designer.cs">
+      <DependentUpon>fmIsrFisicasIngresos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmIsrFisicasPago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmIsrFisicasPago.Designer.cs">
+      <DependentUpon>fmIsrFisicasPago.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmIsrRetencionesSalarios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +160,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModeloIsrPersonasFisicas.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="fmAdminDeclaracion.resx">
@@ -122,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="fmDetalle.resx">
       <DependentUpon>fmDetalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmIsrFisicasIngresos.resx">
+      <DependentUpon>fmIsrFisicasIngresos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmIsrRetencionesSalarios.resx">
       <DependentUpon>fmIsrRetencionesSalarios.cs</DependentUpon>

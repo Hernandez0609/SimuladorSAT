@@ -9,19 +9,21 @@ namespace SimuladorSAT
         {
             InitializeComponent();
 
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
+
+            this.SuspendLayout(); // ← Pausa el recálculo de layout mientras configuramos todo
+
             // Centrar contenido de todas las celdas en tiempo de ejecución
             this.dgvTabla1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             this.dgvTabla2.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            // Centrar los encabezados
             this.dgvTabla1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             this.dgvTabla2.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
             this.Size = new System.Drawing.Size(1400, 700);
 
-            if (dgvTabla1.Rows.Count == 0)
-                dgvTabla1.Rows.Add();
-            if (dgvTabla2.Rows.Count == 0)
-                dgvTabla2.Rows.Add();
+            if (dgvTabla1.Rows.Count == 0) dgvTabla1.Rows.Add();
+            if (dgvTabla2.Rows.Count == 0) dgvTabla2.Rows.Add();
 
             this.dgvTabla1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvTabla1.ColumnHeadersHeight = 40;
@@ -30,24 +32,18 @@ namespace SimuladorSAT
             this.dgvTabla1.RowTemplate.Height = 40;
             this.dgvTabla2.RowTemplate.Height = 40;
 
-            // =========================================================================
-            // 1. ELIMINAR EL AZUL AL DAR CLIC EN AMBAS TABLAS
-            // =========================================================================
-            this.dgvTabla1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
+            this.dgvTabla1.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(238, 238, 238);
+            this.dgvTabla1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(238, 238, 238);
             this.dgvTabla1.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
-            this.dgvTabla2.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
-            this.dgvTabla2.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
 
-            // Enlazar los eventos que pintarán de forma automática todas las celdas de datos
-            this.dgvTabla1.CellFormatting += new DataGridViewCellFormattingEventHandler(dgvTabla1_CellFormatting);
-            this.dgvTabla2.CellFormatting += new DataGridViewCellFormattingEventHandler(dgvTabla2_CellFormatting);
+            this.dgvTabla2.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(238, 238, 238);
+            this.dgvTabla2.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(238, 238, 238);
+            this.dgvTabla2.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
 
             this.lblTituloModal.Text = titulo;
             this.Text = titulo;
-
             this.dgvTabla1.Rows[0].Cells["dataGridViewTextBoxColumn7"].Value = mesActual;
             this.dgvTabla2.Rows[0].Cells["dataGridViewTextBoxColumn1"].Value = mesActual;
-
             LimpiarCeldasYTextos();
 
             if (titulo.Contains("exentas") || titulo.Contains("Exentas"))
@@ -208,6 +204,7 @@ namespace SimuladorSAT
                 this.lblCampo2.Text = "Base IVA 16% de facturas emitidas de tipo pago";
                 this.lblCampo3.Text = titulo;
             }
+            this.ResumeLayout(true); // ← Aquí recalcula y repinta TODO de una sola vez
         }
 
         private void LimpiarCeldasYTextos()

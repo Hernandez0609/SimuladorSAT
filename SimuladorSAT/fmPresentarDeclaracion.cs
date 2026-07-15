@@ -18,6 +18,9 @@ namespace SimuladorSAT
         public fmPresentarDeclaracion(TipoRegimen regimen)
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
             _regimen = regimen;
             this.WindowState = FormWindowState.Maximized;
             ConfigurarSegunRegimen();

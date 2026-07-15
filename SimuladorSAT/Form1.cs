@@ -15,6 +15,9 @@ namespace SimuladorSAT
         public Form1()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
         }
 
         private void lblIconoArrendamiento_Click(object sender, EventArgs e)

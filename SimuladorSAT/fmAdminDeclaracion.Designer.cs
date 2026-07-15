@@ -251,6 +251,7 @@
             this.btnIsrFisicas.Name = "btnIsrFisicas";
             this.btnIsrFisicas.Size = new System.Drawing.Size(73, 68);
             this.btnIsrFisicas.TabIndex = 0;
+            this.btnIsrFisicas.Click += new System.EventHandler(this.btnIsrFisicas_Click);
             // 
             // lblIsrFisicas
             // 

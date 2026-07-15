@@ -11,9 +11,10 @@ namespace SimuladorSAT
         public fmCapturaListaGenerica()
         {
             InitializeComponent();
-            AjustarPosicionesUI(false); // Arranca en el estado del Mockup 1
-
-            // Hace la ventana flotante sobre el padre
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint, true);
+            AjustarPosicionesUI(false);
             this.Owner = null;
         }
 
@@ -29,43 +30,43 @@ namespace SimuladorSAT
         /// </summary>
         private void AjustarPosicionesUI(bool panelVisible)
         {
+            this.SuspendLayout(); // Evita repintar mientras se reposicionan varios controles
+
             pnlCapturaDesplegable.Visible = panelVisible;
-            btnAgregar.Visible = !panelVisible; // Desaparece al capturar (Mockup 2)
+            btnAgregar.Visible = !panelVisible;
 
             if (panelVisible)
             {
-                // Baja la tabla para hacer espacio al panel desplegado
                 dgvRegistros.Location = new Point(25, 205);
                 dgvRegistros.Size = new Size(900, 110);
             }
             else
             {
-                // Regresa la tabla a su posición inicial compacta
                 dgvRegistros.Location = new Point(25, 95);
                 dgvRegistros.Size = new Size(900, 220);
             }
 
-            // Reposiciona los componentes inferiores de estatus de forma fija
             lblTotalRegistros.Location = new Point(25, 325);
             lblPagina.Location = new Point(400, 325);
             lblMensajeAlerta.Location = new Point(25, 360);
             lblIconoAlerta.Location = new Point(535, 360);
+
+            this.ResumeLayout(true); // Repinta todo de una sola vez
         }
 
         // ====================================================================
         // GESTIÓN DE EVENTOS INTERACTIVOS (FIGMA)
         // ====================================================================
-
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            AjustarPosicionesUI(true); // Abre el panel desplegable
+            AjustarPosicionesUI(true);
         }
 
         private void btnCancelarCaptura_Click(object sender, EventArgs e)
         {
             cmbTipoEstimulo.SelectedIndex = 0;
             txtMontoPorAplicar.Clear();
-            AjustarPosicionesUI(false); // Cierra el panel y regresa al Mockup 1
+            AjustarPosicionesUI(false);
         }
 
         private void btnGuardarCaptura_Click(object sender, EventArgs e)
@@ -75,8 +76,6 @@ namespace SimuladorSAT
                 MessageBox.Show("Por favor, selecciona un tipo de estímulo válido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // Aquí se meterá la lógica para agregar renglones al DataGridView más adelante
             AjustarPosicionesUI(false);
         }
 

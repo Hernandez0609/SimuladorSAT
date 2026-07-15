@@ -16,6 +16,9 @@ namespace SimuladorSAT
         public fmAdminDeclaracion()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
             CargarImagenesCabecera();
             ConfigurarModulosCirculares();
         }
@@ -47,7 +50,7 @@ namespace SimuladorSAT
             AsignarEfectoCircular(btnIsrSalarios, () => isrSalariosCompletado);
             AsignarEfectoCircular(btnIvaSimplificado, () => ivaSimplificadoCompletado);
             btnIvaSimplificado.Click += BtnIvaSimplificado_Click;
-            btnIsrFisicas.Click += (s, e) => MessageBox.Show("Módulo ISR Simplificado de Confianza Personas Físicas en desarrollo.", "Aviso");
+            btnIsrFisicas.Click += btnIsrFisicas_Click;
         }
 
         private void btnIsrSalarios_Click(object sender, EventArgs e)
@@ -61,8 +64,26 @@ namespace SimuladorSAT
             this.Hide();
         }
 
+        private void btnIsrFisicas_Click(object sender, EventArgs e)
+        {
+            if (Program.formIsrFisicasIngresos == null || Program.formIsrFisicasIngresos.IsDisposed)
+            {
+                Program.formIsrFisicasIngresos = new fmIsrFisicasIngresos();
+            }
+            Program.formIsrFisicasIngresos.WindowState = this.WindowState;
+            Program.formIsrFisicasIngresos.Show();
+            this.Hide();
+        }
+
         private void AsignarEfectoCircular(Button btn, Func<bool> estadoCompletado)
         {
+            // SetStyle es protected, así que se invoca vía Reflection
+            typeof(Control).InvokeMember("SetStyle",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Instance,
+                null, btn, new object[] {
+            ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint,
+            true
+                });
             bool mouseHover = false;
             btn.Paint += (s, e) => {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
