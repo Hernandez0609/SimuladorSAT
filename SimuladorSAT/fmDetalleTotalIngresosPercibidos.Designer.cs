@@ -219,11 +219,11 @@
             this.dgvRegistros.Font = new System.Drawing.Font("Arial", 10F);
             this.dgvRegistros.Location = new System.Drawing.Point(30, 345);
             this.dgvRegistros.Name = "dgvRegistros";
-            this.dgvRegistros.Size = new System.Drawing.Size(1476, 110);
+            this.dgvRegistros.Size = new System.Drawing.Size(1476, 160);
             this.dgvRegistros.TabIndex = 7;
             this.dgvRegistros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvRegistros.ColumnHeadersHeight = 40;
-            this.dgvRegistros.RowTemplate.Height = 40;
+            this.dgvRegistros.ColumnHeadersHeight = 32;
+            this.dgvRegistros.RowTemplate.Height = 32;
             this.dgvRegistros.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.dgvRegistros.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(238, 238, 238);
             this.dgvRegistros.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(238, 238, 238);
@@ -264,10 +264,10 @@
             this.tlpTotalRow.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tlpTotalRow.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
             this.tlpTotalRow.RowCount = 1;
-            this.tlpTotalRow.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpTotalRow.Location = new System.Drawing.Point(30, 475);
+            this.tlpTotalRow.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tlpTotalRow.Location = new System.Drawing.Point(30, 505);
             this.tlpTotalRow.Name = "tlpTotalRow";
-            this.tlpTotalRow.Size = new System.Drawing.Size(1476, 40);
+            this.tlpTotalRow.Size = new System.Drawing.Size(1476, 32);
             this.tlpTotalRow.TabIndex = 8;
             this.tlpTotalRow.Controls.Add(this.lblTotalConceptoCell, 0, 0);
             this.tlpTotalRow.Controls.Add(this.lblTotalImporteCell, 1, 0);
@@ -291,14 +291,14 @@
             // ====================================================================
             this.lblTotalRegistros.AutoSize = true;
             this.lblTotalRegistros.Font = new System.Drawing.Font("Arial", 10F);
-            this.lblTotalRegistros.Location = new System.Drawing.Point(30, 535);
+            this.lblTotalRegistros.Location = new System.Drawing.Point(30, 555);
             this.lblTotalRegistros.Name = "lblTotalRegistros";
             this.lblTotalRegistros.TabIndex = 9;
             this.lblTotalRegistros.Text = "Total de registros            0";
 
             this.lblPagina.AutoSize = true;
             this.lblPagina.Font = new System.Drawing.Font("Arial", 10F);
-            this.lblPagina.Location = new System.Drawing.Point(30, 535); // se recalcula en runtime
+            this.lblPagina.Location = new System.Drawing.Point(30, 555); // se recalcula en runtime
             this.lblPagina.Name = "lblPagina";
             this.lblPagina.TabIndex = 10;
             this.lblPagina.Text = "< Página 1 de 0 >";
@@ -312,7 +312,7 @@
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrar.Font = new System.Drawing.Font("Arial", 10F);
             this.btnCerrar.ForeColor = System.Drawing.Color.White;
-            this.btnCerrar.Location = new System.Drawing.Point(1265, 575); // se recalcula en runtime
+            this.btnCerrar.Location = new System.Drawing.Point(1395, 555); // se recalcula en runtime
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(105, 36);
             this.btnCerrar.TabIndex = 11;

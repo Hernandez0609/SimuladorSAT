@@ -52,11 +52,23 @@
     <Compile Include="fmAdminDeclaracion.Designer.cs">
       <DependentUpon>fmAdminDeclaracion.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmCapturaCompensaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmCapturaCompensaciones.Designer.cs">
+      <DependentUpon>fmCapturaCompensaciones.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmCapturaDetalleGenerico.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="fmCapturaDetalleGenerico.Designer.cs">
       <DependentUpon>fmCapturaDetalleGenerico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmCapturaEstimulos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmCapturaEstimulos.Designer.cs">
+      <DependentUpon>fmCapturaEstimulos.cs</DependentUpon>
     </Compile>
     <Compile Include="fmCapturaListaGenerica.cs">
       <SubType>Form</SubType>

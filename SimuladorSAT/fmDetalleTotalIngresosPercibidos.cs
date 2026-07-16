@@ -15,10 +15,14 @@ namespace SimuladorSAT
             var area = Screen.PrimaryScreen.WorkingArea;
             this.ClientSize = new System.Drawing.Size((int)(area.Width * 0.80), (int)(area.Height * 0.60));
 
-            // Reposiciona btnCerrar a la esquina inferior derecha real
+            // NUEVO — btnCerrar se posiciona debajo del contenido real, no solo pegado al fondo de la ventana
+            int yBtnCerrar = lblTotalRegistros.Location.Y + lblTotalRegistros.Height + 40; // 40px de margen
+            int yMinimo = this.ClientSize.Height - btnCerrar.Height - 30; // nunca más abajo que esto (esquina)
+            int yFinal = Math.Max(yBtnCerrar, this.ClientSize.Height - btnCerrar.Height - 30);
+
             btnCerrar.Location = new System.Drawing.Point(
                 this.ClientSize.Width - btnCerrar.Width - 30,
-                this.ClientSize.Height - btnCerrar.Height - 30
+                Math.Min(yFinal, this.ClientSize.Height - btnCerrar.Height - 20) // no se sale de la ventana
             );
 
             CentrarPaginacion();

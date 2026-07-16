@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SimuladorSAT
@@ -13,6 +14,7 @@ namespace SimuladorSAT
                           ControlStyles.UserPaint, true);
             CargarValoresDesdeModelo();
         }
+        private Form _overlayForm;
 
         public void ActualizarDesdeModelo()
         {
@@ -91,12 +93,69 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnCapturarCompensaciones_Click(object sender, EventArgs e)
         {
-            // Pendiente: conectar al diálogo de captura correspondiente
+            try
+            {
+                _overlayForm = new Form();
+                _overlayForm.FormBorderStyle = FormBorderStyle.None;
+                _overlayForm.BackColor = Color.Black;
+                _overlayForm.Opacity = 0.50;
+                _overlayForm.ShowInTaskbar = false;
+                _overlayForm.StartPosition = FormStartPosition.Manual;
+                _overlayForm.Bounds = this.Bounds;
+                _overlayForm.Owner = this;
+                _overlayForm.Show();
+
+                using (var dlg = new fmCapturaCompensaciones())
+                {
+                    if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
+                    {
+                        txtCompensacionesValor.Text = dlg.MontoCapturado.ToString("N0");
+                    }
+                }
+            }
+            finally
+            {
+                if (_overlayForm != null)
+                {
+                    _overlayForm.Close();
+                    _overlayForm.Dispose();
+                    _overlayForm = null;
+                }
+            }
         }
 
         private void btnCapturarEstimulos_Click(object sender, EventArgs e)
         {
-            // Pendiente: conectar al diálogo de captura correspondiente
+            try
+            {
+                _overlayForm = new Form();
+                _overlayForm.FormBorderStyle = FormBorderStyle.None;
+                _overlayForm.BackColor = Color.Black;
+                _overlayForm.Opacity = 0.50;
+                _overlayForm.ShowInTaskbar = false;
+                _overlayForm.StartPosition = FormStartPosition.Manual;
+                _overlayForm.Bounds = this.Bounds;
+                _overlayForm.Owner = this;
+                _overlayForm.Show();
+
+                decimal limite = Program.modeloIsrFisicas.ImpuestoACargo; // ajustar según lo que aplique como límite real
+                using (var dlg = new fmCapturaEstimulos(limite))
+                {
+                    if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
+                    {
+                        txtEstimulosValor.Text = dlg.MontoCapturado.ToString("N0");
+                    }
+                }
+            }
+            finally
+            {
+                if (_overlayForm != null)
+                {
+                    _overlayForm.Close();
+                    _overlayForm.Dispose();
+                    _overlayForm = null;
+                }
+            }
         }
 
         // ====================================================================
