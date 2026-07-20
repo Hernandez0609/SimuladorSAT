@@ -85,20 +85,18 @@ namespace SimuladorSAT
         private void ActualizarLabelsMonto()
         {
             lblMontoIsrFisicas.Visible = isrFisicasCompletado;
-            lblMontoIsrFisicas.Text = $"Cantidad a pagar: ${montoIsrFisicas:N0}";
+            lblMontoIsrFisicas.Text = $"Cantidad a pagar:\n${montoIsrFisicas:N0}";
 
             lblMontoIsrSalarios.Visible = isrSalariosCompletado;
-            lblMontoIsrSalarios.Text = $"Cantidad a pagar: ${montoIsrSalarios:N0}";
+            lblMontoIsrSalarios.Text = $"Cantidad a pagar:\n${montoIsrSalarios:N0}";
 
             lblMontoIva.Visible = ivaSimplificadoCompletado;
-            lblMontoIva.Text = $"Cantidad a pagar: ${montoIvaSimplificado:N0}";
+            lblMontoIva.Text = $"Cantidad a pagar:\n${montoIvaSimplificado:N0}";
         }
 
         private void PosicionarCirculosVisibles()
         {
             var visibles = new System.Collections.Generic.List<(Button btn, Label nombre, Label monto)>();
-
-            // Evaluamos solo los que estén visibles según la declaración cargada
             if (btnIsrFisicas.Visible) visibles.Add((btnIsrFisicas, lblIsrFisicas, lblMontoIsrFisicas));
             if (btnIsrSalarios.Visible) visibles.Add((btnIsrSalarios, lblIsrSalarios, lblMontoIsrSalarios));
             if (btnIvaSimplificado.Visible) visibles.Add((btnIvaSimplificado, lblIvaSimplificado, lblMontoIva));
@@ -106,28 +104,27 @@ namespace SimuladorSAT
             if (visibles.Count == 0) return;
 
             int circleWidth = 80;
-            int gap = 180; // Ajusta este espacio para evitar que los textos largos colisionen
+            int gap = 180;
             int totalWidth = (visibles.Count * circleWidth) + ((visibles.Count - 1) * gap);
-
-            // Se centra con respecto al panel de los íconos
             int startX = (pnlIconosSecciones.Width - totalWidth) / 2;
             int y = btnIsrFisicas.Top;
 
             for (int i = 0; i < visibles.Count; i++)
             {
                 int x = startX + i * (circleWidth + gap);
-
-                // Mover el círculo
                 visibles[i].btn.Left = x;
                 visibles[i].btn.Top = y;
 
-                // Centrar la etiqueta del título (las etiquetas miden aprox. 320 de ancho, desfasamos -120 para centrar)
+                // Centrar nombres y montos respecto al botón horizontalmente
                 visibles[i].nombre.Left = x - (visibles[i].nombre.Width - circleWidth) / 2;
                 visibles[i].monto.Left = x - (visibles[i].monto.Width - circleWidth) / 2;
 
-                // Centrar la etiqueta del monto justo abajo del título
-                visibles[i].monto.Left = x - 120;
-                visibles[i].monto.Top = visibles[i].nombre.Top + visibles[i].nombre.Height + 5;
+                // POSICIONAMIENTO VERTICAL RESPONSIVO:
+                // Coloca la etiqueta del monto a exactamente 2px por debajo de donde finaliza el texto del nombre
+                visibles[i].monto.Top = visibles[i].nombre.Top + visibles[i].nombre.Height + 2;
+
+                // Nos aseguramos que el control esté visible por encima
+                visibles[i].monto.BringToFront();
             }
         }
 
@@ -149,11 +146,11 @@ namespace SimuladorSAT
                 if (d.ModuloIsrSalariosSeleccionado) total += montoIsrSalarios;
                 if (d.ModuloIvaSimplificadoSeleccionado) total += montoIvaSimplificado;
 
-                lblTotalPagar.Text = $"Total a pagar: ${total:N0}";
+                lblTotalPagar.Text = $"Total a pagar:${total:N0}";
             }
             else
             {
-                lblTotalPagar.Text = "Total a pagar: $0";
+                lblTotalPagar.Text = "Total a pagar:$0";
             }
         }
 

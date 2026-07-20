@@ -16,7 +16,7 @@ namespace SimuladorSAT
         public decimal MontoCapturado { get; private set; } = 0;
         private TipoCapturaEnum _modo;
         private decimal _limiteAplicar;
-        private decimal _montoValidado = 0; // Previene fallos de validación si limpian el string después de continuar
+        private decimal _montoValidado = 0; 
 
         public fmCapturaDetalleGenerico(TipoCapturaEnum modo, decimal limiteAplicar)
         {

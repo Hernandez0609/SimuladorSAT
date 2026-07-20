@@ -1,5 +1,4 @@
-﻿
-namespace SimuladorSAT
+﻿namespace SimuladorSAT
 {
     partial class fmAdminDeclaracion
     {
@@ -248,7 +247,7 @@ namespace SimuladorSAT
             this.pnlIconosSecciones.Location = new System.Drawing.Point(102, 542);
             this.pnlIconosSecciones.Margin = new System.Windows.Forms.Padding(4);
             this.pnlIconosSecciones.Name = "pnlIconosSecciones";
-            this.pnlIconosSecciones.Size = new System.Drawing.Size(1140, 160);
+            this.pnlIconosSecciones.Size = new System.Drawing.Size(1140, 210);
             this.pnlIconosSecciones.TabIndex = 3;
             //
             //
@@ -257,24 +256,23 @@ namespace SimuladorSAT
             this.lblMontoIsrFisicas.Name = "lblMontoIsrFisicas";
             this.lblMontoIsrFisicas.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.lblMontoIsrFisicas.ForeColor = System.Drawing.Color.FromArgb(13, 78, 92);
-            this.lblMontoIsrFisicas.Size = new System.Drawing.Size(287, 20);
-            this.lblMontoIsrFisicas.Location = new System.Drawing.Point(13, 148);
+            this.lblMontoIsrFisicas.Size = new System.Drawing.Size(287, 45);
+            this.lblMontoIsrFisicas.Location = new System.Drawing.Point(13, 116);
             this.lblMontoIsrFisicas.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblMontoIsrFisicas.Visible = false;
-
             this.lblMontoIsrSalarios.Name = "lblMontoIsrSalarios";
             this.lblMontoIsrSalarios.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.lblMontoIsrSalarios.ForeColor = System.Drawing.Color.FromArgb(13, 78, 92);
-            this.lblMontoIsrSalarios.Size = new System.Drawing.Size(320, 20);
-            this.lblMontoIsrSalarios.Location = new System.Drawing.Point(410, 148);
+            this.lblMontoIsrSalarios.Size = new System.Drawing.Size(320, 45);
+            this.lblMontoIsrSalarios.Location = new System.Drawing.Point(410, 116);
             this.lblMontoIsrSalarios.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblMontoIsrSalarios.Visible = false;
 
             this.lblMontoIva.Name = "lblMontoIva";
             this.lblMontoIva.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.lblMontoIva.ForeColor = System.Drawing.Color.FromArgb(13, 78, 92);
-            this.lblMontoIva.Size = new System.Drawing.Size(320, 20);
-            this.lblMontoIva.Location = new System.Drawing.Point(822, 148);
+            this.lblMontoIva.Size = new System.Drawing.Size(320, 45);
+            this.lblMontoIva.Location = new System.Drawing.Point(822, 116);
             this.lblMontoIva.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblMontoIva.Visible = false;
             // 
@@ -295,7 +293,7 @@ namespace SimuladorSAT
             this.lblIsrFisicas.Location = new System.Drawing.Point(13, 86);
             this.lblIsrFisicas.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIsrFisicas.Name = "lblIsrFisicas";
-            this.lblIsrFisicas.Size = new System.Drawing.Size(287, 62);
+            this.lblIsrFisicas.Size = new System.Drawing.Size(287, 30);
             this.lblIsrFisicas.TabIndex = 1;
             this.lblIsrFisicas.Text = "ISR simplificado de confianza\r\npersonas físicas";
             this.lblIsrFisicas.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -318,7 +316,7 @@ namespace SimuladorSAT
             this.lblIsrSalarios.Location = new System.Drawing.Point(410, 86);
             this.lblIsrSalarios.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIsrSalarios.Name = "lblIsrSalarios";
-            this.lblIsrSalarios.Size = new System.Drawing.Size(320, 62);
+            this.lblIsrSalarios.Size = new System.Drawing.Size(320, 30);
             this.lblIsrSalarios.TabIndex = 3;
             this.lblIsrSalarios.Text = "ISR retenciones por salarios";
             this.lblIsrSalarios.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -340,7 +338,7 @@ namespace SimuladorSAT
             this.lblIvaSimplificado.Location = new System.Drawing.Point(822, 86);
             this.lblIvaSimplificado.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIvaSimplificado.Name = "lblIvaSimplificado";
-            this.lblIvaSimplificado.Size = new System.Drawing.Size(320, 62);
+            this.lblIvaSimplificado.Size = new System.Drawing.Size(320, 30);
             this.lblIvaSimplificado.TabIndex = 5;
             this.lblIvaSimplificado.Text = "IVA simplificado de confianza";
             this.lblIvaSimplificado.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -350,7 +348,7 @@ namespace SimuladorSAT
             this.pnlTotalPagar.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pnlTotalPagar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlTotalPagar.Controls.Add(this.lblTotalPagar);
-            this.pnlTotalPagar.Location = new System.Drawing.Point(339, 700);
+            this.pnlTotalPagar.Location = new System.Drawing.Point(339, 730);
             this.pnlTotalPagar.Margin = new System.Windows.Forms.Padding(4);
             this.pnlTotalPagar.Name = "pnlTotalPagar";
             this.pnlTotalPagar.Size = new System.Drawing.Size(666, 61);
