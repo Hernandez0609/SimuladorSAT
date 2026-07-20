@@ -174,16 +174,13 @@ namespace SimuladorSAT
                 using (fmCapturaListaGenerica fLista = new fmCapturaListaGenerica())
                 {
                     // 2. Configura los títulos, el modo y el límite antes de mostrarlo
-                    fLista.ConfigurarInterfaz("Estímulos", "Estímulos al impuesto a cargo", "0");
+                    fLista.ConfigurarInterfaz("Estímulos", "Estímulos al impuesto a cargo", impuestoACargoInicial.ToString());
 
                     // 3. Abre la interfaz flotante usando el OVERLAY como dueño para bloquear el fondo limpiamente
-                    fLista.ShowDialog(_overlayForm);
-
-                    // 4. Al cerrar, extrae el monto calculado de forma segura
-                    Control[] c = fLista.Controls.Find("txtMontoPorAplicar", true);
-                    if (c.Length > 0 && c[0] is TextBox tb)
+                    if (fLista.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
-                        double.TryParse(tb.Text, out montoEstimulos);
+                        // 4. Al cerrar con OK, extrae el monto ya calculado por el propio formulario
+                        montoEstimulos = (double)fLista.MontoCapturado;
                     }
                 }
             }

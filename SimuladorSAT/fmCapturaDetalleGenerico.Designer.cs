@@ -6,39 +6,46 @@
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-                components.Dispose();
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
-
-        #region Windows Form Designer generated code
 
         private void InitializeComponent()
         {
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblTotalMonto = new System.Windows.Forms.Label();
+
+            this.btnAgregar = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnTerminar = new System.Windows.Forms.Button();
+
             this.pnlFormularioCaptura = new System.Windows.Forms.Panel();
             this.lblTipo = new System.Windows.Forms.Label();
             this.cmbTipo = new System.Windows.Forms.ComboBox();
             this.lblPeriodicidad = new System.Windows.Forms.Label();
-            this.txtPeriodicidad = new System.Windows.Forms.TextBox();
+            this.cmbPeriodicidad = new System.Windows.Forms.ComboBox();
             this.lblPeriodo = new System.Windows.Forms.Label();
-            this.txtPeriodo = new System.Windows.Forms.TextBox();
+            this.cmbPeriodo = new System.Windows.Forms.ComboBox();
             this.lblEjercicio = new System.Windows.Forms.Label();
-            this.txtEjercicio = new System.Windows.Forms.TextBox();
+            this.cmbEjercicio = new System.Windows.Forms.ComboBox();
+
             this.lblFechaCausacion = new System.Windows.Forms.Label();
             this.txtFechaCausacion = new System.Windows.Forms.TextBox();
             this.lblNumOp1 = new System.Windows.Forms.Label();
             this.txtNumOp1 = new System.Windows.Forms.TextBox();
             this.lblConcepto = new System.Windows.Forms.Label();
-            this.txtConcepto = new System.Windows.Forms.TextBox();
+            this.cmbConcepto = new System.Windows.Forms.ComboBox();
             this.lblSaldoAplicar = new System.Windows.Forms.Label();
             this.txtSaldoAplicar = new System.Windows.Forms.TextBox();
+
             this.btnContinuar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
+
+            this.pnlDivisor = new System.Windows.Forms.Panel();
+
             this.lblTipoDecl = new System.Windows.Forms.Label();
-            this.txtTipoDecl = new System.Windows.Forms.TextBox();
+            this.cmbTipoDecl = new System.Windows.Forms.ComboBox();
             this.lblNumOp2 = new System.Windows.Forms.Label();
             this.txtNumOp2 = new System.Windows.Forms.TextBox();
             this.lblMontoSaldo = new System.Windows.Forms.Label();
@@ -49,262 +56,360 @@
             this.txtFechaDecl = new System.Windows.Forms.TextBox();
             this.lblRemanAct = new System.Windows.Forms.Label();
             this.txtRemanAct = new System.Windows.Forms.TextBox();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnAgregar = new System.Windows.Forms.Button();
-            this.btnTerminar = new System.Windows.Forms.Button();
-            this.lblTipoEstimulo = new System.Windows.Forms.Label();
-            this.cmbTipoEstimulo = new System.Windows.Forms.ComboBox();
-            this.lblPorAplicar = new System.Windows.Forms.Label();
-            this.txtPorAplicar = new System.Windows.Forms.TextBox();
+
             this.pnlHeader.SuspendLayout();
             this.pnlFormularioCaptura.SuspendLayout();
             this.SuspendLayout();
 
-            // ==========================================
-            // PANEL CABECERA (ESTILO FIGMA AZUL OSCURO)
-            // ==========================================
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(68)))), ((int)(((byte)(83)))));
+            // ====================================================================
+            // pnlHeader
+            // ====================================================================
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(13, 78, 92);
             this.pnlHeader.Controls.Add(this.lblTitulo);
             this.pnlHeader.Controls.Add(this.lblTotalMonto);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Size = new System.Drawing.Size(950, 75);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1400, 70);
+            this.pnlHeader.TabIndex = 0;
 
-            // Título Principal
             this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Georgia", 14F);
+            this.lblTitulo.Font = new System.Drawing.Font("Arial", 14F);
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
-            this.lblTitulo.Location = new System.Drawing.Point(40, 25);
-            this.lblTitulo.Size = new System.Drawing.Size(150, 25);
+            this.lblTitulo.Location = new System.Drawing.Point(30, 22);
+            this.lblTitulo.Name = "lblTitulo";
             this.lblTitulo.Text = "Compensaciones";
 
-            // Total Acumulado Derecho
-            this.lblTotalMonto.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblTotalMonto.Font = new System.Drawing.Font("Georgia", 14F);
+            this.lblTotalMonto.AutoSize = true;
+            this.lblTotalMonto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalMonto.Font = new System.Drawing.Font("Arial", 13F);
             this.lblTotalMonto.ForeColor = System.Drawing.Color.White;
-            this.lblTotalMonto.Location = new System.Drawing.Point(750, 25);
-            this.lblTotalMonto.Size = new System.Drawing.Size(160, 25);
+            this.lblTotalMonto.Location = new System.Drawing.Point(1230, 25);
+            this.lblTotalMonto.Name = "lblTotalMonto";
             this.lblTotalMonto.Text = "Total: $0";
-            this.lblTotalMonto.TextAlign = System.Drawing.ContentAlignment.TopRight;
 
             // ====================================================================
-            // PANEL CONTENEDOR DESPLEGABLE (Escondido al abrir por primera vez)
+            // btnAgregar / btnCancelar / btnTerminar — DIRECTO en el Form,
+            // Anchor Bottom|Right, en fila: Cancelar - Agregar - Terminar
             // ====================================================================
-            this.pnlFormularioCaptura.BackColor = System.Drawing.Color.White;
-            this.pnlFormularioCaptura.Controls.AddRange(new System.Windows.Forms.Control[] {
-                this.lblTipo, this.cmbTipo, this.lblPeriodicidad, this.txtPeriodicidad, this.lblPeriodo, this.txtPeriodo, this.lblEjercicio, this.txtEjercicio,
-                this.lblFechaCausacion, this.txtFechaCausacion, this.lblNumOp1, this.txtNumOp1, this.lblConcepto, this.txtConcepto, this.lblSaldoAplicar, this.txtSaldoAplicar,
-                this.btnContinuar, this.btnEliminar,
-                this.lblTipoDecl, this.txtTipoDecl, this.lblNumOp2, this.txtNumOp2, this.lblMontoSaldo, this.txtMontoSaldo,
-                this.lblRemanHist, this.txtRemanHist, this.lblFechaDecl, this.txtFechaDecl, this.lblRemanAct, this.txtRemanAct
-            });
-            this.pnlFormularioCaptura.Location = new System.Drawing.Point(20, 90);
-            this.pnlFormularioCaptura.Size = new System.Drawing.Size(910, 340);
-            this.pnlFormularioCaptura.Visible = false; // CRÍTICO: Inicia limpio estilo Figma
+            this.btnCancelar.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Font = new System.Drawing.Font("Arial", 10F);
+            this.btnCancelar.Location = new System.Drawing.Point(970, 590);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(120, 36);
+            this.btnCancelar.Text = "CANCELAR";
 
-            // --- FILA 1 DE CAPTURA (4 Columnas) ---
-            // Columna 1: Tipo
+            this.btnAgregar.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnAgregar.BackColor = System.Drawing.Color.FromArgb(13, 78, 92);
+            this.btnAgregar.FlatAppearance.BorderSize = 0;
+            this.btnAgregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAgregar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAgregar.ForeColor = System.Drawing.Color.White;
+            this.btnAgregar.Location = new System.Drawing.Point(1110, 590);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(120, 36);
+            this.btnAgregar.Text = "Agregar";
+            this.btnAgregar.UseVisualStyleBackColor = false;
+
+            this.btnTerminar.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnTerminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTerminar.Font = new System.Drawing.Font("Arial", 10F);
+            this.btnTerminar.Location = new System.Drawing.Point(1250, 590);
+            this.btnTerminar.Name = "btnTerminar";
+            this.btnTerminar.Size = new System.Drawing.Size(120, 36);
+            this.btnTerminar.Text = "TERMINAR";
+
+            // ====================================================================
+            // pnlFormularioCaptura — nace oculto
+            // ====================================================================
+            this.pnlFormularioCaptura.Location = new System.Drawing.Point(50, 90);
+            this.pnlFormularioCaptura.Name = "pnlFormularioCaptura";
+            this.pnlFormularioCaptura.Size = new System.Drawing.Size(1300, 460);
+            this.pnlFormularioCaptura.TabIndex = 2;
+            this.pnlFormularioCaptura.Visible = false;
+            this.pnlFormularioCaptura.Controls.Add(this.lblTipo);
+            this.pnlFormularioCaptura.Controls.Add(this.cmbTipo);
+            this.pnlFormularioCaptura.Controls.Add(this.lblPeriodicidad);
+            this.pnlFormularioCaptura.Controls.Add(this.cmbPeriodicidad);
+            this.pnlFormularioCaptura.Controls.Add(this.lblPeriodo);
+            this.pnlFormularioCaptura.Controls.Add(this.cmbPeriodo);
+            this.pnlFormularioCaptura.Controls.Add(this.lblEjercicio);
+            this.pnlFormularioCaptura.Controls.Add(this.cmbEjercicio);
+            this.pnlFormularioCaptura.Controls.Add(this.lblFechaCausacion);
+            this.pnlFormularioCaptura.Controls.Add(this.txtFechaCausacion);
+            this.pnlFormularioCaptura.Controls.Add(this.lblNumOp1);
+            this.pnlFormularioCaptura.Controls.Add(this.txtNumOp1);
+            this.pnlFormularioCaptura.Controls.Add(this.lblConcepto);
+            this.pnlFormularioCaptura.Controls.Add(this.cmbConcepto);
+            this.pnlFormularioCaptura.Controls.Add(this.lblSaldoAplicar);
+            this.pnlFormularioCaptura.Controls.Add(this.txtSaldoAplicar);
+            this.pnlFormularioCaptura.Controls.Add(this.btnContinuar);
+            this.pnlFormularioCaptura.Controls.Add(this.btnEliminar);
+            this.pnlFormularioCaptura.Controls.Add(this.pnlDivisor);
+            this.pnlFormularioCaptura.Controls.Add(this.lblTipoDecl);
+            this.pnlFormularioCaptura.Controls.Add(this.cmbTipoDecl);
+            this.pnlFormularioCaptura.Controls.Add(this.lblNumOp2);
+            this.pnlFormularioCaptura.Controls.Add(this.txtNumOp2);
+            this.pnlFormularioCaptura.Controls.Add(this.lblMontoSaldo);
+            this.pnlFormularioCaptura.Controls.Add(this.txtMontoSaldo);
+            this.pnlFormularioCaptura.Controls.Add(this.lblRemanHist);
+            this.pnlFormularioCaptura.Controls.Add(this.txtRemanHist);
+            this.pnlFormularioCaptura.Controls.Add(this.lblFechaDecl);
+            this.pnlFormularioCaptura.Controls.Add(this.txtFechaDecl);
+            this.pnlFormularioCaptura.Controls.Add(this.lblRemanAct);
+            this.pnlFormularioCaptura.Controls.Add(this.txtRemanAct);
+
+            // ---- FILA 1: Tipo | Periodicidad | Período | Ejercicio ----
+            this.lblTipo.AutoSize = true;
+            this.lblTipo.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblTipo.Location = new System.Drawing.Point(0, 0);
             this.lblTipo.Text = "Tipo";
-            this.lblTipo.Location = new System.Drawing.Point(20, 10);
-            this.lblTipo.Size = new System.Drawing.Size(180, 20);
-            this.cmbTipo.Location = new System.Drawing.Point(20, 35);
-            this.cmbTipo.Size = new System.Drawing.Size(200, 25);
+
             this.cmbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTipo.Font = new System.Drawing.Font("Arial", 10F);
+            this.cmbTipo.Location = new System.Drawing.Point(0, 25);
+            this.cmbTipo.Size = new System.Drawing.Size(290, 28);
+            this.cmbTipo.Items.AddRange(new object[] { "-Seleccione-", "Pago de lo indebido", "Saldo a favor" });
+            this.cmbTipo.SelectedIndex = 0;
+            this.cmbTipo.SelectedIndexChanged += new System.EventHandler(this.cmbTipo_SelectedIndexChanged);
 
-            // Columna 2: Periodicidad
+            this.lblPeriodicidad.AutoSize = true;
+            this.lblPeriodicidad.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblPeriodicidad.Location = new System.Drawing.Point(330, 0);
             this.lblPeriodicidad.Text = "Periodicidad";
-            this.lblPeriodicidad.Location = new System.Drawing.Point(240, 10);
-            this.lblPeriodicidad.Size = new System.Drawing.Size(180, 20);
-            this.txtPeriodicidad.Location = new System.Drawing.Point(240, 35);
-            this.txtPeriodicidad.Size = new System.Drawing.Size(200, 25);
 
-            // Columna 3: Periodo
-            this.lblPeriodo.Text = "Periodo";
-            this.lblPeriodo.Location = new System.Drawing.Point(460, 10);
-            this.lblPeriodo.Size = new System.Drawing.Size(180, 20);
-            this.txtPeriodo.Location = new System.Drawing.Point(460, 35);
-            this.txtPeriodo.Size = new System.Drawing.Size(200, 25);
+            this.cmbPeriodicidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPeriodicidad.Enabled = false;
+            this.cmbPeriodicidad.Font = new System.Drawing.Font("Arial", 10F);
+            this.cmbPeriodicidad.Location = new System.Drawing.Point(330, 25);
+            this.cmbPeriodicidad.Size = new System.Drawing.Size(290, 28);
+            this.cmbPeriodicidad.Items.AddRange(new object[] { "-Seleccione-", "Mensual" });
+            this.cmbPeriodicidad.SelectedIndex = 0;
+            this.cmbPeriodicidad.SelectedIndexChanged += new System.EventHandler(this.cmbPeriodicidad_SelectedIndexChanged);
 
-            // Columna 4: Ejercicio
+            this.lblPeriodo.AutoSize = true;
+            this.lblPeriodo.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblPeriodo.Location = new System.Drawing.Point(660, 0);
+            this.lblPeriodo.Text = "Período";
+
+            this.cmbPeriodo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPeriodo.Enabled = false;
+            this.cmbPeriodo.Font = new System.Drawing.Font("Arial", 10F);
+            this.cmbPeriodo.Location = new System.Drawing.Point(660, 25);
+            this.cmbPeriodo.Size = new System.Drawing.Size(290, 28);
+            this.cmbPeriodo.SelectedIndexChanged += new System.EventHandler(this.cmbPeriodo_SelectedIndexChanged);
+
+            this.lblEjercicio.AutoSize = true;
+            this.lblEjercicio.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblEjercicio.Location = new System.Drawing.Point(990, 0);
             this.lblEjercicio.Text = "Ejercicio";
-            this.lblEjercicio.Location = new System.Drawing.Point(680, 10);
-            this.lblEjercicio.Size = new System.Drawing.Size(180, 20);
-            this.txtEjercicio.Location = new System.Drawing.Point(680, 35);
-            this.txtEjercicio.Size = new System.Drawing.Size(200, 25);
 
-            // --- FILA 2 DE CAPTURA (4 Columnas) ---
-            // Columna 1: Fecha de causación
+            this.cmbEjercicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEjercicio.Enabled = false;
+            this.cmbEjercicio.Font = new System.Drawing.Font("Arial", 10F);
+            this.cmbEjercicio.Location = new System.Drawing.Point(990, 25);
+            this.cmbEjercicio.Size = new System.Drawing.Size(290, 28);
+            this.cmbEjercicio.SelectedIndexChanged += new System.EventHandler(this.cmbEjercicio_SelectedIndexChanged);
+
+            // ---- FILA 2: Fecha causación | Núm. operación | Concepto | Saldo a aplicar ----
+            this.lblFechaCausacion.AutoSize = true;
+            this.lblFechaCausacion.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblFechaCausacion.Location = new System.Drawing.Point(0, 70);
             this.lblFechaCausacion.Text = "Fecha de causación (dd-mm-aaaa)";
-            this.lblFechaCausacion.Location = new System.Drawing.Point(20, 75);
-            this.lblFechaCausacion.Size = new System.Drawing.Size(210, 20);
-            this.txtFechaCausacion.Location = new System.Drawing.Point(20, 100);
-            this.txtFechaCausacion.Size = new System.Drawing.Size(200, 25);
 
-            // Columna 2: Número de operación
-            this.lblNumOp1.Text = "Numero de operación";
-            this.lblNumOp1.Location = new System.Drawing.Point(240, 75);
-            this.lblNumOp1.Size = new System.Drawing.Size(180, 20);
-            this.txtNumOp1.Location = new System.Drawing.Point(240, 100);
-            this.txtNumOp1.Size = new System.Drawing.Size(200, 25);
+            this.txtFechaCausacion.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtFechaCausacion.Enabled = false;
+            this.txtFechaCausacion.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtFechaCausacion.Location = new System.Drawing.Point(0, 95);
+            this.txtFechaCausacion.Size = new System.Drawing.Size(290, 28);
 
-            // Columna 3: Concepto
+            this.lblNumOp1.AutoSize = true;
+            this.lblNumOp1.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblNumOp1.Location = new System.Drawing.Point(330, 70);
+            this.lblNumOp1.Text = "Número de operación";
+
+            this.txtNumOp1.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtNumOp1.Enabled = false;
+            this.txtNumOp1.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtNumOp1.Location = new System.Drawing.Point(330, 95);
+            this.txtNumOp1.Size = new System.Drawing.Size(290, 28);
+
+            this.lblConcepto.AutoSize = true;
+            this.lblConcepto.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblConcepto.Location = new System.Drawing.Point(660, 70);
             this.lblConcepto.Text = "Concepto";
-            this.lblConcepto.Location = new System.Drawing.Point(460, 75);
-            this.lblConcepto.Size = new System.Drawing.Size(180, 20);
-            this.txtConcepto.Location = new System.Drawing.Point(460, 100);
-            this.txtConcepto.Size = new System.Drawing.Size(200, 25);
 
-            // Columna 4: Saldo a aplicar
+            this.cmbConcepto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbConcepto.Enabled = false;
+            this.cmbConcepto.Font = new System.Drawing.Font("Arial", 9F);
+            this.cmbConcepto.Location = new System.Drawing.Point(660, 95);
+            this.cmbConcepto.Size = new System.Drawing.Size(290, 28);
+            this.cmbConcepto.Items.AddRange(new object[] { "-Seleccione-", "IVA simplificado de confianza" });
+            this.cmbConcepto.SelectedIndex = 0;
+            this.cmbConcepto.SelectedIndexChanged += new System.EventHandler(this.cmbConcepto_SelectedIndexChanged);
+
+            this.lblSaldoAplicar.AutoSize = true;
+            this.lblSaldoAplicar.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblSaldoAplicar.Location = new System.Drawing.Point(990, 70);
             this.lblSaldoAplicar.Text = "Saldo a aplicar";
-            this.lblSaldoAplicar.Location = new System.Drawing.Point(680, 75);
-            this.lblSaldoAplicar.Size = new System.Drawing.Size(180, 20);
-            this.txtSaldoAplicar.Location = new System.Drawing.Point(680, 100);
-            this.txtSaldoAplicar.Size = new System.Drawing.Size(200, 25);
+
+            this.txtSaldoAplicar.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtSaldoAplicar.Enabled = false;
+            this.txtSaldoAplicar.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtSaldoAplicar.Location = new System.Drawing.Point(990, 95);
+            this.txtSaldoAplicar.Size = new System.Drawing.Size(290, 28);
             this.txtSaldoAplicar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 
-            // --- BOTONES INTERMEDIOS DE FLUJO ---
-            // Continuar (Rojo sólido institucional del SAT)
-            this.btnContinuar.Text = "Continuar";
-            this.btnContinuar.BackColor = System.Drawing.Color.Red;
-            this.btnContinuar.ForeColor = System.Drawing.Color.Black;
+            // ---- Continuar / Eliminar ----
+            this.btnContinuar.BackColor = System.Drawing.Color.FromArgb(13, 78, 92);
+            this.btnContinuar.FlatAppearance.BorderSize = 0;
             this.btnContinuar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnContinuar.Location = new System.Drawing.Point(20, 140);
-            this.btnContinuar.Size = new System.Drawing.Size(110, 32);
+            this.btnContinuar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.btnContinuar.ForeColor = System.Drawing.Color.White;
+            this.btnContinuar.Location = new System.Drawing.Point(0, 150);
+            this.btnContinuar.Size = new System.Drawing.Size(160, 38);
+            this.btnContinuar.Text = "CONTINUAR";
+            this.btnContinuar.UseVisualStyleBackColor = false;
+            //this.btnContinuar.Click += new System.EventHandler(this.btnContinuar_Click);
 
-            // Eliminar (Blanco con borde gris)
-            this.btnEliminar.Text = "Eliminar";
-            this.btnEliminar.BackColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(140, 140);
-            this.btnEliminar.Size = new System.Drawing.Size(110, 32);
+            this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminar.Font = new System.Drawing.Font("Arial", 10F);
+            this.btnEliminar.Location = new System.Drawing.Point(180, 150);
+            this.btnEliminar.Size = new System.Drawing.Size(160, 38);
+            this.btnEliminar.Text = "ELIMINAR";
+            //this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
 
-            // --- SEGUNDO BLOQUE DE DATOS: SALDO A FAVOR (2 Columnas anchas) ---
-            // Columna Izquierda
+            // ---- Divisor ----
+            this.pnlDivisor.BackColor = System.Drawing.Color.FromArgb(220, 220, 220);
+            this.pnlDivisor.Location = new System.Drawing.Point(0, 215);
+            this.pnlDivisor.Size = new System.Drawing.Size(1300, 1);
+
+            // ---- Sección gris (siempre visible, inicia deshabilitada) ----
+            this.lblTipoDecl.AutoSize = true;
+            this.lblTipoDecl.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblTipoDecl.Location = new System.Drawing.Point(0, 250);
             this.lblTipoDecl.Text = "Tipo de declaración";
-            this.lblTipoDecl.Location = new System.Drawing.Point(20, 195);
-            this.lblTipoDecl.Size = new System.Drawing.Size(260, 20);
-            this.txtTipoDecl.Location = new System.Drawing.Point(290, 192);
-            this.txtTipoDecl.Size = new System.Drawing.Size(200, 25);
 
-            this.lblMontoSaldo.Text = "Monto del saldo a favor original";
-            this.lblMontoSaldo.Location = new System.Drawing.Point(20, 230);
-            this.lblMontoSaldo.Size = new System.Drawing.Size(260, 20);
-            this.txtMontoSaldo.Location = new System.Drawing.Point(290, 227);
-            this.txtMontoSaldo.Size = new System.Drawing.Size(200, 25);
+            this.cmbTipoDecl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTipoDecl.Enabled = false;
+            this.cmbTipoDecl.Font = new System.Drawing.Font("Arial", 10F);
+            this.cmbTipoDecl.Location = new System.Drawing.Point(280, 247);
+            this.cmbTipoDecl.Size = new System.Drawing.Size(370, 28);
+            this.cmbTipoDecl.Items.AddRange(new object[] { "-Seleccione-", "Normal", "Complementaria" });
+            this.cmbTipoDecl.SelectedIndex = 0;
 
-            this.lblFechaDecl.Text = "Fecha en que se presentó la declaración del saldo a favor (dd-mm-aaaa)";
-            this.lblFechaDecl.Location = new System.Drawing.Point(20, 265);
-            this.lblFechaDecl.Size = new System.Drawing.Size(260, 40); // Doble renglón por texto largo
-            this.txtFechaDecl.Location = new System.Drawing.Point(290, 262);
-            this.txtFechaDecl.Size = new System.Drawing.Size(200, 25);
-
-            // Columna Derecha
+            this.lblNumOp2.AutoSize = true;
+            this.lblNumOp2.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblNumOp2.Location = new System.Drawing.Point(720, 250);
             this.lblNumOp2.Text = "Número de operación";
-            this.lblNumOp2.Location = new System.Drawing.Point(520, 195);
-            this.lblNumOp2.Size = new System.Drawing.Size(180, 20);
-            this.txtNumOp2.Location = new System.Drawing.Point(710, 192);
-            this.txtNumOp2.Size = new System.Drawing.Size(180, 25);
 
+            this.txtNumOp2.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtNumOp2.Enabled = false;
+            this.txtNumOp2.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtNumOp2.Location = new System.Drawing.Point(980, 247);
+            this.txtNumOp2.Size = new System.Drawing.Size(320, 28);
+
+            this.lblMontoSaldo.AutoSize = true;
+            this.lblMontoSaldo.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblMontoSaldo.Location = new System.Drawing.Point(0, 305);
+            this.lblMontoSaldo.Text = "Monto del saldo a favor original";
+
+            this.txtMontoSaldo.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtMontoSaldo.Enabled = false;
+            this.txtMontoSaldo.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtMontoSaldo.Location = new System.Drawing.Point(280, 302);
+            this.txtMontoSaldo.Size = new System.Drawing.Size(370, 28);
+            this.txtMontoSaldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+
+            this.lblRemanHist.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblRemanHist.Location = new System.Drawing.Point(720, 305);
+            this.lblRemanHist.Size = new System.Drawing.Size(255, 40);
             this.lblRemanHist.Text = "Remanente histórico antes de la aplicación";
-            this.lblRemanHist.Location = new System.Drawing.Point(520, 230);
-            this.lblRemanHist.Size = new System.Drawing.Size(180, 20);
-            this.txtRemanHist.Location = new System.Drawing.Point(710, 227);
-            this.txtRemanHist.Size = new System.Drawing.Size(180, 25);
 
+            this.txtRemanHist.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtRemanHist.Enabled = false;
+            this.txtRemanHist.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtRemanHist.Location = new System.Drawing.Point(980, 315);
+            this.txtRemanHist.Size = new System.Drawing.Size(320, 28);
+            this.txtRemanHist.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+
+            this.lblFechaDecl.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblFechaDecl.Location = new System.Drawing.Point(0, 375);
+            this.lblFechaDecl.Size = new System.Drawing.Size(260, 60);
+            this.lblFechaDecl.Text = "Fecha en que se presentó la declaración del saldo a favor (dd-mm-aaaa)";
+
+            this.txtFechaDecl.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtFechaDecl.Enabled = false;
+            this.txtFechaDecl.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtFechaDecl.Location = new System.Drawing.Point(280, 385);
+            this.txtFechaDecl.Size = new System.Drawing.Size(370, 28);
+
+            this.lblRemanAct.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblRemanAct.Location = new System.Drawing.Point(720, 375);
+            this.lblRemanAct.Size = new System.Drawing.Size(255, 40);
             this.lblRemanAct.Text = "Remanente actualizado antes de la aplicación";
-            this.lblRemanAct.Location = new System.Drawing.Point(520, 265);
-            this.lblRemanAct.Size = new System.Drawing.Size(180, 20);
-            this.txtRemanAct.Location = new System.Drawing.Point(710, 262);
-            this.txtRemanAct.Size = new System.Drawing.Size(180, 25);
+
+            this.txtRemanAct.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtRemanAct.Enabled = false;
+            this.txtRemanAct.Font = new System.Drawing.Font("Arial", 9F);
+            this.txtRemanAct.Location = new System.Drawing.Point(980, 385);
+            this.txtRemanAct.Size = new System.Drawing.Size(320, 28);
+            this.txtRemanAct.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 
             // ====================================================================
-            // PANEL INFERIOR FIJO: BOTONES DE ACCIÓN DE LA VENTANA
+            // Form — nace DIRECTAMENTE a su tamaño final (igual que Compensaciones),
+            // sin footer aparte, sin resize posterior
             // ====================================================================
-            // Cancelar (Izquierda del grupo)
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.BackColor = System.Drawing.Color.White;
-            this.btnCancelar.Location = new System.Drawing.Point(620, 445);
-            this.btnCancelar.Size = new System.Drawing.Size(95, 32);
-
-            // Agregar (Fondo azul oscuro oficial del simulador)
-            this.btnAgregar.Text = "Agregar";
-            this.btnAgregar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(68)))), ((int)(((byte)(83)))));
-            this.btnAgregar.ForeColor = System.Drawing.Color.White;
-            this.btnAgregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAgregar.Location = new System.Drawing.Point(725, 445);
-            this.btnAgregar.Size = new System.Drawing.Size(95, 32);
-
-            // Terminar (Borde gris, fondo blanco)
-            this.btnTerminar.Text = "Terminar";
-            this.btnTerminar.BackColor = System.Drawing.Color.White;
-            this.btnTerminar.Location = new System.Drawing.Point(830, 445);
-            this.btnTerminar.Size = new System.Drawing.Size(95, 32);
-
-            // ==========================================
-            // CONFIGURACIÓN PROPIEDADES DE VENTANA DIÁLOGO MODAL FLOATING
-            // ==========================================
-            this.ClientSize = new System.Drawing.Size(950, 500);
-            this.Text = "";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog; // Activa la sombra nativa
-            this.ShowInTaskbar = false;
-            this.ControlBox = false;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.Font = new System.Drawing.Font("Georgia", 10F); // Tipografía Georgia corporativa del SAT
-
-            // Registro general de las capas en el Formulario
-            this.Controls.Add(this.pnlFormularioCaptura);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnAgregar);
+            this.ClientSize = new System.Drawing.Size(1400, 650); // valor de referencia para los Anchor
             this.Controls.Add(this.btnTerminar);
+            this.Controls.Add(this.btnAgregar);
+            this.Controls.Add(this.btnCancelar);
+            this.Controls.Add(this.pnlFormularioCaptura);
             this.Controls.Add(this.pnlHeader);
-
-            // Controles fantasmas no utilizados pero declarados
-            this.Controls.Add(this.lblTipoEstimulo);
-            this.Controls.Add(this.cmbTipoEstimulo);
-            this.Controls.Add(this.lblPorAplicar);
-            this.Controls.Add(this.txtPorAplicar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "fmCapturaDetalleGenerico";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Compensaciones";
 
             this.pnlHeader.ResumeLayout(false);
             this.pnlHeader.PerformLayout();
             this.pnlFormularioCaptura.ResumeLayout(false);
             this.pnlFormularioCaptura.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
-        #endregion
-
-        // Componentes nativos reestructurados
         private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Label lblTotalMonto;
-        private System.Windows.Forms.Panel pnlFormularioCaptura;
-        private System.Windows.Forms.Button btnAgregar;
-        private System.Windows.Forms.Button btnTerminar;
-
-        // Variables de control originales mapeadas perfectamente
         private System.Windows.Forms.Label lblTitulo;
+        private System.Windows.Forms.Label lblTotalMonto;
+        private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.Button btnTerminar;
+        private System.Windows.Forms.Panel pnlFormularioCaptura;
         private System.Windows.Forms.Label lblTipo;
         private System.Windows.Forms.ComboBox cmbTipo;
         private System.Windows.Forms.Label lblPeriodicidad;
-        private System.Windows.Forms.TextBox txtPeriodicidad;
+        private System.Windows.Forms.ComboBox cmbPeriodicidad;
         private System.Windows.Forms.Label lblPeriodo;
-        private System.Windows.Forms.TextBox txtPeriodo;
+        private System.Windows.Forms.ComboBox cmbPeriodo;
         private System.Windows.Forms.Label lblEjercicio;
-        private System.Windows.Forms.TextBox txtEjercicio;
+        private System.Windows.Forms.ComboBox cmbEjercicio;
         private System.Windows.Forms.Label lblFechaCausacion;
         private System.Windows.Forms.TextBox txtFechaCausacion;
         private System.Windows.Forms.Label lblNumOp1;
         private System.Windows.Forms.TextBox txtNumOp1;
         private System.Windows.Forms.Label lblConcepto;
-        private System.Windows.Forms.TextBox txtConcepto;
+        private System.Windows.Forms.ComboBox cmbConcepto;
         private System.Windows.Forms.Label lblSaldoAplicar;
         private System.Windows.Forms.TextBox txtSaldoAplicar;
         private System.Windows.Forms.Button btnContinuar;
         private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Panel pnlDivisor;
         private System.Windows.Forms.Label lblTipoDecl;
-        private System.Windows.Forms.TextBox txtTipoDecl;
+        private System.Windows.Forms.ComboBox cmbTipoDecl;
         private System.Windows.Forms.Label lblNumOp2;
         private System.Windows.Forms.TextBox txtNumOp2;
         private System.Windows.Forms.Label lblMontoSaldo;
@@ -315,10 +420,5 @@
         private System.Windows.Forms.TextBox txtFechaDecl;
         private System.Windows.Forms.Label lblRemanAct;
         private System.Windows.Forms.TextBox txtRemanAct;
-        private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Label lblTipoEstimulo;
-        private System.Windows.Forms.ComboBox cmbTipoEstimulo;
-        private System.Windows.Forms.Label lblPorAplicar;
-        private System.Windows.Forms.TextBox txtPorAplicar;
     }
 }

@@ -21,7 +21,6 @@
             this.pnlDatosUsuario = new System.Windows.Forms.Panel();
             this.lblDatosIzq = new System.Windows.Forms.Label();
             this.lblTituloDecl = new System.Windows.Forms.Label();
-            this.lblDatosDer = new System.Windows.Forms.Label();
             this.pnlNavBar = new System.Windows.Forms.Panel();
             this.btnPresentar = new System.Windows.Forms.Button();
             this.btnInicio = new System.Windows.Forms.Button();
@@ -92,7 +91,6 @@
             this.pnlDatosUsuario.TabIndex = 2;
             this.pnlDatosUsuario.Controls.Add(this.lblDatosIzq);
             this.pnlDatosUsuario.Controls.Add(this.lblTituloDecl);
-            this.pnlDatosUsuario.Controls.Add(this.lblDatosDer);
 
             // lblDatosIzq — fijo izquierda con salto de línea para el nombre
             this.lblDatosIzq.Font = new System.Drawing.Font("Arial", 11F);
@@ -115,19 +113,7 @@
             this.lblTituloDecl.TabIndex = 1;
             this.lblTituloDecl.Text = "Declaración Provisional o Definitiva de Impuestos\r\nFederales";
             this.lblTituloDecl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-
-            // lblDatosDer — Anchor Top|Right: siempre pegado a la derecha
-            this.lblDatosDer.Anchor = ((System.Windows.Forms.AnchorStyles)(
-                                          System.Windows.Forms.AnchorStyles.Top |
-                                          System.Windows.Forms.AnchorStyles.Right));
-            this.lblDatosDer.Font = new System.Drawing.Font("Arial", 11F);
-            this.lblDatosDer.Location = new System.Drawing.Point(1079, 11);
-            this.lblDatosDer.Name = "lblDatosDer";
-            this.lblDatosDer.Size = new System.Drawing.Size(343, 59);
-            this.lblDatosDer.TabIndex = 2;
-            this.lblDatosDer.Text = "Ejercicio: 2026 / periodo: xxxx\r\nDeclaración: Normal\r\nVencimiento: xx/xx/xx";
-            this.lblDatosDer.TextAlign = System.Drawing.ContentAlignment.TopRight;
-
+            //
             // pnlNavBar — Dock Top
             this.pnlNavBar.BackColor = System.Drawing.Color.FromArgb(13, 78, 92);
             this.pnlNavBar.Dock = System.Windows.Forms.DockStyle.Top;
@@ -226,7 +212,6 @@
         private System.Windows.Forms.Panel pnlDatosUsuario;
         private System.Windows.Forms.Label lblDatosIzq;
         private System.Windows.Forms.Label lblTituloDecl;
-        private System.Windows.Forms.Label lblDatosDer;
         private System.Windows.Forms.Panel pnlNavBar;
         private System.Windows.Forms.Button btnPresentar;
         private System.Windows.Forms.Button btnInicio;

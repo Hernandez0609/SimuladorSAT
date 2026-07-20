@@ -49,21 +49,27 @@ namespace SimuladorSAT
             switch (_regimen)
             {
                 case TipoRegimen.RegimenSimplificado:
-                    IrAAdminDeclaracion();
+                    IrAFlujoDeclaracion();
                     break;
-                case TipoRegimen.SueldosYSalarios:
-                    MessageBox.Show("Módulo Sueldos y Salarios — próximamente.",
-                        "En construcción", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    break;
-                case TipoRegimen.PersonasFisicas:
-                    MessageBox.Show("Módulo Personas Físicas — próximamente.",
-                        "En construcción", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    break;
-                case TipoRegimen.Arrendamiento:
-                    MessageBox.Show("Módulo Arrendamiento — próximamente.",
-                        "En construcción", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    break;
+                    // ... resto de los cases igual
             }
+        }
+
+        private void IrAFlujoDeclaracion()
+        {
+            if (Program.listaDeclaraciones.Count > 0)
+            {
+                Program.formDeclaracionesPendientes.ActualizarLista();
+                Program.formDeclaracionesPendientes.WindowState = this.WindowState;
+                Program.formDeclaracionesPendientes.Show();
+            }
+            else
+            {
+                Program.formConfiguracionDeclaracion.ReiniciarFormulario();
+                Program.formConfiguracionDeclaracion.WindowState = this.WindowState;
+                Program.formConfiguracionDeclaracion.Show();
+            }
+            this.Hide();
         }
 
         private void IrAAdminDeclaracion()

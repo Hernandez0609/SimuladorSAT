@@ -271,7 +271,7 @@
             this.btnTabPago.Name = "btnTabPago";
             this.btnTabPago.Size = new System.Drawing.Size(110, 34);
             this.btnTabPago.TabIndex = 5;
-            this.btnTabPago.Text = "PAGO";
+            this.btnTabPago.Text = "Pago";
             this.btnTabPago.UseVisualStyleBackColor = false;
 
             this.btnTabDatosAdicionales.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);

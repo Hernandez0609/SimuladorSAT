@@ -82,6 +82,18 @@
     <Compile Include="fmCapturar.Designer.cs">
       <DependentUpon>fmCapturar.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmConfiguracionDeclaracion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmConfiguracionDeclaracion.Designer.cs">
+      <DependentUpon>fmConfiguracionDeclaracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmDeclaracionesPendientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmDeclaracionesPendientes.Designer.cs">
+      <DependentUpon>fmDeclaracionesPendientes.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmDetalle.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +184,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModeloDeclaracion.cs" />
     <Compile Include="ModeloIsrPersonasFisicas.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

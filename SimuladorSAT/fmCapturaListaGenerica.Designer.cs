@@ -64,7 +64,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.BackColor = System.Drawing.Color.White;
-            this.Font = new System.Drawing.Font("Georgia", 10F); // Tipografía Serif solicitada
+            this.Font = new System.Drawing.Font("Arial", 10F); 
 
             // =============================================
             // HEADER (Teal Oscuro Figma)
@@ -131,12 +131,13 @@
             this.lblLimite.AutoSize = true;
             this.lblLimite.Location = new System.Drawing.Point(25, 15);
 
+            this.txtLimite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtLimite.Font = new System.Drawing.Font("Arial", 9F);
             this.txtLimite.Location = new System.Drawing.Point(424, 25);
             this.txtLimite.Size = new System.Drawing.Size(120, 23);
             this.txtLimite.ReadOnly = true;
             this.txtLimite.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtLimite.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            this.txtLimite.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLimite.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
             this.txtLimite.Text = "0";
 
             // Botón Agregar de Figma (Bordes redondeados, fondo blanco)
@@ -174,15 +175,18 @@
             this.cmbTipoEstimulo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTipoEstimulo.Items.AddRange(new object[] { "Selecciona", "Estímulo Fronterizo", "Estímulo Diésel" });
             this.cmbTipoEstimulo.SelectedIndex = 0;
+            this.cmbTipoEstimulo.SelectedIndexChanged += new System.EventHandler(this.cmbTipoEstimulo_SelectedIndexChanged);
 
             this.lblPorAplicarPeriodo.Text = "Por aplicar en el periodo";
             this.lblPorAplicarPeriodo.Location = new System.Drawing.Point(15, 53);
             this.lblPorAplicarPeriodo.AutoSize = true;
 
+            this.txtMontoPorAplicar.Anchor = System.Windows.Forms.AnchorStyles.None; 
+            this.txtMontoPorAplicar.Font = new System.Drawing.Font("Arial", 9F); 
             this.txtMontoPorAplicar.Location = new System.Drawing.Point(400, 50);
             this.txtMontoPorAplicar.Size = new System.Drawing.Size(120, 23);
+            this.txtMontoPorAplicar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtMontoPorAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            this.txtMontoPorAplicar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 
             // Botones del panel interno
             this.btnGuardarCaptura.Text = "Guardar";
@@ -210,36 +214,53 @@
             this.dgvRegistros.Size = new System.Drawing.Size(900, 160);
             this.dgvRegistros.BackgroundColor = System.Drawing.Color.White;
             this.dgvRegistros.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvRegistros.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvRegistros.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Single; 
+            this.dgvRegistros.GridColor = System.Drawing.Color.FromArgb(220, 220, 220); 
             this.dgvRegistros.AllowUserToAddRows = false;
             this.dgvRegistros.AllowUserToDeleteRows = false;
             this.dgvRegistros.RowHeadersVisible = false;
             this.dgvRegistros.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRegistros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvRegistros.ScrollBars = System.Windows.Forms.ScrollBars.Vertical; 
+            this.dgvRegistros.Font = new System.Drawing.Font("Arial", 10F); 
+            this.dgvRegistros.ColumnHeadersHeight = 32;
+            this.dgvRegistros.RowTemplate.Height = 32;
+            // Estilo de celdas normales — BLANCO, no gris
+            this.dgvRegistros.DefaultCellStyle.BackColor = System.Drawing.Color.White; 
+            this.dgvRegistros.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White; 
+            this.dgvRegistros.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+            this.dgvRegistros.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 
-            // Estilos de los encabezados idénticos a los bloques limpios de Figma
+            // Estilos de los encabezados
             this.dgvRegistros.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvRegistros.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
-            this.dgvRegistros.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Georgia", 11F);
+            this.dgvRegistros.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold); 
             this.dgvRegistros.ColumnHeadersDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dgvRegistros.ColumnHeadersHeight = 35;
+            this.dgvRegistros.ColumnHeadersDefaultCellStyle.SelectionBackColor = System.Drawing.Color.White; 
+            this.dgvRegistros.ColumnHeadersDefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black; 
             this.dgvRegistros.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvRegistros.EnableHeadersVisualStyles = false;
+            this.dgvRegistros.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRegistros_CellClick);
 
             this.colTipo.HeaderText = "Tipo de estimulo";
             this.colTipo.Name = "colTipo";
             this.colTipo.ReadOnly = true;
             this.colTipo.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colTipo.FillWeight = 150;
 
             this.colPorAplicar.HeaderText = "Por aplicar en el periodo";
             this.colPorAplicar.Name = "colPorAplicar";
             this.colPorAplicar.ReadOnly = true;
             this.colPorAplicar.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colPorAplicar.FillWeight = 150;
 
             this.colEliminar.HeaderText = "Eliminar";
             this.colEliminar.Name = "colEliminar";
-            this.colEliminar.ReadOnly = true;
+            this.colEliminar.Text = "🗑"; // AGREGAR — el ícono que faltaba
+            this.colEliminar.UseColumnTextForButtonValue = true; // AGREGAR — obligatorio para que se vea el texto/ícono
+            this.colEliminar.ReadOnly = false; // antes true — debe ser false para que se pueda hacer clic
             this.colEliminar.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colEliminar.FillWeight = 150;
 
             this.dgvRegistros.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.colTipo, this.colPorAplicar, this.colEliminar });
 

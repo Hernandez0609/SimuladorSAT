@@ -1,4 +1,5 @@
-﻿namespace SimuladorSAT
+﻿
+namespace SimuladorSAT
 {
     partial class fmAdminDeclaracion
     {
@@ -43,6 +44,11 @@
             this.lblTotalPagar = new System.Windows.Forms.Label();
             this.btnVistaPrevia = new System.Windows.Forms.Button();
             this.btnEnviarDeclaracion = new System.Windows.Forms.Button();
+            // ==========================================
+            this.lblMontoIsrFisicas = new System.Windows.Forms.Label();
+            this.lblMontoIsrSalarios = new System.Windows.Forms.Label();
+            this.lblMontoIva = new System.Windows.Forms.Label();
+            // ==========================================
             this.pnlHeaderBlanco.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoIzquierdo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoDerecho)).BeginInit();
@@ -235,11 +241,42 @@
             this.pnlIconosSecciones.Controls.Add(this.lblIsrSalarios);
             this.pnlIconosSecciones.Controls.Add(this.btnIvaSimplificado);
             this.pnlIconosSecciones.Controls.Add(this.lblIvaSimplificado);
+            //
+            this.pnlIconosSecciones.Controls.Add(this.lblMontoIsrFisicas);
+            this.pnlIconosSecciones.Controls.Add(this.lblMontoIsrSalarios);
+            this.pnlIconosSecciones.Controls.Add(this.lblMontoIva);
             this.pnlIconosSecciones.Location = new System.Drawing.Point(102, 542);
             this.pnlIconosSecciones.Margin = new System.Windows.Forms.Padding(4);
             this.pnlIconosSecciones.Name = "pnlIconosSecciones";
             this.pnlIconosSecciones.Size = new System.Drawing.Size(1140, 160);
             this.pnlIconosSecciones.TabIndex = 3;
+            //
+            //
+            // LABELS NUEVOS MONTO (Configuración y Posicionamiento)
+            // 
+            this.lblMontoIsrFisicas.Name = "lblMontoIsrFisicas";
+            this.lblMontoIsrFisicas.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.lblMontoIsrFisicas.ForeColor = System.Drawing.Color.FromArgb(13, 78, 92);
+            this.lblMontoIsrFisicas.Size = new System.Drawing.Size(287, 20);
+            this.lblMontoIsrFisicas.Location = new System.Drawing.Point(13, 148);
+            this.lblMontoIsrFisicas.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblMontoIsrFisicas.Visible = false;
+
+            this.lblMontoIsrSalarios.Name = "lblMontoIsrSalarios";
+            this.lblMontoIsrSalarios.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.lblMontoIsrSalarios.ForeColor = System.Drawing.Color.FromArgb(13, 78, 92);
+            this.lblMontoIsrSalarios.Size = new System.Drawing.Size(320, 20);
+            this.lblMontoIsrSalarios.Location = new System.Drawing.Point(410, 148);
+            this.lblMontoIsrSalarios.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblMontoIsrSalarios.Visible = false;
+
+            this.lblMontoIva.Name = "lblMontoIva";
+            this.lblMontoIva.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.lblMontoIva.ForeColor = System.Drawing.Color.FromArgb(13, 78, 92);
+            this.lblMontoIva.Size = new System.Drawing.Size(320, 20);
+            this.lblMontoIva.Location = new System.Drawing.Point(822, 148);
+            this.lblMontoIva.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblMontoIva.Visible = false;
             // 
             // btnIsrFisicas
             // 
@@ -251,7 +288,6 @@
             this.btnIsrFisicas.Name = "btnIsrFisicas";
             this.btnIsrFisicas.Size = new System.Drawing.Size(73, 68);
             this.btnIsrFisicas.TabIndex = 0;
-            this.btnIsrFisicas.Click += new System.EventHandler(this.btnIsrFisicas_Click);
             // 
             // lblIsrFisicas
             // 
@@ -425,5 +461,9 @@
         private System.Windows.Forms.Label lblTotalPagar;
         private System.Windows.Forms.Button btnVistaPrevia;
         private System.Windows.Forms.Button btnEnviarDeclaracion;
+
+        private System.Windows.Forms.Label lblMontoIsrFisicas;
+        private System.Windows.Forms.Label lblMontoIsrSalarios;
+        private System.Windows.Forms.Label lblMontoIva;
     }
 }
