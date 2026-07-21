@@ -16,7 +16,7 @@ namespace SimuladorSAT
         public decimal MontoCapturado { get; private set; } = 0;
         private TipoCapturaEnum _modo;
         private decimal _limiteAplicar;
-        private decimal _montoValidado = 0; 
+        private decimal _montoValidado = 0;
 
         public fmCapturaDetalleGenerico(TipoCapturaEnum modo, decimal limiteAplicar)
         {
@@ -26,15 +26,10 @@ namespace SimuladorSAT
             _limiteAplicar = limiteAplicar;
 
             CargarAnios();
+            InicializarComboPeriodo(); // <--- AJUSTE 1: Carga "-Seleccione-" desde el inicio para evitar caja en blanco
 
             // 1. ESTADO COLAPSADO INICIAL
-            // Ancho 1400 (fijo de tu designer), Alto 150 (suficiente para Header + Botones)
-            pnlFormularioCaptura.Visible = false;
-            this.ClientSize = new System.Drawing.Size(1400, 150);
-
-            // Reposicionar botones manualmente para la vista colapsada
-            AjustarPosicionBotones(100);
-            CentrarEnPantalla();
+            ColapsarAInterfazChica();
 
             // Eventos
             btnAgregar.Click += (s, e) => Expandir();
@@ -62,7 +57,7 @@ namespace SimuladorSAT
             cmbEjercicio.Items.Add("-Seleccione-");
 
             int anioActual = DateTime.Now.Year;
-            for (int anio = 2022; anio <= anioActual; anio++)
+            for (int anio = anioActual; anio >= 2002; anio--)
             {
                 cmbEjercicio.Items.Add(anio.ToString());
             }
@@ -70,9 +65,18 @@ namespace SimuladorSAT
             cmbEjercicio.SelectedIndex = 0;
         }
 
+        // Método auxiliar para precargar "-Seleccione-" en cmbPeriodo
+        private void InicializarComboPeriodo()
+        {
+            cmbPeriodo.SelectedIndexChanged -= cmbPeriodo_SelectedIndexChanged;
+            cmbPeriodo.Items.Clear();
+            cmbPeriodo.Items.Add("-Seleccione-");
+            cmbPeriodo.SelectedIndex = 0;
+            cmbPeriodo.SelectedIndexChanged += cmbPeriodo_SelectedIndexChanged;
+        }
+
         private void Expandir()
         {
-
             pnlFormularioCaptura.Visible = true;
             this.ClientSize = new System.Drawing.Size(1400, 650);
 
@@ -80,6 +84,15 @@ namespace SimuladorSAT
             AjustarPosicionBotones(580);
             CentrarEnPantalla();
         }
+
+        private void ColapsarAInterfazChica()
+        {
+            pnlFormularioCaptura.Visible = false;
+            this.ClientSize = new System.Drawing.Size(1400, 150);
+            AjustarPosicionBotones(100);
+            CentrarEnPantalla();
+        }
+
         private void AjustarPosicionBotones(int posY)
         {
             btnCancelar.Location = new System.Drawing.Point(970, posY);
@@ -110,12 +123,16 @@ namespace SimuladorSAT
 
         private void CargarMeses()
         {
+            cmbPeriodo.SelectedIndexChanged -= cmbPeriodo_SelectedIndexChanged;
+
             string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
             cmbPeriodo.Items.Clear();
             cmbPeriodo.Items.Add("-Seleccione-");
             foreach (var m in meses) cmbPeriodo.Items.Add(m);
             cmbPeriodo.SelectedIndex = 0;
+
+            cmbPeriodo.SelectedIndexChanged += cmbPeriodo_SelectedIndexChanged;
         }
 
         private void cmbPeriodo_SelectedIndexChanged(object sender, EventArgs e)
@@ -170,7 +187,7 @@ namespace SimuladorSAT
 
         private void ColapsarDesdePeriodo()
         {
-            if (cmbPeriodo.Items.Count > 0) cmbPeriodo.SelectedIndex = 0;
+            InicializarComboPeriodo();
             cmbEjercicio.Enabled = false;
             ColapsarDesdeEjercicio();
         }
@@ -231,12 +248,12 @@ namespace SimuladorSAT
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
             _montoValidado = 0;
-            cmbTipo.SelectedIndex = 0;
+            if (cmbTipo.Items.Count > 0) cmbTipo.SelectedIndex = 0;
             cmbTipo.Enabled = true;
             cmbPeriodicidad.Enabled = false;
             ColapsarDesdePeriodicidad();
 
-            cmbTipoDecl.SelectedIndex = 0;
+            if (cmbTipoDecl.Items.Count > 0) cmbTipoDecl.SelectedIndex = 0;
             cmbTipoDecl.Enabled = false;
             txtNumOp2.Text = "";
             txtNumOp2.Enabled = false;
@@ -255,6 +272,9 @@ namespace SimuladorSAT
             txtRemanAct.BackColor = Color.FromArgb(235, 235, 235);
 
             lblTotalMonto.Text = "Total: $0";
+
+            // <--- AJUSTE 2: Oculta el panel y regresa la pantalla al estado colapsado (interfaz chica)
+            ColapsarAInterfazChica();
         }
 
         private void BtnTerminar_Click(object sender, EventArgs e)
@@ -273,7 +293,6 @@ namespace SimuladorSAT
                 return;
             }
 
-            // Comprobamos directamente contra la variable respaldada en el botón continuar
             if (_montoValidado <= 0)
             {
                 MessageBox.Show("Ingrese y procese un Saldo a aplicar válido mediante el botón CONTINUAR.", "Campo requerido",

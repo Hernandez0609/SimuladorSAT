@@ -98,7 +98,7 @@
             this.btnCancelar.Location = new System.Drawing.Point(970, 590);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(120, 36);
-            this.btnCancelar.Text = "CANCELAR";
+            this.btnCancelar.Text = "Cancelar";
 
             this.btnAgregar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnAgregar.BackColor = System.Drawing.Color.FromArgb(13, 78, 92);
@@ -118,7 +118,7 @@
             this.btnTerminar.Location = new System.Drawing.Point(1250, 590);
             this.btnTerminar.Name = "btnTerminar";
             this.btnTerminar.Size = new System.Drawing.Size(120, 36);
-            this.btnTerminar.Text = "TERMINAR";
+            this.btnTerminar.Text = "Terminar";
 
             // ====================================================================
             // pnlFormularioCaptura — nace oculto
@@ -210,6 +210,8 @@
             this.cmbEjercicio.Font = new System.Drawing.Font("Arial", 10F);
             this.cmbEjercicio.Location = new System.Drawing.Point(990, 25);
             this.cmbEjercicio.Size = new System.Drawing.Size(290, 28);
+            this.cmbEjercicio.IntegralHeight = false; 
+            this.cmbEjercicio.DropDownHeight = 180;
             this.cmbEjercicio.SelectedIndexChanged += new System.EventHandler(this.cmbEjercicio_SelectedIndexChanged);
 
             // ---- FILA 2: Fecha causación | Núm. operación | Concepto | Saldo a aplicar ----
@@ -269,7 +271,7 @@
             this.btnContinuar.ForeColor = System.Drawing.Color.White;
             this.btnContinuar.Location = new System.Drawing.Point(0, 150);
             this.btnContinuar.Size = new System.Drawing.Size(160, 38);
-            this.btnContinuar.Text = "CONTINUAR";
+            this.btnContinuar.Text = "Continuar";
             this.btnContinuar.UseVisualStyleBackColor = false;
             //this.btnContinuar.Click += new System.EventHandler(this.btnContinuar_Click);
 
@@ -277,7 +279,7 @@
             this.btnEliminar.Font = new System.Drawing.Font("Arial", 10F);
             this.btnEliminar.Location = new System.Drawing.Point(180, 150);
             this.btnEliminar.Size = new System.Drawing.Size(160, 38);
-            this.btnEliminar.Text = "ELIMINAR";
+            this.btnEliminar.Text = "Eliminar";
             //this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
 
             // ---- Divisor ----

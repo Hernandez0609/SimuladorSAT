@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace SimuladorSAT
@@ -15,9 +10,69 @@ namespace SimuladorSAT
         public Form1()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
+
+            // Doble búfer
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
-                  ControlStyles.AllPaintingInWmPaint |
-                  ControlStyles.UserPaint, true);
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint, true);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // Asigna el ícono renderizado
+            picUserIcon.Image = CrearIconoUsuario(60, 60);
+            AjustarPosicionesResponsivas();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            AjustarPosicionesResponsivas();
+        }
+
+        private void AjustarPosicionesResponsivas()
+        {
+            if (this.ClientSize.Width == 0 || this.ClientSize.Height == 0) return;
+
+            // Mismo cálculo X e Y exacto que en fmInicio
+            picUserIcon.Left = this.ClientSize.Width - picUserIcon.Width - 60;
+
+            picUserIcon.BringToFront();
+        }
+
+        // Evita el destello o parpadeo blanco al cambiar entre pantallas
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_ERASEBKGND = 0x0014;
+            if (m.Msg == WM_ERASEBKGND)
+            {
+                m.Result = (IntPtr)1;
+                return;
+            }
+            base.WndProc(ref m);
+        }
+
+        private Bitmap CrearIconoUsuario(int width, int height)
+        {
+            Bitmap bmp = new Bitmap(width, height);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.Clear(Color.Transparent);
+                using (Pen pen = new Pen(Color.White, 3.0f))
+                {
+                    g.DrawEllipse(pen, 18, 8, 24, 24);
+                    GraphicsPath path = new GraphicsPath();
+                    path.AddArc(10, 38, 40, 26, 180, 180);
+                    g.DrawPath(pen, path);
+                }
+            }
+            return bmp;
+        }
+
+        private void picUserIcon_Click(object sender, EventArgs e)
+        {
+            // Evento Click
         }
 
         private void lblIconoArrendamiento_Click(object sender, EventArgs e)
@@ -42,6 +97,23 @@ namespace SimuladorSAT
             }
             Program.formPresentar.WindowState = this.WindowState;
             Program.formPresentar.Show();
+            this.Hide();
+        }
+
+        private void lblMenuInicio_Click(object sender, EventArgs e)
+        {
+            if (Program.formInicio != null && !Program.formInicio.IsDisposed)
+            {
+                Program.formInicio.WindowState = this.WindowState;
+                Program.formInicio.Show();
+            }
+            else
+            {
+                Program.formInicio = new fmInicio();
+                Program.formInicio.WindowState = this.WindowState;
+                Program.formInicio.Show();
+            }
+
             this.Hide();
         }
     }

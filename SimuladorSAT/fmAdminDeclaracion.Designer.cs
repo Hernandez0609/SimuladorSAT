@@ -293,7 +293,7 @@
             this.lblIsrFisicas.Location = new System.Drawing.Point(13, 86);
             this.lblIsrFisicas.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIsrFisicas.Name = "lblIsrFisicas";
-            this.lblIsrFisicas.Size = new System.Drawing.Size(287, 30);
+            this.lblIsrFisicas.Size = new System.Drawing.Size(287, 35);
             this.lblIsrFisicas.TabIndex = 1;
             this.lblIsrFisicas.Text = "ISR simplificado de confianza\r\npersonas físicas";
             this.lblIsrFisicas.TextAlign = System.Drawing.ContentAlignment.TopCenter;

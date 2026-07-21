@@ -23,7 +23,7 @@ namespace SimuladorSAT
         }
 
         // ====================================================================
-        // Centra la ventana respecto al Owner (la cortina, que cubre toda la pantalla)
+        // Centra la ventana respecto al Owner
         // ====================================================================
         private void CentrarEnPantalla()
         {
@@ -35,6 +35,7 @@ namespace SimuladorSAT
 
         private void CargarAniosDinamicos()
         {
+            cmbEjercicio.Items.Clear();
             cmbEjercicio.Items.Add("-Seleccione-");
             int anioActual = DateTime.Now.Year;
             for (int anio = anioActual; anio >= 2002; anio--)
@@ -45,45 +46,59 @@ namespace SimuladorSAT
         }
 
         // ====================================================================
-        // Cascada de habilitación
+        // CASCADA DE HABILITACIÓN 1 A 1 (CORREGIDA)
         // ====================================================================
+
+        // 1. Tipo -> Habilita Periodicidad
         private void cmbTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool haySeleccion = cmbTipo.SelectedIndex > 0;
             cmbPeriocidad.Enabled = haySeleccion;
-            if (!haySeleccion) ColapsarDesde();
+            if (!haySeleccion) ColapsarDesdePeriodicidad();
         }
 
+        // 2. Periodicidad -> Habilita ÚNICAMENTE Período (Ejercicio se mantiene disabled)
         private void cmbPeriocidad_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool haySeleccion = cmbPeriocidad.SelectedIndex > 0;
             cmbPeriodo.Enabled = haySeleccion;
-            cmbEjercicio.Enabled = haySeleccion;
             if (!haySeleccion)
             {
-                cmbPeriodo.SelectedIndex = 0;
-                cmbEjercicio.SelectedIndex = 0;
-                VerificarPeriodoYEjercicio();
+                ColapsarDesdePeriodo();
             }
         }
 
-        private void cmbPeriodo_SelectedIndexChanged(object sender, EventArgs e) => VerificarPeriodoYEjercicio();
-        private void cmbEjercicio_SelectedIndexChanged(object sender, EventArgs e) => VerificarPeriodoYEjercicio();
-
-        private void VerificarPeriodoYEjercicio()
+        // 3. Período -> Habilita ÚNICAMENTE Ejercicio
+        private void cmbPeriodo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bool ambosCompletos = cmbPeriodo.SelectedIndex > 0 && cmbEjercicio.SelectedIndex > 0;
-            txtFechaCausacion.Enabled = ambosCompletos;
-            txtFechaCausacion.BackColor = ambosCompletos ? Color.White : Color.FromArgb(238, 238, 238);
-            txtNumOperacion1.Enabled = ambosCompletos;
-            txtNumOperacion1.BackColor = ambosCompletos ? Color.White : Color.FromArgb(238, 238, 238);
-            cmbConcepto.Enabled = ambosCompletos;
+            bool haySeleccion = cmbPeriodo.SelectedIndex > 0;
+            cmbEjercicio.Enabled = haySeleccion;
+            if (!haySeleccion)
+            {
+                ColapsarDesdeEjercicio();
+            }
+        }
 
-            if (!ambosCompletos)
+        // 4. Ejercicio -> Habilita el bloque de datos posterior
+        private void cmbEjercicio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool haySeleccion = cmbEjercicio.SelectedIndex > 0;
+            HabilitarBloqueDatos(haySeleccion);
+        }
+
+        private void HabilitarBloqueDatos(bool habilitar)
+        {
+            txtFechaCausacion.Enabled = habilitar;
+            txtFechaCausacion.BackColor = habilitar ? Color.White : Color.FromArgb(238, 238, 238);
+            txtNumOperacion1.Enabled = habilitar;
+            txtNumOperacion1.BackColor = habilitar ? Color.White : Color.FromArgb(238, 238, 238);
+            cmbConcepto.Enabled = habilitar;
+
+            if (!habilitar)
             {
                 txtFechaCausacion.Text = "";
                 txtNumOperacion1.Text = "";
-                cmbConcepto.SelectedIndex = 0;
+                if (cmbConcepto.Items.Count > 0) cmbConcepto.SelectedIndex = 0;
                 txtSaldoAplicar.Enabled = false;
                 txtSaldoAplicar.Text = "";
                 txtSaldoAplicar.BackColor = Color.FromArgb(238, 238, 238);
@@ -98,18 +113,38 @@ namespace SimuladorSAT
             if (!haySeleccion) txtSaldoAplicar.Text = "";
         }
 
-        private void ColapsarDesde()
+        // ====================================================================
+        // Métodos de colapso/limpieza en cascada
+        // ====================================================================
+        private void ColapsarDesdePeriodicidad()
         {
-            cmbPeriocidad.SelectedIndex = 0;
-            cmbPeriodo.SelectedIndex = 0;
+            if (cmbPeriocidad.Items.Count > 0) cmbPeriocidad.SelectedIndex = 0;
             cmbPeriodo.Enabled = false;
-            cmbEjercicio.SelectedIndex = 0;
+            ColapsarDesdePeriodo();
+        }
+
+        private void ColapsarDesdePeriodo()
+        {
+            if (cmbPeriodo.Items.Count > 0) cmbPeriodo.SelectedIndex = 0;
             cmbEjercicio.Enabled = false;
-            VerificarPeriodoYEjercicio();
+            ColapsarDesdeEjercicio();
+        }
+
+        private void ColapsarDesdeEjercicio()
+        {
+            if (cmbEjercicio.Items.Count > 0) cmbEjercicio.SelectedIndex = 0;
+            HabilitarBloqueDatos(false);
+        }
+
+        private void ColapsarAInterfazChica()
+        {
+            pnlFormularioCaptura.Visible = false;
+            this.ClientSize = new System.Drawing.Size(1400, 150);
+            CentrarEnPantalla();
         }
 
         // ====================================================================
-        // Botón Agregar — expande el formulario y lo recentra
+        // Botón Agregar — expande el formulario
         // ====================================================================
         private void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -117,11 +152,11 @@ namespace SimuladorSAT
 
             pnlFormularioCaptura.Visible = true;
             this.ClientSize = new System.Drawing.Size(1400, 750);
-            CentrarEnPantalla(); // reposiciona para que quede centrado con el nuevo tamaño
+            CentrarEnPantalla();
         }
 
         // ====================================================================
-        // Botón Continuar — valida y HABILITA (no oculta) la sección de abajo
+        // Botón Continuar
         // ====================================================================
         private void btnContinuar_Click(object sender, EventArgs e)
         {
@@ -134,7 +169,9 @@ namespace SimuladorSAT
                 return;
             }
 
-            if (!decimal.TryParse(txtSaldoAplicar.Text, out decimal saldo) || saldo <= 0)
+            string textoLimpio = txtSaldoAplicar.Text.Replace("$", "").Replace(",", "").Trim();
+
+            if (!decimal.TryParse(textoLimpio, out decimal saldo) || saldo <= 0)
             {
                 MessageBox.Show("Ingresa un saldo a aplicar válido.", "Campo requerido",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -158,15 +195,15 @@ namespace SimuladorSAT
         }
 
         // ====================================================================
-        // Botón Eliminar — limpia todo el formulario de captura
+        // Botón Eliminar — limpia y colapsa la pantalla
         // ====================================================================
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            cmbTipo.SelectedIndex = 0;
+            if (cmbTipo.Items.Count > 0) cmbTipo.SelectedIndex = 0;
             cmbPeriocidad.Enabled = false;
-            ColapsarDesde();
+            ColapsarDesdePeriodicidad();
 
-            cmbTipoDeclaracion.SelectedIndex = 0;
+            if (cmbTipoDeclaracion.Items.Count > 0) cmbTipoDeclaracion.SelectedIndex = 0;
             cmbTipoDeclaracion.Enabled = false;
             txtNumOperacion2.Text = "";
             txtNumOperacion2.Enabled = false;
@@ -185,6 +222,9 @@ namespace SimuladorSAT
             txtRemanenteActualizado.BackColor = Color.FromArgb(238, 238, 238);
 
             lblTotalHeader.Text = "Total: $0";
+
+            // Regresa la interfaz al estado chico colapsado
+            ColapsarAInterfazChica();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -195,7 +235,8 @@ namespace SimuladorSAT
 
         private void btnTerminar_Click(object sender, EventArgs e)
         {
-            decimal.TryParse(txtSaldoAplicar.Text, out decimal saldo);
+            string textoLimpio = txtSaldoAplicar.Text.Replace("$", "").Replace(",", "").Trim();
+            decimal.TryParse(textoLimpio, out decimal saldo);
             MontoCapturado = saldo;
             Program.modeloIsrFisicas.Compensaciones = saldo;
             this.DialogResult = DialogResult.OK;

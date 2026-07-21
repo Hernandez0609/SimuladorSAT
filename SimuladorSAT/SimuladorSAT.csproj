@@ -130,6 +130,12 @@
     <Compile Include="fmDetalleTotalIngresosPercibidos.Designer.cs">
       <DependentUpon>fmDetalleTotalIngresosPercibidos.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmInicio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmInicio.Designer.cs">
+      <DependentUpon>fmInicio.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmIsrFisicasDeterminacion.cs">
       <SubType>Form</SubType>
     </Compile>

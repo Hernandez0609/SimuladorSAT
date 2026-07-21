@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.pnlMenuSuperior = new System.Windows.Forms.Panel();
-            this.pnlBusqueda = new System.Windows.Forms.Panel();
-            this.txtBusqueda = new System.Windows.Forms.TextBox();
-            this.lblLupaBusqueda = new System.Windows.Forms.Label();
-            this.lblIconoUsuario = new System.Windows.Forms.Label();
+
+
+
+            this.picUserIcon = new System.Windows.Forms.PictureBox();
             this.lblMenuEmpresa = new System.Windows.Forms.Label();
             this.lblMenuPersonas = new System.Windows.Forms.Label();
             this.lblMenuInicio = new System.Windows.Forms.Label();
@@ -52,7 +52,7 @@
             this.lblTextoArrendamiento = new System.Windows.Forms.Label();
             this.lblTituloPrincipal = new System.Windows.Forms.Label();
             this.pnlMenuSuperior.SuspendLayout();
-            this.pnlBusqueda.SuspendLayout();
+            
             this.pnlFondoBlanco.SuspendLayout();
             this.flpContenedorMosaicos.SuspendLayout();
             this.pnlSueldos.SuspendLayout();
@@ -64,8 +64,7 @@
             // pnlMenuSuperior
             // 
             this.pnlMenuSuperior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(76)))), ((int)(((byte)(92)))));
-            this.pnlMenuSuperior.Controls.Add(this.pnlBusqueda);
-            this.pnlMenuSuperior.Controls.Add(this.lblIconoUsuario);
+            this.pnlMenuSuperior.Controls.Add(this.picUserIcon);
             this.pnlMenuSuperior.Controls.Add(this.lblMenuEmpresa);
             this.pnlMenuSuperior.Controls.Add(this.lblMenuPersonas);
             this.pnlMenuSuperior.Controls.Add(this.lblMenuInicio);
@@ -76,56 +75,16 @@
             this.pnlMenuSuperior.Size = new System.Drawing.Size(1920, 130);
             this.pnlMenuSuperior.TabIndex = 0;
             // 
-            // pnlBusqueda
             // 
-            this.pnlBusqueda.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlBusqueda.BackColor = System.Drawing.Color.White;
-            this.pnlBusqueda.Controls.Add(this.txtBusqueda);
-            this.pnlBusqueda.Controls.Add(this.lblLupaBusqueda);
-            this.pnlBusqueda.Location = new System.Drawing.Point(1300, 40);
-            this.pnlBusqueda.Margin = new System.Windows.Forms.Padding(4);
-            this.pnlBusqueda.Name = "pnlBusqueda";
-            this.pnlBusqueda.Size = new System.Drawing.Size(400, 49);
-            this.pnlBusqueda.TabIndex = 4;
-            // 
-            // txtBusqueda
-            // 
-            this.txtBusqueda.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtBusqueda.Font = new System.Drawing.Font("Georgia", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBusqueda.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtBusqueda.Location = new System.Drawing.Point(13, 12);
-            this.txtBusqueda.Margin = new System.Windows.Forms.Padding(4);
-            this.txtBusqueda.Name = "txtBusqueda";
-            this.txtBusqueda.Size = new System.Drawing.Size(333, 21);
-            this.txtBusqueda.TabIndex = 0;
-            this.txtBusqueda.Text = "Buscar";
-            // 
-            // lblLupaBusqueda
-            // 
-            this.lblLupaBusqueda.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblLupaBusqueda.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblLupaBusqueda.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLupaBusqueda.Location = new System.Drawing.Point(347, 0);
-            this.lblLupaBusqueda.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblLupaBusqueda.Name = "lblLupaBusqueda";
-            this.lblLupaBusqueda.Size = new System.Drawing.Size(53, 49);
-            this.lblLupaBusqueda.TabIndex = 1;
-            this.lblLupaBusqueda.Text = "🔍";
-            this.lblLupaBusqueda.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblIconoUsuario
-            // 
-            this.lblIconoUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIconoUsuario.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblIconoUsuario.Font = new System.Drawing.Font("Georgia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIconoUsuario.ForeColor = System.Drawing.Color.White;
-            this.lblIconoUsuario.Location = new System.Drawing.Point(1780, 33);
-            this.lblIconoUsuario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblIconoUsuario.Name = "lblIconoUsuario";
-            this.lblIconoUsuario.Size = new System.Drawing.Size(67, 62);
-            this.lblIconoUsuario.TabIndex = 3;
-            this.lblIconoUsuario.Text = "👤";
-            this.lblIconoUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.picUserIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.picUserIcon.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picUserIcon.Location = new System.Drawing.Point(1800, 20);
+            this.picUserIcon.Name = "picUserIcon";
+            this.picUserIcon.Size = new System.Drawing.Size(60, 60);
+            this.picUserIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picUserIcon.TabIndex = 3;
+            this.picUserIcon.TabStop = false;
+            this.picUserIcon.Click += new System.EventHandler(this.picUserIcon_Click);
             // 
             // lblMenuEmpresa
             // 
@@ -165,6 +124,7 @@
             this.lblMenuInicio.TabIndex = 0;
             this.lblMenuInicio.Text = "Inicio";
             this.lblMenuInicio.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMenuInicio.Click += new System.EventHandler(this.lblMenuInicio_Click);
             // 
             // pnlFondoBlanco
             // 
@@ -376,9 +336,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Simulador SAT - Regímenes";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.pnlMenuSuperior.ResumeLayout(false);
-            this.pnlBusqueda.ResumeLayout(false);
-            this.pnlBusqueda.PerformLayout();
             this.pnlFondoBlanco.ResumeLayout(false);
             this.pnlFondoBlanco.PerformLayout();
             this.flpContenedorMosaicos.ResumeLayout(false);
@@ -396,10 +355,7 @@
         private System.Windows.Forms.Label lblMenuInicio;
         private System.Windows.Forms.Label lblMenuPersonas;
         private System.Windows.Forms.Label lblMenuEmpresa;
-        private System.Windows.Forms.Panel pnlBusqueda;
-        private System.Windows.Forms.TextBox txtBusqueda;
-        private System.Windows.Forms.Label lblLupaBusqueda;
-        private System.Windows.Forms.Label lblIconoUsuario;
+        private System.Windows.Forms.PictureBox picUserIcon;
         private System.Windows.Forms.Panel pnlFondoBlanco;
         private System.Windows.Forms.Label lblTituloPrincipal;
         private System.Windows.Forms.FlowLayoutPanel flpContenedorMosaicos;

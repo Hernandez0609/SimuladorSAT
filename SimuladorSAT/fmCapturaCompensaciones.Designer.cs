@@ -197,6 +197,8 @@
             this.cmbEjercicio.Font = new System.Drawing.Font("Arial", 10F);
             this.cmbEjercicio.Location = new System.Drawing.Point(990, 25);
             this.cmbEjercicio.Size = new System.Drawing.Size(290, 28);
+            this.cmbEjercicio.IntegralHeight = false; // Desactiva el cálculo automático de Windows
+            this.cmbEjercicio.DropDownHeight = 180;
             this.cmbEjercicio.SelectedIndexChanged += new System.EventHandler(this.cmbEjercicio_SelectedIndexChanged);
 
             // ---- FILA 2: mismas 4 columnas ----
@@ -256,7 +258,7 @@
             this.btnContinuar.ForeColor = System.Drawing.Color.White;
             this.btnContinuar.Location = new System.Drawing.Point(0, 150);
             this.btnContinuar.Size = new System.Drawing.Size(160, 38);
-            this.btnContinuar.Text = "CONTINUAR";
+            this.btnContinuar.Text = "Continuar";
             this.btnContinuar.UseVisualStyleBackColor = false;
             this.btnContinuar.Click += new System.EventHandler(this.btnContinuar_Click);
 
@@ -264,7 +266,7 @@
             this.btnEliminar.Font = new System.Drawing.Font("Arial", 10F);
             this.btnEliminar.Location = new System.Drawing.Point(180, 150);
             this.btnEliminar.Size = new System.Drawing.Size(160, 38);
-            this.btnEliminar.Text = "ELIMINAR";
+            this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
 
             // ---- Divisor ----
@@ -364,7 +366,7 @@
             this.btnTerminar.Font = new System.Drawing.Font("Arial", 10F);
             this.btnTerminar.Location = new System.Drawing.Point(1250, 22);
             this.btnTerminar.Size = new System.Drawing.Size(120, 36);
-            this.btnTerminar.Text = "TERMINAR";
+            this.btnTerminar.Text = "Terminar";
             this.btnTerminar.Click += new System.EventHandler(this.btnTerminar_Click);
 
             this.btnAgregar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -375,7 +377,7 @@
             this.btnAgregar.ForeColor = System.Drawing.Color.White;
             this.btnAgregar.Location = new System.Drawing.Point(1110, 22);
             this.btnAgregar.Size = new System.Drawing.Size(120, 36);
-            this.btnAgregar.Text = "AGREGAR";
+            this.btnAgregar.Text = "Agregar";
             this.btnAgregar.UseVisualStyleBackColor = false;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
 
@@ -384,7 +386,7 @@
             this.btnCancelar.Font = new System.Drawing.Font("Arial", 10F);
             this.btnCancelar.Location = new System.Drawing.Point(970, 22);
             this.btnCancelar.Size = new System.Drawing.Size(120, 36);
-            this.btnCancelar.Text = "CANCELAR";
+            this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
 
             // ====================================================================

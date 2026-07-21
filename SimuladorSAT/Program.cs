@@ -8,6 +8,7 @@ namespace SimuladorSAT
 {
     internal static class Program
     {
+        public static fmInicio formInicio;
         public static Form1 form1;
         public static fmPresentarDeclaracion formPresentar;
         public static fmAdminDeclaracion formAdmin;
@@ -34,6 +35,10 @@ namespace SimuladorSAT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // 1. Instanciamos fmInicio
+            formInicio = new fmInicio();
+
+            // 2. Mantenemos TODAS tus instancias originales con su constructor normal sin parámetros
             form1 = new Form1();
             formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
             formAdmin = new fmAdminDeclaracion();
@@ -41,16 +46,27 @@ namespace SimuladorSAT
             formPagoIsr = new fmPagoISR();
             formPagoIva = new fmPagoIVA();
             formResico = new fmResico(formAdmin);
+
             // NUEVA
             formIsrFisicasIngresos = new fmIsrFisicasIngresos();
             formIsrFisicasDeterminacion = new fmIsrFisicasDeterminacion();
             formIsrFisicasPago = new fmIsrFisicasPago();
 
-            //NUEVA 2.0
+            // NUEVA 2.0
             formConfiguracionDeclaracion = new fmConfiguracionDeclaracion();
             formDeclaracionesPendientes = new fmDeclaracionesPendientes();
 
-            Application.Run(form1);
+            // NUEVO — fuerza la creación del handle nativo de cada ventana, "calienta" el JIT
+            ForzarCreacionHandle(form1);
+            ForzarCreacionHandle(formPresentar);
+            ForzarCreacionHandle(formAdmin);
+            // ... agrega uno por cada form pesado que uses en el flujo principal ...
+            // 3. Ejecutamos iniciando desde formInicio
+            Application.Run(formInicio);
+        }
+        private static void ForzarCreacionHandle(Form f)
+        {
+            var handle = f.Handle; // esto obliga a WinForms a crear el handle nativo YA, sin esperar al primer Show()
         }
     }
 }
