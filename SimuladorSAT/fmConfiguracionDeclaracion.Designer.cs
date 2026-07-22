@@ -179,7 +179,7 @@
             this.lblPeriocidad.AutoSize = true;
             this.lblPeriocidad.Font = new System.Drawing.Font("Arial", 10F);
             this.lblPeriocidad.Location = new System.Drawing.Point(46, 170);
-            this.lblPeriocidad.Text = "Periocidad";
+            this.lblPeriocidad.Text = "Periodicidad";
 
             this.cmbPeriocidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPeriocidad.Enabled = false;

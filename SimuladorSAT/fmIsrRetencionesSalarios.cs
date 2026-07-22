@@ -9,27 +9,19 @@ namespace SimuladorSAT
         {
             InitializeComponent();
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
-                  ControlStyles.AllPaintingInWmPaint |
-                  ControlStyles.UserPaint, true);
-            AsignarEventosNavegacion();
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint, true);
         }
 
-        private void AsignarEventosNavegacion()
-        {
-            btnCerrar.Click += BtnCerrar_Click;
-        }
-
-        private void BtnCerrar_Click(object sender, EventArgs e)
+        private void btnCerrar_Click(object sender, EventArgs e)
         {
             if (Program.formAdmin == null || Program.formAdmin.IsDisposed)
             {
                 Program.formAdmin = new fmAdminDeclaracion();
             }
 
-            // Copiamos el WindowState manualmente antes de navegar
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            // Transición limpia utilizando el Helper
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
         private void btnInicio_Click(object sender, EventArgs e)
@@ -39,10 +31,8 @@ namespace SimuladorSAT
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
             }
 
-            // Copiamos el WindowState manualmente antes de navegar
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            // Transición limpia utilizando el Helper
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnTabPago_Click(object sender, EventArgs e)
@@ -51,6 +41,7 @@ namespace SimuladorSAT
             {
                 Program.formPagoIsr = new fmPagoISR();
             }
+
             NavegacionHelper.MostrarSinParpadeo(Program.formPagoIsr, this);
         }
     }

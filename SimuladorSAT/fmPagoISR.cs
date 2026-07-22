@@ -11,8 +11,8 @@ namespace SimuladorSAT
         {
             InitializeComponent();
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
-                  ControlStyles.AllPaintingInWmPaint |
-                  ControlStyles.UserPaint, true);
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint, true);
             CargarImagenesCabecera();
             AsignarEventosNavegacion();
         }
@@ -24,6 +24,8 @@ namespace SimuladorSAT
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 string rutaEscudo = Path.Combine(baseDir, "escudo.png");
                 string rutaLogo = Path.Combine(baseDir, "logouthh.png");
+
+                // Mantenemos la carga exacta de imágenes
                 if (File.Exists(rutaEscudo)) picLogoUthh.Image = Image.FromFile(rutaEscudo);
                 if (File.Exists(rutaLogo)) picEscudoUthh.Image = Image.FromFile(rutaLogo);
             }
@@ -32,6 +34,10 @@ namespace SimuladorSAT
 
         private void AsignarEventosNavegacion()
         {
+            // Primero desvinculamos para evitar que los eventos se acumulen si se llama más de una vez
+            btnTabDeterminacion.Click -= BtnTabDeterminacion_Click;
+
+            // Asignación de eventos limpia
             btnTabDeterminacion.Click += BtnTabDeterminacion_Click;
             btnInicio.Click += (s, e) => IrAPresentarDeclaracion();
             btnCerrar.Click += (s, e) => IrAAdminDeclaracion();
@@ -53,9 +59,12 @@ namespace SimuladorSAT
             {
                 Program.formAdmin = new fmAdminDeclaracion();
             }
+
             Program.formAdmin.WindowState = FormWindowState.Maximized;
-            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, null); // Se pasa null para mantener su FormWindowState.Maximized explícito
-            if (!this.IsDisposed) this.Hide();
+
+            // CORRECCIÓN CLAVE: Pasamos 'this' en lugar de 'null'.
+            // NavegacionHelper se encarga de mostrar 'formAdmin' y ocultar 'this' sin parpadeos ni NullReferenceException.
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
         private void IrAPresentarDeclaracion()
@@ -64,9 +73,12 @@ namespace SimuladorSAT
             {
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
             }
+
             Program.formPresentar.WindowState = FormWindowState.Maximized;
-            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, null); // Se pasa null para mantener su FormWindowState.Maximized explícito
-            if (!this.IsDisposed) this.Hide();
+
+            // CORRECCIÓN CLAVE: Pasamos 'this' en lugar de 'null'.
+            // Mantiene el Maximized correctamente y oculta la ventana actual de forma segura.
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
     }
 }
