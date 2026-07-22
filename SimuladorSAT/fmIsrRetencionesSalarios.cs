@@ -21,7 +21,12 @@ namespace SimuladorSAT
 
         private void BtnCerrar_Click(object sender, EventArgs e)
         {
-            // 'Cerrar' regresa un paso atrás a fmAdminDeclaracion
+            if (Program.formAdmin == null || Program.formAdmin.IsDisposed)
+            {
+                Program.formAdmin = new fmAdminDeclaracion();
+            }
+
+            // Copiamos el WindowState manualmente antes de navegar
             Program.formAdmin.WindowState = this.WindowState;
             Program.formAdmin.Show();
             this.Hide();
@@ -29,7 +34,12 @@ namespace SimuladorSAT
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            // 'Inicio' siempre regresa a la base fija: fmPresentarDeclaracion
+            if (Program.formPresentar == null || Program.formPresentar.IsDisposed)
+            {
+                Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
+            }
+
+            // Copiamos el WindowState manualmente antes de navegar
             Program.formPresentar.WindowState = this.WindowState;
             Program.formPresentar.Show();
             this.Hide();
@@ -41,9 +51,7 @@ namespace SimuladorSAT
             {
                 Program.formPagoIsr = new fmPagoISR();
             }
-            Program.formPagoIsr.WindowState = FormWindowState.Maximized;
-            Program.formPagoIsr.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPagoIsr, this);
         }
     }
 }

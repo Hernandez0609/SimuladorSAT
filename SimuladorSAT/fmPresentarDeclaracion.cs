@@ -60,16 +60,13 @@ namespace SimuladorSAT
             if (Program.listaDeclaraciones.Count > 0)
             {
                 Program.formDeclaracionesPendientes.ActualizarLista();
-                Program.formDeclaracionesPendientes.WindowState = this.WindowState;
-                Program.formDeclaracionesPendientes.Show();
+                NavegacionHelper.MostrarSinParpadeo(Program.formDeclaracionesPendientes, this);
             }
             else
             {
                 Program.formConfiguracionDeclaracion.ReiniciarFormulario();
-                Program.formConfiguracionDeclaracion.WindowState = this.WindowState;
-                Program.formConfiguracionDeclaracion.Show();
+                NavegacionHelper.MostrarSinParpadeo(Program.formConfiguracionDeclaracion, this);
             }
-            this.Hide();
         }
 
         private void IrAAdminDeclaracion()
@@ -78,23 +75,17 @@ namespace SimuladorSAT
             {
                 Program.formAdmin = new fmAdminDeclaracion();
             }
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
         private void BtnInicio_Click(object sender, EventArgs e)
         {
-            Program.form1.WindowState = this.WindowState;
-            Program.form1.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
         }
 
         private void BtnCerrar_Click(object sender, EventArgs e)
         {
-            Program.form1.WindowState = this.WindowState;
-            Program.form1.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
         }
     }
 }

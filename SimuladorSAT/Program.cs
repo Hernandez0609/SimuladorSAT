@@ -46,27 +46,31 @@ namespace SimuladorSAT
             formPagoIsr = new fmPagoISR();
             formPagoIva = new fmPagoIVA();
             formResico = new fmResico(formAdmin);
-
-            // NUEVA
             formIsrFisicasIngresos = new fmIsrFisicasIngresos();
             formIsrFisicasDeterminacion = new fmIsrFisicasDeterminacion();
             formIsrFisicasPago = new fmIsrFisicasPago();
-
-            // NUEVA 2.0
             formConfiguracionDeclaracion = new fmConfiguracionDeclaracion();
             formDeclaracionesPendientes = new fmDeclaracionesPendientes();
 
-            // NUEVO — fuerza la creación del handle nativo de cada ventana, "calienta" el JIT
+            // Fuerza la creación del handle nativo de cada ventana, "calienta" el JIT
+            ForzarCreacionHandle(formInicio);
             ForzarCreacionHandle(form1);
             ForzarCreacionHandle(formPresentar);
             ForzarCreacionHandle(formAdmin);
-            // ... agrega uno por cada form pesado que uses en el flujo principal ...
-            // 3. Ejecutamos iniciando desde formInicio
+            ForzarCreacionHandle(formIsrSalarios);
+            ForzarCreacionHandle(formPagoIsr);
+            ForzarCreacionHandle(formPagoIva);
+            ForzarCreacionHandle(formResico);
+            ForzarCreacionHandle(formIsrFisicasIngresos);
+            ForzarCreacionHandle(formIsrFisicasDeterminacion);
+            ForzarCreacionHandle(formIsrFisicasPago);
+            ForzarCreacionHandle(formConfiguracionDeclaracion);
+            ForzarCreacionHandle(formDeclaracionesPendientes);
             Application.Run(formInicio);
         }
         private static void ForzarCreacionHandle(Form f)
         {
-            var handle = f.Handle; // esto obliga a WinForms a crear el handle nativo YA, sin esperar al primer Show()
+            var handle = f.Handle; 
         }
     }
 }

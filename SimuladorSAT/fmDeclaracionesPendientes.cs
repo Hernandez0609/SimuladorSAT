@@ -29,9 +29,7 @@ namespace SimuladorSAT
             Program.declaracionActual = d;
             d.FechaUltimaModificacion = DateTime.Now; // Se actualiza al entrar a trabajar en ella
             Program.formAdmin.AplicarModulosDeclaracionActual();
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
         public void ActualizarLista()
@@ -131,23 +129,17 @@ namespace SimuladorSAT
         private void btnNuevaDeclaracion_Click(object sender, EventArgs e)
         {
             Program.formConfiguracionDeclaracion.ReiniciarFormulario();
-            Program.formConfiguracionDeclaracion.WindowState = this.WindowState;
-            Program.formConfiguracionDeclaracion.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formConfiguracionDeclaracion, this);
         }
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
     }
 }

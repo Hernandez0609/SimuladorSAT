@@ -93,9 +93,7 @@ namespace SimuladorSAT
 
         private void btnNavPersonas_Click(object sender, EventArgs e)
         {
-            Program.form1.WindowState = this.WindowState;
-            Program.form1.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
         }
 
         private void picUserIcon_Click(object sender, EventArgs e)

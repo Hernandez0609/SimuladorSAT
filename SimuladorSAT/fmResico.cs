@@ -64,10 +64,8 @@ namespace SimuladorSAT
             }
             if (_ventanaAnterior != null)
             {
-                _ventanaAnterior.WindowState = this.WindowState;
-                _ventanaAnterior.Show();
+                NavegacionHelper.MostrarSinParpadeo((Form)_ventanaAnterior, this);
             }
-            this.Hide();
         }
 
         private void btnRegresarAdmin_Click(object sender, EventArgs e)
@@ -198,9 +196,7 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
@@ -214,9 +210,7 @@ namespace SimuladorSAT
             {
                 Program.formPagoIva = new fmPagoIVA();
             }
-            Program.formPagoIva.WindowState = FormWindowState.Maximized;
-            Program.formPagoIva.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPagoIva, this);
         }
 
         private void pnlContenedorPrincipal_Paint(object sender, PaintEventArgs e) { }

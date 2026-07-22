@@ -44,9 +44,7 @@ namespace SimuladorSAT
             {
                 Program.formIsrSalarios = new fmIsrRetencionesSalarios();
             }
-            Program.formIsrSalarios.WindowState = this.WindowState;
-            Program.formIsrSalarios.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formIsrSalarios, this);
         }
 
         private void IrAAdminDeclaracion()
@@ -56,8 +54,8 @@ namespace SimuladorSAT
                 Program.formAdmin = new fmAdminDeclaracion();
             }
             Program.formAdmin.WindowState = FormWindowState.Maximized;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, null); // Se pasa null para mantener su FormWindowState.Maximized explícito
+            if (!this.IsDisposed) this.Hide();
         }
 
         private void IrAPresentarDeclaracion()
@@ -67,8 +65,8 @@ namespace SimuladorSAT
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
             }
             Program.formPresentar.WindowState = FormWindowState.Maximized;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, null); // Se pasa null para mantener su FormWindowState.Maximized explícito
+            if (!this.IsDisposed) this.Hide();
         }
     }
 }

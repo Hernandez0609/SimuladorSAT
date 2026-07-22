@@ -230,9 +230,7 @@ namespace SimuladorSAT
                     Size = this.Size
                 };
             }
-            Program.formResico.WindowState = this.WindowState;
-            Program.formResico.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formResico, this);
         }
 
         private void btnIsrFisicas_Click(object sender, EventArgs e)
@@ -241,9 +239,7 @@ namespace SimuladorSAT
             {
                 Program.formIsrFisicasIngresos = new fmIsrFisicasIngresos();
             }
-            Program.formIsrFisicasIngresos.WindowState = this.WindowState;
-            Program.formIsrFisicasIngresos.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasIngresos, this);
         }
 
         private void btnIsrSalarios_Click(object sender, EventArgs e)
@@ -252,23 +248,17 @@ namespace SimuladorSAT
             {
                 Program.formIsrSalarios = new fmIsrRetencionesSalarios();
             }
-            Program.formIsrSalarios.WindowState = this.WindowState;
-            Program.formIsrSalarios.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formIsrSalarios, this);
         }
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
     }
 }

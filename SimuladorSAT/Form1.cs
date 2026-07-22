@@ -95,26 +95,16 @@ namespace SimuladorSAT
             {
                 Program.formPresentar = new fmPresentarDeclaracion(regimen);
             }
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void lblMenuInicio_Click(object sender, EventArgs e)
         {
-            if (Program.formInicio != null && !Program.formInicio.IsDisposed)
-            {
-                Program.formInicio.WindowState = this.WindowState;
-                Program.formInicio.Show();
-            }
-            else
+            if (Program.formInicio == null || Program.formInicio.IsDisposed)
             {
                 Program.formInicio = new fmInicio();
-                Program.formInicio.WindowState = this.WindowState;
-                Program.formInicio.Show();
             }
-
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
     }
 }

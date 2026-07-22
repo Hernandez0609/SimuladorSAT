@@ -207,10 +207,12 @@ namespace SimuladorSAT
         {
             if (Program.formResico != null && !Program.formResico.IsDisposed)
             {
-                Program.formResico.WindowState = this.WindowState;
-                Program.formResico.Show();
+                NavegacionHelper.MostrarSinParpadeo(Program.formResico, this);
             }
-            this.Hide();
+            else
+            {
+                this.Hide();
+            }
         }
 
         private void tlpCamposPago_Paint(object sender, PaintEventArgs e)
@@ -220,19 +222,19 @@ namespace SimuladorSAT
 
         private void btnNavInicio_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnNavCerrar_Click(object sender, EventArgs e)
         {
             if (Program.formResico != null && !Program.formResico.IsDisposed)
             {
-                Program.formResico.WindowState = this.WindowState;
-                Program.formResico.Show();
+                NavegacionHelper.MostrarSinParpadeo(Program.formResico, this);
             }
-            this.Hide();
+            else
+            {
+                this.Hide();
+            }
         }
     }
 }

@@ -164,17 +164,13 @@ namespace SimuladorSAT
         private void btnTabIngresos_Click(object sender, EventArgs e)
         {
             Program.formIsrFisicasIngresos.ActualizarDesdeModelo();
-            Program.formIsrFisicasIngresos.WindowState = this.WindowState;
-            Program.formIsrFisicasIngresos.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasIngresos, this);
         }
 
         private void btnTabDeterminacion_Click(object sender, EventArgs e)
         {
             Program.formIsrFisicasDeterminacion.ActualizarDesdeModelo();
-            Program.formIsrFisicasDeterminacion.WindowState = this.WindowState;
-            Program.formIsrFisicasDeterminacion.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasDeterminacion, this);
         }
 
         private void btnTabDatosAdicionales_Click(object sender, EventArgs e)
@@ -187,23 +183,17 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnAdministracion_Click(object sender, EventArgs e)
         {
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
     }
 }

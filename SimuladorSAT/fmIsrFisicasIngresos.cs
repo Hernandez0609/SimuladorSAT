@@ -245,17 +245,13 @@ namespace SimuladorSAT
                 Program.formIsrFisicasDeterminacion = new fmIsrFisicasDeterminacion();
             }
             Program.formIsrFisicasDeterminacion.ActualizarDesdeModelo(); // ← NUEVO
-            Program.formIsrFisicasDeterminacion.WindowState = this.WindowState;
-            Program.formIsrFisicasDeterminacion.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasDeterminacion, this);
         }
 
         private void btnTabPago_Click(object sender, EventArgs e)
         {
             Program.formIsrFisicasPago.ActualizarDesdeModelo();
-            Program.formIsrFisicasPago.WindowState = this.WindowState;
-            Program.formIsrFisicasPago.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasPago, this);
         }
 
         private void btnTabDatosAdicionales_Click(object sender, EventArgs e)
@@ -268,24 +264,18 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnAdministracion_Click(object sender, EventArgs e)
         {
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             // Cerrar regresa un paso atrás: Admin (no Presentar)
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
     }
 }

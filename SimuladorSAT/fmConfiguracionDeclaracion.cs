@@ -52,13 +52,19 @@ namespace SimuladorSAT
 
         private void AsignarEfectoCircular(Button btn, Func<bool> estadoSeleccionado)
         {
+            bool mouseHover = false;
+
             btn.Paint += (s, e) => {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                Color fondo = estadoSeleccionado() ? ColorAzulNavbar : ColorGrisBase;
+
+                // Se activa si está seleccionado O si el cursor está encima
+                bool activo = estadoSeleccionado() || mouseHover;
+                Color fondo = activo ? ColorAzulNavbar : ColorGrisBase;
+
                 using (Brush brush = new SolidBrush(fondo))
                     e.Graphics.FillEllipse(brush, 0, 0, btn.Width - 1, btn.Height - 1);
 
-                if (estadoSeleccionado())
+                if (activo)
                 {
                     using (Font font = new Font("Arial", 16F, FontStyle.Bold))
                     using (Brush brushText = new SolidBrush(Color.White))
@@ -68,6 +74,9 @@ namespace SimuladorSAT
                     }
                 }
             };
+
+            btn.MouseEnter += (s, e) => { mouseHover = true; btn.Invalidate(); };
+            btn.MouseLeave += (s, e) => { mouseHover = false; btn.Invalidate(); };
         }
 
         // ====================================================================
@@ -75,41 +84,84 @@ namespace SimuladorSAT
         // ====================================================================
         private void cmbEjercicio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bool hay = cmbEjercicio.SelectedIndex >= 0;
-            cmbPeriocidad.Enabled = hay;
-            if (!hay) OcultarDesde(lblPeriodo);
+            if (cmbEjercicio.SelectedIndex >= 0)
+            {
+                cmbPeriocidad.Enabled = true; // ← Desbloquea el combo de periodicidad
+
+                if (cmbPeriocidad.SelectedIndex > 0)
+                {
+                    CargarMeses();
+                }
+                else
+                {
+                    ResetearDesdePeriodo();
+                }
+            }
+            else
+            {
+                cmbPeriocidad.Enabled = false;
+                ResetearDesdePeriocidad();
+            }
         }
 
         private void cmbPeriocidad_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool hay = cmbPeriocidad.SelectedIndex > 0;
+
+            // Muestra u oculta los controles de Periodo según la selección
+            lblPeriodo.Visible = hay;
+            cmbPeriodo.Visible = hay;
+
             if (hay)
             {
                 CargarMeses();
-                lblPeriodo.Visible = true;
-                cmbPeriodo.Visible = true;
             }
             else
             {
-                OcultarDesde(lblPeriodo);
+                ResetearDesdePeriodo();
             }
+        }
+        private void ResetearDesdePeriocidad()
+        {
+            cmbPeriocidad.SelectedIndex = 0;
+            ResetearDesdePeriodo();
+        }
+
+        private void ResetearDesdePeriodo()
+        {
+            lblPeriodo.Visible = false;
+            cmbPeriodo.Visible = false;
+            cmbPeriodo.Items.Clear();
+            cmbPeriodo.Items.Add("-Seleccione-");
+            cmbPeriodo.SelectedIndex = 0;
+            ResetearDesdeTipoDeclaracion();
+        }
+
+        private void ResetearDesdeTipoDeclaracion()
+        {
+            cmbTipoDeclaracion.SelectedIndex = 0;
+            OcultarModulosYSiguiente(); // el método que ya tienes para ocultar círculos
         }
 
         private void CargarMeses()
         {
             string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+              "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+
             cmbPeriodo.Items.Clear();
             cmbPeriodo.Items.Add("-Seleccione-");
 
-            int mesActual = DateTime.Now.Month;
-            int anioSeleccionado = int.Parse(cmbEjercicio.SelectedItem.ToString());
-            int limite = (anioSeleccionado == DateTime.Now.Year) ? mesActual : 12;
+            if (cmbEjercicio.SelectedItem != null && int.TryParse(cmbEjercicio.SelectedItem.ToString(), out int anioSeleccionado))
+            {
+                int mesActual = DateTime.Now.Month;
+                int limite = (anioSeleccionado == DateTime.Now.Year) ? mesActual : 12;
 
-            for (int i = 0; i < limite; i++)
-                cmbPeriodo.Items.Add(meses[i]);
+                for (int i = 0; i < limite; i++)
+                    cmbPeriodo.Items.Add(meses[i]);
+            }
 
             cmbPeriodo.SelectedIndex = 0;
+            ResetearDesdeTipoDeclaracion(); // ← Oculta/reinicia todo lo que esté más abajo
         }
 
         private void cmbPeriodo_SelectedIndexChanged(object sender, EventArgs e)
@@ -117,7 +169,10 @@ namespace SimuladorSAT
             bool hay = cmbPeriodo.SelectedIndex > 0;
             lblTipoDeclaracion.Visible = hay;
             cmbTipoDeclaracion.Visible = hay;
-            if (!hay) OcultarDesde(lblTipoComplementaria);
+
+            // Al cambiar el mes (sea cual sea), resetear de inmediato 
+            // todo el flujo que viene después de Periodo
+            ResetearDesdeTipoDeclaracion();
         }
 
         private void cmbTipoDeclaracion_SelectedIndexChanged(object sender, EventArgs e)
@@ -274,9 +329,7 @@ namespace SimuladorSAT
             Program.declaracionActual = nueva;
 
             Program.formAdmin.AplicarModulosDeclaracionActual();
-            Program.formAdmin.WindowState = this.WindowState;
-            Program.formAdmin.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
             AplicarCentrado();
         }
         //CENTRAR
@@ -337,16 +390,12 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            Program.formPresentar.WindowState = this.WindowState;
-            Program.formPresentar.Show();
-            this.Hide();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
     }
 }

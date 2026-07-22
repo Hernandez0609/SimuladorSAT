@@ -192,6 +192,7 @@
     </Compile>
     <Compile Include="ModeloDeclaracion.cs" />
     <Compile Include="ModeloIsrPersonasFisicas.cs" />
+    <Compile Include="NavegacionHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="fmAdminDeclaracion.resx">
