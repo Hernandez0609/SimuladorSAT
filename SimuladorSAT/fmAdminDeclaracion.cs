@@ -3,10 +3,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
-
+using PdfSharp.Drawing.Layout;
 namespace SimuladorSAT
 {
-    public partial class fmAdminDeclaracion : Form
+    public partial class fmAdminDeclaracion : Form, IInfoDeclaracion
     {
         private readonly Color ColorGrisBase = Color.FromArgb(200, 200, 200);
         private readonly Color ColorAzulNavbar = Color.FromArgb(13, 78, 92);
@@ -19,22 +19,19 @@ namespace SimuladorSAT
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
-            CargarImagenesCabecera();
             ConfigurarModulosCirculares();
         }
-
-        private void CargarImagenesCabecera()
+        public void ActualizarInfoDeclaracion()
         {
-            try
-            {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string rutaEscudo = Path.Combine(baseDir, "escudo.png");
-                string rutaLogo = Path.Combine(baseDir, "logouthh.png");
+            if (Program.declaracionActual == null) return;
 
-                if (File.Exists(rutaEscudo)) picLogoIzquierdo.Image = Image.FromFile(rutaEscudo);
-                if (File.Exists(rutaLogo)) picLogoDerecho.Image = Image.FromFile(rutaLogo);
-            }
-            catch { /* Evita interrupciones en tiempo de diseño */ }
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblInfoDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
         }
 
         private void ConfigurarModulosCirculares()
@@ -259,6 +256,34 @@ namespace SimuladorSAT
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
+        }
+        private void btnEnviarDeclaracion_Click(object sender, EventArgs e)
+        {
+            if (Program.declaracionActual == null) return;
+
+            var d = Program.declaracionActual;
+            var conexion = new clsConexion();
+
+            // Marca como concluida y genera folio en BD
+            string folio = conexion.FinalizarDeclaracion(d.Id);
+            d.NumeroOperacion = folio;
+            d.Concluida = true;
+
+            var (matricula, nombre) = conexion.ObtenerDatosContribuyente(Program.contribuyenteId);
+
+            string carpetaDescargas = Path.Combine(
+                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+            Directory.CreateDirectory(carpetaDescargas);
+
+            string nombreArchivo = $"Acuse.{matricula}.{d.Ejercicio}.pdf";
+            string rutaCompleta = Path.Combine(carpetaDescargas, nombreArchivo);
+
+            clsGeneradorAcuse.GenerarPdf(d, matricula, nombre, rutaCompleta);
+
+            MessageBox.Show($"Declaración enviada correctamente.\nAcuse guardado en:\n{rutaCompleta}",
+                "Enviar declaración", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            System.Diagnostics.Process.Start(rutaCompleta); // Abre el PDF automáticamente
         }
     }
 }

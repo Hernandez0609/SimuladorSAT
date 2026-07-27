@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SimuladorSAT
 {
-    public partial class fmIsrRetencionesSalarios : Form
+    public partial class fmIsrRetencionesSalarios : Form, IInfoDeclaracion
     {
         public fmIsrRetencionesSalarios()
         {
@@ -12,7 +12,18 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
         }
+        public void ActualizarInfoDeclaracion()
+        {
+            if (Program.declaracionActual == null) return;
 
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblDatosDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
+        }
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             if (Program.formAdmin == null || Program.formAdmin.IsDisposed)

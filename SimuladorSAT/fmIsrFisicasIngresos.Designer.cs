@@ -334,6 +334,8 @@
             // 
             // tlpCamposSat
             // 
+            this.tlpCamposSat.AutoSize = true;
+            this.tlpCamposSat.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tlpCamposSat.ColumnCount = 5;
             this.tlpCamposSat.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 460F));
             this.tlpCamposSat.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 45F));
@@ -375,9 +377,7 @@
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
-            this.tlpCamposSat.Size = new System.Drawing.Size(1340, 440);
-            this.tlpCamposSat.AutoSize = true;
-            this.tlpCamposSat.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlpCamposSat.Size = new System.Drawing.Size(895, 312);
             this.tlpCamposSat.TabIndex = 1;
             // 
             // lblCopropiedad
@@ -625,7 +625,7 @@
             this.lblTotalPercibidos.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblTotalPercibidos.AutoSize = true;
             this.lblTotalPercibidos.Font = new System.Drawing.Font("Arial", 10F);
-            this.lblTotalPercibidos.Location = new System.Drawing.Point(3, 340);
+            this.lblTotalPercibidos.Location = new System.Drawing.Point(3, 276);
             this.lblTotalPercibidos.Name = "lblTotalPercibidos";
             this.lblTotalPercibidos.Size = new System.Drawing.Size(327, 19);
             this.lblTotalPercibidos.TabIndex = 17;
@@ -637,7 +637,7 @@
             this.lblSignoTotalPercibidos.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.lblSignoTotalPercibidos.Location = new System.Drawing.Point(463, 260);
             this.lblSignoTotalPercibidos.Name = "lblSignoTotalPercibidos";
-            this.lblSignoTotalPercibidos.Size = new System.Drawing.Size(39, 180);
+            this.lblSignoTotalPercibidos.Size = new System.Drawing.Size(39, 52);
             this.lblSignoTotalPercibidos.TabIndex = 18;
             this.lblSignoTotalPercibidos.Text = "(=)";
             this.lblSignoTotalPercibidos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -647,7 +647,7 @@
             this.txtTotalPercibidos.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtTotalPercibidos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txtTotalPercibidos.Font = new System.Drawing.Font("Arial", 9F);
-            this.txtTotalPercibidos.Location = new System.Drawing.Point(527, 337);
+            this.txtTotalPercibidos.Location = new System.Drawing.Point(527, 273);
             this.txtTotalPercibidos.Name = "txtTotalPercibidos";
             this.txtTotalPercibidos.ReadOnly = true;
             this.txtTotalPercibidos.Size = new System.Drawing.Size(195, 25);
@@ -658,7 +658,7 @@
             // 
             this.btnCapturarTotalPercibidos.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnCapturarTotalPercibidos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCapturarTotalPercibidos.Location = new System.Drawing.Point(751, 336);
+            this.btnCapturarTotalPercibidos.Location = new System.Drawing.Point(751, 272);
             this.btnCapturarTotalPercibidos.Name = "btnCapturarTotalPercibidos";
             this.btnCapturarTotalPercibidos.Size = new System.Drawing.Size(137, 28);
             this.btnCapturarTotalPercibidos.TabIndex = 5;

@@ -241,6 +241,7 @@
             this.btnAdministracion.TabIndex = 1;
             this.btnAdministracion.Text = "Administración de la declaración";
             this.btnAdministracion.UseVisualStyleBackColor = false;
+            this.btnAdministracion.Click += new System.EventHandler(this.btnAdministracion_Click);
             // 
             // btnGuardar
             // 
@@ -255,6 +256,7 @@
             this.btnGuardar.TabIndex = 2;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = false;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnTabDeterminacion
             // 

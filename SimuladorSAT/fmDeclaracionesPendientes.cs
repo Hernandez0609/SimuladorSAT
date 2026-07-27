@@ -16,7 +16,7 @@ namespace SimuladorSAT
 
         private void fmDeclaracionesPendientes_Load(object sender, EventArgs e)
         {
-            AplicarCentradoPendientes();
+            ActualizarLista();
         }
 
         private void pnlContenedorPrincipal_Resize(object sender, EventArgs e)
@@ -27,7 +27,11 @@ namespace SimuladorSAT
         private void SeleccionarDeclaracion(ModeloDeclaracion d)
         {
             Program.declaracionActual = d;
-            d.FechaUltimaModificacion = DateTime.Now; // Se actualiza al entrar a trabajar en ella
+            d.FechaUltimaModificacion = DateTime.Now;
+
+            var conexion = new clsConexion();
+            conexion.ActualizarFechaModificacion(d.Id);
+
             Program.formAdmin.AplicarModulosDeclaracionActual();
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
@@ -42,7 +46,12 @@ namespace SimuladorSAT
             int cardHeight = 75;
             int cardWidth = 700;
 
-            var pendientes = Program.listaDeclaraciones.FindAll(d => !d.Concluida);
+            var conexion = new clsConexion();
+            var pendientes = conexion.ObtenerDeclaracionesPendientes(Program.contribuyenteId);
+
+            // Sincroniza la lista en memoria con lo que acabamos de traer de la BD
+            Program.listaDeclaraciones.Clear();
+            Program.listaDeclaraciones.AddRange(pendientes);
 
             foreach (var d in pendientes)
             {
@@ -115,12 +124,16 @@ namespace SimuladorSAT
         {
             var btn = (Button)sender;
             var d = (ModeloDeclaracion)btn.Tag;
-
             var confirm = MessageBox.Show("¿Deseas eliminar esta declaración?", "Confirmar",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirm == DialogResult.Yes)
             {
+                var conexion = new clsConexion();
+                conexion.EliminarDeclaracion(d.Id);
+
+
+
                 Program.listaDeclaraciones.Remove(d);
                 ActualizarLista();
             }

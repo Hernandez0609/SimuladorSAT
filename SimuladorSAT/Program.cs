@@ -28,6 +28,8 @@ namespace SimuladorSAT
         public static ModeloDeclaracion declaracionActual;
         public static fmConfiguracionDeclaracion formConfiguracionDeclaracion;
         public static fmDeclaracionesPendientes formDeclaracionesPendientes;
+        //En lo que creo el login//
+        public static int contribuyenteId = 1; // id de prueba, hasta que exista el login
 
         [STAThread]
         static void Main()

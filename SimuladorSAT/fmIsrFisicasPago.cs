@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SimuladorSAT
 {
-    public partial class fmIsrFisicasPago : Form
+    public partial class fmIsrFisicasPago : Form, IInfoDeclaracion
     {
         public fmIsrFisicasPago()
         {
@@ -13,6 +13,18 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
             CargarValoresDesdeModelo();
+        }
+        public void ActualizarInfoDeclaracion()
+        {
+            if (Program.declaracionActual == null) return;
+
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblDatosDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
         }
         private Form _overlayForm;
 
@@ -181,11 +193,6 @@ namespace SimuladorSAT
         // ====================================================================
         // Navegación general
         // ====================================================================
-        private void btnAdministracion_Click(object sender, EventArgs e)
-        {
-            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
-        }
-
         private void btnInicio_Click(object sender, EventArgs e)
         {
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
@@ -194,6 +201,28 @@ namespace SimuladorSAT
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+        }
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            GuardarYMarcarCompletado();
+        }
+
+        private void btnAdministracion_Click(object sender, EventArgs e)
+        {
+            GuardarYMarcarCompletado();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+        }
+
+        private void GuardarYMarcarCompletado()
+        {
+            if (Program.declaracionActual == null) return;
+
+            var conexion = new clsConexion();
+            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_fisicas_completado");
+            Program.declaracionActual.ModuloIsrFisicasCompletado = true;
+
+            Program.formAdmin.AplicarModulosDeclaracionActual();
+            MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

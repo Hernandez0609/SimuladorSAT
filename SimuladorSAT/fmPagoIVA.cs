@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SimuladorSAT
 {
-    public partial class fmPagoIVA : Form
+    public partial class fmPagoIVA : Form, IInfoDeclaracion
     {
         private double impuestoACargoInicial = 195.0;
         private double montoCompensaciones = 0.0;
@@ -32,7 +32,18 @@ namespace SimuladorSAT
             cmbCompensaciones.SelectedIndex = 0;
             cmbEstimulos.SelectedIndex = 0;
         }
+        public void ActualizarInfoDeclaracion()
+        {
+            if (Program.declaracionActual == null) return;
 
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblDatosDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
+        }
         private void fmPagoIVA_Load(object sender, EventArgs e)
         {
             esCargaInicial = false;
@@ -235,6 +246,28 @@ namespace SimuladorSAT
             {
                 this.Hide();
             }
+        }
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            GuardarYMarcarCompletado();
+        }
+
+        private void btnAdminDeclaracion_Click(object sender, EventArgs e)
+        {
+            GuardarYMarcarCompletado();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+        }
+
+        private void GuardarYMarcarCompletado()
+        {
+            if (Program.declaracionActual == null) return;
+
+            var conexion = new clsConexion();
+            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_iva_completado");
+            Program.declaracionActual.ModuloIvaSimplificadoCompletado = true;
+
+            Program.formAdmin.AplicarModulosDeclaracionActual();
+            MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

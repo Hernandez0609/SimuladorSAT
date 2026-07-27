@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SimuladorSAT
 {
-    public partial class fmIsrFisicasDeterminacion : Form
+    public partial class fmIsrFisicasDeterminacion : Form, IInfoDeclaracion
     {
         public fmIsrFisicasDeterminacion()
         {
@@ -12,6 +12,18 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
             CargarValoresDesdeModelo();
+        }
+        public void ActualizarInfoDeclaracion()
+        {
+            if (Program.declaracionActual == null) return;
+
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblDatosDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
         }
         public void ActualizarDesdeModelo()
         {

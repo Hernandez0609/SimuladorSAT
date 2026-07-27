@@ -57,8 +57,14 @@ namespace SimuladorSAT
 
         private void IrAFlujoDeclaracion()
         {
-            if (Program.listaDeclaraciones.Count > 0)
+            var conexion = new clsConexion();
+            var pendientes = conexion.ObtenerDeclaracionesPendientes(Program.contribuyenteId);
+
+            if (pendientes.Count > 0)
             {
+                Program.listaDeclaraciones.Clear();
+                Program.listaDeclaraciones.AddRange(pendientes);
+
                 Program.formDeclaracionesPendientes.ActualizarLista();
                 NavegacionHelper.MostrarSinParpadeo(Program.formDeclaracionesPendientes, this);
             }

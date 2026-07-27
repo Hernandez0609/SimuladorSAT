@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SimuladorSAT
@@ -14,6 +15,9 @@ namespace SimuladorSAT
         private bool _isrSalariosSel = false;
         private bool _ivaSel = false;
 
+        private bool _completadoIsrFisicas = false;
+        private bool _completadoIsrSalarios = false;
+        private bool _completadoIva = false;
         public fmConfiguracionDeclaracion()
         {
             InitializeComponent();
@@ -140,7 +144,8 @@ namespace SimuladorSAT
         private void ResetearDesdeTipoDeclaracion()
         {
             cmbTipoDeclaracion.SelectedIndex = 0;
-            OcultarModulosYSiguiente(); // el método que ya tienes para ocultar círculos
+            _completadoIsrFisicas = _completadoIsrSalarios = _completadoIva = false;
+            OcultarModulosYSiguiente();
         }
 
         private void CargarMeses()
@@ -170,9 +175,39 @@ namespace SimuladorSAT
             lblTipoDeclaracion.Visible = hay;
             cmbTipoDeclaracion.Visible = hay;
 
-            // Al cambiar el mes (sea cual sea), resetear de inmediato 
-            // todo el flujo que viene después de Periodo
             ResetearDesdeTipoDeclaracion();
+
+            if (hay)
+            {
+                ActualizarOpcionesTipoDeclaracion();
+            }
+        }
+
+        private void ActualizarOpcionesTipoDeclaracion()
+        {
+            int ejercicio = int.Parse(cmbEjercicio.SelectedItem.ToString());
+            string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+            int periodoId = Array.IndexOf(meses, cmbPeriodo.SelectedItem.ToString()) + 1;
+
+            var conexion = new clsConexion();
+            int tipoNormalId = conexion.ObtenerIdCatalogo("cat_tipos_declaracion", "descripcion", "Normal");
+
+            conexion.ObtenerModulosCompletados(ejercicio, periodoId, tipoNormalId, Program.contribuyenteId,
+                out _completadoIsrFisicas, out _completadoIsrSalarios, out _completadoIva);
+
+            bool hayAlgoQueEditar = _completadoIsrFisicas || _completadoIsrSalarios || _completadoIva;
+
+            cmbTipoDeclaracion.Items.Clear();
+            cmbTipoDeclaracion.Items.Add("-Seleccione-");
+            cmbTipoDeclaracion.Items.Add("Normal");
+
+            if (hayAlgoQueEditar)
+            {
+                cmbTipoDeclaracion.Items.Add("Complementaria");
+            }
+
+            cmbTipoDeclaracion.SelectedIndex = 0;
         }
 
         private void cmbTipoDeclaracion_SelectedIndexChanged(object sender, EventArgs e)
@@ -226,23 +261,23 @@ namespace SimuladorSAT
 
         private void MostrarCirculosParaComplementaria()
         {
-            // Solo 2 módulos, ya seleccionados y no clickeables
-            btnCircIsrFisicas.Visible = true;
-            lblCircIsrFisicas.Visible = true;
-            btnCircIva.Visible = true;
-            lblCircIva.Visible = true;
-            btnCircIsrSalarios.Visible = false;
-            lblCircIsrSalarios.Visible = false;
+            btnCircIsrFisicas.Visible = _completadoIsrFisicas;
+            lblCircIsrFisicas.Visible = _completadoIsrFisicas;
+            btnCircIsrSalarios.Visible = _completadoIsrSalarios;
+            lblCircIsrSalarios.Visible = _completadoIsrSalarios;
+            btnCircIva.Visible = _completadoIva;
+            lblCircIva.Visible = _completadoIva;
 
             btnCircIsrFisicas.Enabled = false;
+            btnCircIsrSalarios.Enabled = false;
             btnCircIva.Enabled = false;
 
-            _isrFisicasSel = true;
-            _isrSalariosSel = false;
-            _ivaSel = true;
-            Invalidate(true);
+            _isrFisicasSel = _completadoIsrFisicas;
+            _isrSalariosSel = _completadoIsrSalarios;
+            _ivaSel = _completadoIva;
 
-            btnSiguiente.Visible = true;
+            Invalidate(true);
+            btnSiguiente.Visible = _isrFisicasSel || _isrSalariosSel || _ivaSel;
         }
 
         // ====================================================================
@@ -310,24 +345,113 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnSiguiente_Click(object sender, EventArgs e)
         {
-            var nueva = new ModeloDeclaracion
+            var conexion = new clsConexion();
+
+            int ejercicio = int.Parse(cmbEjercicio.SelectedItem.ToString());
+            string periocidadTexto = cmbPeriocidad.SelectedItem.ToString();
+            string periodoTexto = cmbPeriodo.SelectedItem.ToString();
+            string tipoDeclaracionTexto = cmbTipoDeclaracion.SelectedItem.ToString();
+
+            int periodicidadId = conexion.ObtenerIdCatalogo("cat_tipos_periodicidad", "descripcion", periocidadTexto);
+            int tipoDeclaracionId = conexion.ObtenerIdCatalogo("cat_tipos_declaracion", "descripcion", tipoDeclaracionTexto);
+
+            string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+            int periodoId = Array.IndexOf(meses, periodoTexto) + 1;
+
+            int declaracionExistenteId;
+            bool existe = conexion.ExisteDeclaracionPendiente(ejercicio, periodoId, tipoDeclaracionId, Program.contribuyenteId, out declaracionExistenteId);
+
+            ModeloDeclaracion nueva = null;
+
+            if (existe)
             {
-                Ejercicio = int.Parse(cmbEjercicio.SelectedItem.ToString()),
-                Periocidad = cmbPeriocidad.SelectedItem.ToString(),
-                Periodo = cmbPeriodo.SelectedItem.ToString(),
-                TipoDeclaracion = cmbTipoDeclaracion.SelectedItem.ToString(),
-                TipoComplementaria = cmbTipoComplementaria.Visible ? cmbTipoComplementaria.SelectedItem?.ToString() : "",
-                ModuloIsrFisicasSeleccionado = _isrFisicasSel,
-                ModuloIsrSalariosSeleccionado = _isrSalariosSel,
-                ModuloIvaSimplificadoSeleccionado = _ivaSel,
-                FechaCreacion = DateTime.Now,
-                FechaUltimaModificacion = DateTime.Now,
-                Concluida = false
-            };
+                using (Form cortinaOscura = new Form())
+                {
+                    cortinaOscura.StartPosition = FormStartPosition.Manual;
+                    cortinaOscura.FormBorderStyle = FormBorderStyle.None;
+                    cortinaOscura.Opacity = 0.50d;
+                    cortinaOscura.BackColor = System.Drawing.Color.Black;
+                    cortinaOscura.Bounds = this.Bounds;
+                    cortinaOscura.ShowInTaskbar = false;
+                    cortinaOscura.Show(this);
 
-            Program.listaDeclaraciones.Add(nueva);
+                    using (fmConfirmarReemplazo dialogoConfirmar = new fmConfirmarReemplazo())
+                    {
+                        dialogoConfirmar.ShowDialog(cortinaOscura);
+
+                        if (dialogoConfirmar.SeEligioReemplazar)
+                        {
+                            conexion.EliminarDeclaracion(declaracionExistenteId);
+
+                            // Quita de la lista en memoria la que acabamos de borrar de la BD
+                            Program.listaDeclaraciones.RemoveAll(d => d.Id == declaracionExistenteId);
+
+                            int nuevoId = conexion.InsertarDeclaracion(
+                                Program.contribuyenteId, ejercicio, periodicidadId, periodoId, tipoDeclaracionId,
+                                _isrFisicasSel, _isrSalariosSel, _ivaSel);
+
+                            nueva = new ModeloDeclaracion
+                            {
+                                Id = nuevoId,
+                                Ejercicio = ejercicio,
+                                Periocidad = periocidadTexto,
+                                Periodo = periodoTexto,
+                                TipoDeclaracion = tipoDeclaracionTexto,
+                                TipoComplementaria = cmbTipoComplementaria.Visible ? cmbTipoComplementaria.SelectedItem?.ToString() : "",
+                                ModuloIsrFisicasSeleccionado = _isrFisicasSel,
+                                ModuloIsrSalariosSeleccionado = _isrSalariosSel,
+                                ModuloIvaSimplificadoSeleccionado = _ivaSel,
+                                FechaCreacion = DateTime.Now,
+                                FechaUltimaModificacion = DateTime.Now,
+                                Concluida = false
+                            };
+
+                            Program.listaDeclaraciones.Add(nueva);
+                        }
+                        else
+                        {
+                            // Continuar: busca si ya está en memoria (evita duplicar);
+                            // si no está (ej. la app se reinició), la carga de la BD una sola vez
+                            nueva = Program.listaDeclaraciones.FirstOrDefault(d => d.Id == declaracionExistenteId);
+
+                            if (nueva == null)
+                            {
+                                nueva = conexion.ObtenerDeclaracionPorId(declaracionExistenteId);
+                                nueva.Id = declaracionExistenteId;
+                                Program.listaDeclaraciones.Add(nueva);
+                            }
+                        }
+                    }
+
+                    cortinaOscura.Close();
+                }
+            }
+            else
+            {
+                int nuevoId = conexion.InsertarDeclaracion(
+                    Program.contribuyenteId, ejercicio, periodicidadId, periodoId, tipoDeclaracionId,
+                    _isrFisicasSel, _isrSalariosSel, _ivaSel);
+
+                nueva = new ModeloDeclaracion
+                {
+                    Id = nuevoId,
+                    Ejercicio = ejercicio,
+                    Periocidad = periocidadTexto,
+                    Periodo = periodoTexto,
+                    TipoDeclaracion = tipoDeclaracionTexto,
+                    TipoComplementaria = cmbTipoComplementaria.Visible ? cmbTipoComplementaria.SelectedItem?.ToString() : "",
+                    ModuloIsrFisicasSeleccionado = _isrFisicasSel,
+                    ModuloIsrSalariosSeleccionado = _isrSalariosSel,
+                    ModuloIvaSimplificadoSeleccionado = _ivaSel,
+                    FechaCreacion = DateTime.Now,
+                    FechaUltimaModificacion = DateTime.Now,
+                    Concluida = false
+                };
+
+                Program.listaDeclaraciones.Add(nueva);
+            }
             Program.declaracionActual = nueva;
-
             Program.formAdmin.AplicarModulosDeclaracionActual();
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
             AplicarCentrado();

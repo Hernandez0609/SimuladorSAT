@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace SimuladorSAT
 {
-    public partial class fmPagoISR : Form
+    public partial class fmPagoISR : Form, IInfoDeclaracion
     {
         public fmPagoISR()
         {
@@ -16,7 +16,18 @@ namespace SimuladorSAT
             CargarImagenesCabecera();
             AsignarEventosNavegacion();
         }
+        public void ActualizarInfoDeclaracion()
+        {
+            if (Program.declaracionActual == null) return;
 
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblDatosDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
+        }
         private void CargarImagenesCabecera()
         {
             try
@@ -24,10 +35,8 @@ namespace SimuladorSAT
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 string rutaEscudo = Path.Combine(baseDir, "escudo.png");
                 string rutaLogo = Path.Combine(baseDir, "logouthh.png");
-
-                // Mantenemos la carga exacta de imágenes
-                if (File.Exists(rutaEscudo)) picLogoUthh.Image = Image.FromFile(rutaEscudo);
-                if (File.Exists(rutaLogo)) picEscudoUthh.Image = Image.FromFile(rutaLogo);
+                if (File.Exists(rutaLogo)) picLogoUthh.Image = Image.FromFile(rutaLogo);
+                if (File.Exists(rutaEscudo)) picEscudoUthh.Image = Image.FromFile(rutaEscudo);
             }
             catch { /* Evita interrupciones en tiempo de diseño */ }
         }
@@ -79,6 +88,27 @@ namespace SimuladorSAT
             // CORRECCIÓN CLAVE: Pasamos 'this' en lugar de 'null'.
             // Mantiene el Maximized correctamente y oculta la ventana actual de forma segura.
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
+        }
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            GuardarYMarcarCompletado();
+        }
+
+        private void btnAdministracion_Click(object sender, EventArgs e)
+        {
+            GuardarYMarcarCompletado();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+        }
+
+        private void GuardarYMarcarCompletado()
+        {
+            if (Program.declaracionActual == null) return;
+
+            var conexion = new clsConexion();
+            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_salarios_completado");
+            Program.declaracionActual.ModuloIsrSalariosCompletado = true;
+            Program.formAdmin.AplicarModulosDeclaracionActual();
+            MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

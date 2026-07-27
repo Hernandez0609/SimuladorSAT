@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SimuladorSAT
 {
-    public partial class fmIsrFisicasIngresos : Form
+    public partial class fmIsrFisicasIngresos : Form, IInfoDeclaracion
     {
         public fmIsrFisicasIngresos()
         {
@@ -14,6 +14,18 @@ namespace SimuladorSAT
                           ControlStyles.UserPaint, true);
 
             CargarValoresDesdeModelo();
+        }
+        public void ActualizarInfoDeclaracion()
+        {
+            if (Program.declaracionActual == null) return;
+
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblDatosDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
         }
         private Form _overlayForm;
         public void ActualizarDesdeModelo()

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SimuladorSAT
 {
-    public partial class fmResico : Form
+    public partial class fmResico : Form, IInfoDeclaracion
     {
         private Form _ventanaAnterior;
         private Form _overlayForm;
@@ -28,7 +28,18 @@ namespace SimuladorSAT
                   ControlStyles.UserPaint, true);
             _ventanaAnterior = ventanaAnterior;
         }
+        public void ActualizarInfoDeclaracion()
+        {
+            if (Program.declaracionActual == null) return;
 
+            var d = Program.declaracionActual;
+            DateTime vencimiento = d.CalcularVencimiento();
+
+            lblDatosDerecha.Text =
+                $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
+                $"Declaración: {d.TipoDeclaracion}\r\n" +
+                $"Vencimiento: {vencimiento:dd/MM/yy}";
+        }
         // ====================================================================
         // GESTIÓN ELÁSTICA DEL OVERLAY OSCURO (Efecto Figma Lightbox)
         // ====================================================================

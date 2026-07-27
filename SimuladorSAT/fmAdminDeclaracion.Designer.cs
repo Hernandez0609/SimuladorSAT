@@ -400,6 +400,7 @@
             this.btnEnviarDeclaracion.TabIndex = 0;
             this.btnEnviarDeclaracion.Text = "ENVIAR DECLARACIÓN";
             this.btnEnviarDeclaracion.UseVisualStyleBackColor = false;
+            this.btnEnviarDeclaracion.Click += new System.EventHandler(this.btnEnviarDeclaracion_Click);
             // 
             // fmAdminDeclaracion
             // 
