@@ -44,7 +44,7 @@ namespace SimuladorSAT
         private void AsignarEfectoHover(Label lbl)
         {
             Font fontNormal = lbl.Font;
-            Font fontHover = new Font(lbl.Font, FontStyle.Bold | FontStyle.Underline);
+            Font fontHover = new Font(lbl.Font, FontStyle.Bold);
 
             lbl.MouseEnter += (s, e) => {
                 lbl.Font = fontHover;

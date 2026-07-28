@@ -57,6 +57,9 @@
             this.lblRemanAct = new System.Windows.Forms.Label();
             this.txtRemanAct = new System.Windows.Forms.TextBox();
 
+            this.pnlCuerpo = new System.Windows.Forms.Panel();
+            this.pnlFooter = new System.Windows.Forms.Panel();
+
             this.pnlHeader.SuspendLayout();
             this.pnlFormularioCaptura.SuspendLayout();
             this.SuspendLayout();
@@ -109,7 +112,7 @@
             this.btnAgregar.Location = new System.Drawing.Point(1110, 590);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(120, 36);
-            this.btnAgregar.Text = "Agregar";
+            this.btnAgregar.Text = "AGREGAR";
             this.btnAgregar.UseVisualStyleBackColor = false;
 
             this.btnTerminar.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -123,7 +126,7 @@
             // ====================================================================
             // pnlFormularioCaptura — nace oculto
             // ====================================================================
-            this.pnlFormularioCaptura.Location = new System.Drawing.Point(50, 90);
+            this.pnlFormularioCaptura.Location = new System.Drawing.Point(50, 20);
             this.pnlFormularioCaptura.Name = "pnlFormularioCaptura";
             this.pnlFormularioCaptura.Size = new System.Drawing.Size(1300, 460);
             this.pnlFormularioCaptura.TabIndex = 2;
@@ -359,24 +362,44 @@
             this.txtRemanAct.Size = new System.Drawing.Size(320, 28);
             this.txtRemanAct.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 
-            // ====================================================================
-            // Form — nace DIRECTAMENTE a su tamaño final (igual que Compensaciones),
-            // sin footer aparte, sin resize posterior
-            // ====================================================================
+            // 
+            // pnlCuerpo
+            // 
+            this.pnlCuerpo.AutoScroll = true;
+            this.pnlCuerpo.BackColor = System.Drawing.Color.White;
+            this.pnlCuerpo.Controls.Add(this.pnlFormularioCaptura);
+            this.pnlCuerpo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCuerpo.Location = new System.Drawing.Point(0, 70);
+            this.pnlCuerpo.Name = "pnlCuerpo";
+            this.pnlCuerpo.TabIndex = 1;
+            // 
+            // pnlFooter
+            // 
+            this.pnlFooter.BackColor = System.Drawing.Color.White;
+            this.pnlFooter.Controls.Add(this.btnCancelar);
+            this.pnlFooter.Controls.Add(this.btnAgregar);
+            this.pnlFooter.Controls.Add(this.btnTerminar);
+            this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlFooter.Location = new System.Drawing.Point(0, 570);
+            this.pnlFooter.Name = "pnlFooter";
+            this.pnlFooter.Size = new System.Drawing.Size(1400, 80);
+            this.pnlFooter.TabIndex = 3;
+
+            this.btnCancelar.Location = new System.Drawing.Point(970, 22);
+            this.btnAgregar.Location = new System.Drawing.Point(1110, 22);
+            this.btnTerminar.Location = new System.Drawing.Point(1250, 22);
+
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1400, 650); // valor de referencia para los Anchor
-            this.Controls.Add(this.btnTerminar);
-            this.Controls.Add(this.btnAgregar);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.pnlFormularioCaptura);
+            this.ClientSize = new System.Drawing.Size(1400, 650);
+            this.Controls.Add(this.pnlCuerpo);
+            this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "fmCapturaDetalleGenerico";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Compensaciones";
-
             this.pnlHeader.ResumeLayout(false);
             this.pnlHeader.PerformLayout();
             this.pnlFormularioCaptura.ResumeLayout(false);
@@ -422,5 +445,7 @@
         private System.Windows.Forms.TextBox txtFechaDecl;
         private System.Windows.Forms.Label lblRemanAct;
         private System.Windows.Forms.TextBox txtRemanAct;
+        private System.Windows.Forms.Panel pnlCuerpo;
+        private System.Windows.Forms.Panel pnlFooter;
     }
 }

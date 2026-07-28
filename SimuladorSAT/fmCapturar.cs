@@ -12,6 +12,7 @@ namespace SimuladorSAT
         public fmCapturar(string modoPantalla)
         {
             InitializeComponent();
+            this.ShowInTaskbar = false;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);

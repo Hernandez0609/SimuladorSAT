@@ -8,7 +8,7 @@ namespace SimuladorSAT
         public fmDetalle(string titulo, string mesActual)
         {
             InitializeComponent();
-
+            this.ShowInTaskbar = false;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                   ControlStyles.AllPaintingInWmPaint |
                   ControlStyles.UserPaint, true);
