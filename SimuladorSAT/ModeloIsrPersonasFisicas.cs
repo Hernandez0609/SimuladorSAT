@@ -12,6 +12,17 @@ namespace SimuladorSAT
         public decimal IngresosADisminuir { get; set; }
         public bool TieneIngresosAdicionales { get; set; } = false;
         public decimal IngresosAdicionales { get; set; }
+        // Banderas de captura — indican si el usuario ya abrió y confirmó el diálogo correspondiente
+        public bool DescuentosCapturado { get; set; } = false;
+        public bool IngresosADisminuirCapturado { get; set; } = false;
+        public bool IngresosAdicionalesCapturado { get; set; } = false;
+
+        // Bandera de sección completa — se activa cuando terminemos de programar Determinación
+        public bool DeterminacionCompleta { get; set; } = false;
+        public bool TotalPercibidosCapturado { get; set; } = false;
+        public bool IsrRetenidoCapturado { get; set; } = false;
+        public bool CompensacionesCapturado { get; set; } = false;
+        public bool EstimulosCapturado { get; set; } = false;
         public decimal TotalIngresosPercibidos { get; set; }
 
         // NUEVO — Apartado: Determinación

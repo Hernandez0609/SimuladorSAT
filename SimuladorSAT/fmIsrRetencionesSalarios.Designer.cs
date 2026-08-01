@@ -228,6 +228,7 @@
             this.btnAdministracion.TabIndex = 1;
             this.btnAdministracion.Text = "Administración de la declaración";
             this.btnAdministracion.UseVisualStyleBackColor = false;
+            this.btnAdministracion.Click += new System.EventHandler(this.btnAdministracion_Click);
             // 
             // btnGuardar
             // 
@@ -242,6 +243,7 @@
             this.btnGuardar.TabIndex = 2;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = false;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnTabDeterminacion
             // 
@@ -251,7 +253,7 @@
             this.btnTabDeterminacion.ForeColor = System.Drawing.Color.White;
             this.btnTabDeterminacion.Location = new System.Drawing.Point(46, 80);
             this.btnTabDeterminacion.Name = "btnTabDeterminacion";
-            this.btnTabDeterminacion.Size = new System.Drawing.Size(170, 34);
+            this.btnTabDeterminacion.Size = new System.Drawing.Size(210, 34);
             this.btnTabDeterminacion.TabIndex = 3;
             this.btnTabDeterminacion.Text = "Determinación";
             this.btnTabDeterminacion.UseVisualStyleBackColor = false;
@@ -262,7 +264,7 @@
             this.btnTabPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabPago.Font = new System.Drawing.Font("Arial", 10F);
             this.btnTabPago.ForeColor = System.Drawing.Color.Silver;
-            this.btnTabPago.Location = new System.Drawing.Point(216, 80);
+            this.btnTabPago.Location = new System.Drawing.Point(255, 80);
             this.btnTabPago.Name = "btnTabPago";
             this.btnTabPago.Size = new System.Drawing.Size(110, 34);
             this.btnTabPago.TabIndex = 4;

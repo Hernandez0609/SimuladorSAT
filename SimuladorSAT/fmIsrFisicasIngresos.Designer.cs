@@ -272,9 +272,9 @@
             this.btnTabDeterminacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabDeterminacion.Font = new System.Drawing.Font("Arial", 10F);
             this.btnTabDeterminacion.ForeColor = System.Drawing.Color.Silver;
-            this.btnTabDeterminacion.Location = new System.Drawing.Point(186, 80);
+            this.btnTabDeterminacion.Location = new System.Drawing.Point(185, 80);
             this.btnTabDeterminacion.Name = "btnTabDeterminacion";
-            this.btnTabDeterminacion.Size = new System.Drawing.Size(170, 34);
+            this.btnTabDeterminacion.Size = new System.Drawing.Size(210, 34);
             this.btnTabDeterminacion.TabIndex = 4;
             this.btnTabDeterminacion.Text = "Determinación";
             this.btnTabDeterminacion.UseVisualStyleBackColor = false;
@@ -286,7 +286,7 @@
             this.btnTabPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabPago.Font = new System.Drawing.Font("Arial", 10F);
             this.btnTabPago.ForeColor = System.Drawing.Color.Silver;
-            this.btnTabPago.Location = new System.Drawing.Point(356, 80);
+            this.btnTabPago.Location = new System.Drawing.Point(395, 80);
             this.btnTabPago.Name = "btnTabPago";
             this.btnTabPago.Size = new System.Drawing.Size(110, 34);
             this.btnTabPago.TabIndex = 5;
@@ -300,7 +300,7 @@
             this.btnTabDatosAdicionales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabDatosAdicionales.Font = new System.Drawing.Font("Arial", 10F);
             this.btnTabDatosAdicionales.ForeColor = System.Drawing.Color.Silver;
-            this.btnTabDatosAdicionales.Location = new System.Drawing.Point(465, 80);
+            this.btnTabDatosAdicionales.Location = new System.Drawing.Point(504, 80);
             this.btnTabDatosAdicionales.Name = "btnTabDatosAdicionales";
             this.btnTabDatosAdicionales.Size = new System.Drawing.Size(190, 34);
             this.btnTabDatosAdicionales.TabIndex = 6;

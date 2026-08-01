@@ -6,21 +6,29 @@ namespace SimuladorSAT
 {
     public partial class fmDetalleIsrRetenido : Form
     {
+        public decimal MontoCapturado { get; private set; } = 0;
+
         public fmDetalleIsrRetenido()
         {
             InitializeComponent();
             this.ShowInTaskbar = false;
             this.DoubleBuffered = true;
+
+            txtCampo1.Text = "0";
+            txtCampo2.Text = "0";
+            txtCampo3.Text = "0";
+            txtCampo2.TextChanged += (s, e) => RecalcularTotal();
+            txtCampo3.TextChanged += (s, e) => RecalcularTotal();
         }
 
         private void fmDetalleIsrRetenido_Load(object sender, EventArgs e)
         {
             InicializarEsqueletoTablas();
+            RecalcularTotal();
         }
 
         private void InicializarEsqueletoTablas()
         {
-            // --- TABLA 1 ---
             dgvTabla1.Rows.Clear();
             int fila1Index = dgvTabla1.Rows.Add();
             DataGridViewRow fila1 = dgvTabla1.Rows[fila1Index];
@@ -34,7 +42,6 @@ namespace SimuladorSAT
                 fila1.Cells[i].Value = "";
             }
 
-            // --- TABLA 2 ---
             dgvTabla2.Rows.Clear();
             int fila2Index = dgvTabla2.Rows.Add();
             DataGridViewRow fila2 = dgvTabla2.Rows[fila2Index];
@@ -47,12 +54,24 @@ namespace SimuladorSAT
             {
                 fila2.Cells[i].Value = "";
             }
+        }
 
-            // --- CAMPOS DE TEXTO INFERIORES ---
-            txtCampo1.Text = "";
-            txtCampo2.Text = "";
-            txtCampo3.Text = "";
-            txtCampo4.Text = "";
+        private decimal ParsearMonto(string texto)
+        {
+            string limpio = texto.Replace("$", "").Replace(",", "").Trim();
+            return decimal.TryParse(limpio, out decimal valor) ? valor : 0;
+        }
+
+        private void RecalcularTotal()
+        {
+            decimal campo1 = ParsearMonto(txtCampo1.Text);
+            decimal campo2 = ParsearMonto(txtCampo2.Text);
+            decimal campo3 = ParsearMonto(txtCampo3.Text);
+
+            decimal total = campo1 + campo2 - campo3;
+            if (total < 0) total = 0;
+
+            txtCampo4.Text = total.ToString("N0");
         }
 
         private void btnIconoCerrar_Click(object sender, EventArgs e)
@@ -63,6 +82,8 @@ namespace SimuladorSAT
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
+            RecalcularTotal();
+            MontoCapturado = ParsearMonto(txtCampo4.Text);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

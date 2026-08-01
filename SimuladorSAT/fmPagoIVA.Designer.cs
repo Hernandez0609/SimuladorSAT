@@ -274,7 +274,7 @@
             this.btnTabDeterminacion.ForeColor = System.Drawing.Color.Silver;
             this.btnTabDeterminacion.Location = new System.Drawing.Point(46, 80);
             this.btnTabDeterminacion.Name = "btnTabDeterminacion";
-            this.btnTabDeterminacion.Size = new System.Drawing.Size(170, 34);
+            this.btnTabDeterminacion.Size = new System.Drawing.Size(210, 34);
             this.btnTabDeterminacion.TabIndex = 3;
             this.btnTabDeterminacion.Text = "Determinación";
             this.btnTabDeterminacion.UseVisualStyleBackColor = false;
@@ -286,7 +286,7 @@
             this.btnTabPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabPago.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.btnTabPago.ForeColor = System.Drawing.Color.White;
-            this.btnTabPago.Location = new System.Drawing.Point(210, 80);
+            this.btnTabPago.Location = new System.Drawing.Point(255, 80);
             this.btnTabPago.Name = "btnTabPago";
             this.btnTabPago.Size = new System.Drawing.Size(110, 34);
             this.btnTabPago.TabIndex = 4;
@@ -717,7 +717,7 @@
             this.lblCantAPagar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.lblCantAPagar.Location = new System.Drawing.Point(3, 280);
             this.lblCantAPagar.Name = "lblCantAPagar";
-            this.lblCantAPagar.Size = new System.Drawing.Size(575, 170);
+            this.lblCantAPagar.Size = new System.Drawing.Size(575, 38);
             this.lblCantAPagar.TabIndex = 28;
             this.lblCantAPagar.Text = "Cantidad a pagar";
             this.lblCantAPagar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -727,12 +727,32 @@
             this.txtCantAPagar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtCantAPagar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txtCantAPagar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.txtCantAPagar.Location = new System.Drawing.Point(637, 351);
+            this.txtCantAPagar.Location = new System.Drawing.Point(637, 285);
             this.txtCantAPagar.Name = "txtCantAPagar";
             this.txtCantAPagar.ReadOnly = true;
             this.txtCantAPagar.Size = new System.Drawing.Size(195, 27);
             this.txtCantAPagar.TabIndex = 29;
             this.txtCantAPagar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            //
+            this.lblAFavor = new System.Windows.Forms.Label();
+            this.txtAFavor = new System.Windows.Forms.TextBox();
+
+            this.lblAFavor.AutoSize = true;
+            this.lblAFavor.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.lblAFavor.Location = new System.Drawing.Point(20, 60);
+            this.lblAFavor.Text = "A favor";
+
+            this.txtAFavor.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.txtAFavor.Font = new System.Drawing.Font("Arial", 10F);
+            this.txtAFavor.Location = new System.Drawing.Point(637, 57);
+            this.txtAFavor.ReadOnly = true;
+            this.txtAFavor.Size = new System.Drawing.Size(195, 25);
+            this.txtAFavor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtAFavor.Visible = false;
+            this.lblAFavor.Visible = false;
+
+            this.pnlContenedorTabla.Controls.Add(this.lblAFavor);
+            this.pnlContenedorTabla.Controls.Add(this.txtAFavor);
             // 
             // fmPagoIVA
             // 
@@ -816,5 +836,7 @@
         private System.Windows.Forms.TextBox txtCantACargo;
         private System.Windows.Forms.Label lblCantAPagar;
         private System.Windows.Forms.TextBox txtCantAPagar;
+        private System.Windows.Forms.Label lblAFavor;
+        private System.Windows.Forms.TextBox txtAFavor;
     }
 }

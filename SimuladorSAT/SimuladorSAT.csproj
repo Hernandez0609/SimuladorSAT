@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="clsConexion.cs" />
     <Compile Include="clsGeneradorAcuse.cs" />
+    <Compile Include="EstadoPestanasHelper.cs" />
     <Compile Include="fmAdminDeclaracion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,6 +267,8 @@
     <Compile Include="IInfoDeclaracion.cs" />
     <Compile Include="ModeloDeclaracion.cs" />
     <Compile Include="ModeloIsrPersonasFisicas.cs" />
+    <Compile Include="ModeloIsrRetencionesSalarios.cs" />
+    <Compile Include="ModeloIva.cs" />
     <Compile Include="NavegacionHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

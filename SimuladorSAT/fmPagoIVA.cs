@@ -6,10 +6,6 @@ namespace SimuladorSAT
 {
     public partial class fmPagoIVA : Form, IInfoDeclaracion
     {
-        private double impuestoACargoInicial = 195.0;
-        private double montoCompensaciones = 0.0;
-        private double montoEstimulos = 0.0;
-        private bool esCargaInicial = true;
         private Form _overlayForm;
 
         public fmPagoIVA()
@@ -19,239 +15,192 @@ namespace SimuladorSAT
                   ControlStyles.AllPaintingInWmPaint |
                   ControlStyles.UserPaint, true);
 
-            // Enlazar eventos de selección
-            cmbCompensaciones.SelectedIndexChanged += (s, e) => EjecutarLogicaSATElastica();
-            cmbEstimulos.SelectedIndexChanged += (s, e) => EjecutarLogicaSATElastica();
-
+            cmbCompensaciones.SelectedIndexChanged += (s, e) => { Program.modeloIva.TieneCompensaciones = cmbCompensaciones.SelectedIndex == 1; RecalcularPago(); };
+            cmbEstimulos.SelectedIndexChanged += (s, e) => { Program.modeloIva.TieneEstimulos = cmbEstimulos.SelectedIndex == 1; RecalcularPago(); };
             btnTabDeterminacion.Click += btnTabDeterminacion_Click;
-
             btnCapturarComp.Click += InterfazCapturaCompensacion;
             btnCapturarEst.Click += InterfazCapturaEstimulo;
 
-            // Valores por defecto en "No" como solicita la interfaz de Figma
-            cmbCompensaciones.SelectedIndex = 0;
-            cmbEstimulos.SelectedIndex = 0;
+            CargarValoresDesdeModelo();
         }
+
         public void ActualizarInfoDeclaracion()
         {
             if (Program.declaracionActual == null) return;
-
             var d = Program.declaracionActual;
             DateTime vencimiento = d.CalcularVencimiento();
-
             lblDatosDerecha.Text =
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
         }
-        private void fmPagoIVA_Load(object sender, EventArgs e)
+
+        public void ActualizarDesdeModelo()
         {
-            esCargaInicial = false;
-            EjecutarLogicaSATElastica();
+            CargarValoresDesdeModelo();
         }
 
-        private void EjecutarLogicaSATElastica()
+        private void CargarValoresDesdeModelo()
         {
-            bool esSiCompensaciones = (cmbCompensaciones.SelectedItem?.ToString() == "Si");
-            bool esSiEstimulos = (cmbEstimulos.SelectedItem?.ToString() == "Si");
+            var m = Program.modeloIva;
 
-            if (!esSiCompensaciones) montoCompensaciones = 0.0;
-            if (!esSiEstimulos) montoEstimulos = 0.0;
-
-            // --- Lógica de Despliegue Elástico Dinámico Sincronizado ---
-            // Fila 3 (Compensaciones): Si es "Si" mide 35, si es "No" se reduce a 0
-            tlpCamposPago.RowStyles[3] = esSiCompensaciones ? new RowStyle(SizeType.Absolute, 35F) : new RowStyle(SizeType.Absolute, 0F);
-            lblCompensaciones.Visible = esSiCompensaciones;
-            lblSignoComp.Visible = esSiCompensaciones;
-            txtCompensaciones.Visible = esSiCompensaciones;
-            btnCapturarComp.Visible = esSiCompensaciones;
-
-            // SOLUCIÓN AL BUG DEL DESIGNER: Forzamos el alto real cuando es visible
-            if (esSiCompensaciones)
+            if (m.EsImpuestoAFavor)
             {
-                btnCapturarComp.Height = 25;
-                txtCompensaciones.Height = 25;
-            }
-
-            // Fila 5 (Estímulos): Si es "Si" mide 35, si es "No" se reduce a 0
-            tlpCamposPago.RowStyles[5] = esSiEstimulos ? new RowStyle(SizeType.Absolute, 35F) : new RowStyle(SizeType.Absolute, 0F);
-            lblEstimulos.Visible = esSiEstimulos;
-            lblSignoEst.Visible = esSiEstimulos;
-            txtEstimulos.Visible = esSiEstimulos;
-            btnCapturarEst.Visible = esSiEstimulos;
-
-            // SOLUCIÓN AL BUG DEL DESIGNER: Forzamos el alto real cuando es visible
-            if (esSiEstimulos)
-            {
-                btnCapturarEst.Height = 25;
-                txtEstimulos.Height = 25;
-            }
-
-            // Operaciones matemáticas de determinación de saldos
-            double totalAplicaciones = montoCompensaciones + montoEstimulos;
-            double cantidadCargo = impuestoACargoInicial - totalAplicaciones;
-            if (cantidadCargo < 0) cantidadCargo = 0;
-
-            if (esCargaInicial)
-            {
-                txtACargo.Text = "";
-                txtTotalContrib1.Text = "";
-                txtTotalContrib2.Text = "";
-                txtCompensaciones.Text = "";
-                txtEstimulos.Text = "";
-                txtTotalApl1.Text = "";
-                txtTotalApl2.Text = "";
-                txtCantACargo.Text = "";
-                txtCantAPagar.Text = "";
+                MostrarModoFavor(m.ImpuestoFinal);
             }
             else
             {
-                txtACargo.Text = impuestoACargoInicial.ToString("N0");
-                txtTotalContrib1.Text = impuestoACargoInicial.ToString("N0");
-                txtTotalContrib2.Text = impuestoACargoInicial.ToString("N0");
-                txtCompensaciones.Text = montoCompensaciones.ToString("N0");
-                txtEstimulos.Text = montoEstimulos.ToString("N0");
-                txtTotalApl1.Text = totalAplicaciones.ToString("N0");
-                txtTotalApl2.Text = totalAplicaciones.ToString("N0");
-                txtCantACargo.Text = cantidadCargo.ToString("N0");
-                txtCantAPagar.Text = cantidadCargo.ToString("N0");
+                MostrarModoCargo();
+                cmbCompensaciones.SelectedIndex = m.TieneCompensaciones ? 1 : 0;
+                cmbEstimulos.SelectedIndex = m.TieneEstimulos ? 1 : 0;
+                RecalcularPago();
             }
+
+            ActualizarEstadoPestañas(); // ← esta línea faltaba
         }
+
+        private void MostrarModoFavor(decimal monto)
+        {
+            tlpCamposPago.Visible = false;
+            lblAFavor.Visible = true;
+            txtAFavor.Visible = true;
+            txtAFavor.Text = monto.ToString("N0");
+        }
+
+        private void MostrarModoCargo()
+        {
+            tlpCamposPago.Visible = true;
+            lblAFavor.Visible = false;
+            txtAFavor.Visible = false;
+        }
+
+        private void RecalcularPago()
+        {
+            var m = Program.modeloIva;
+            if (m.EsImpuestoAFavor) return;
+
+            decimal impuestoACargo = m.ImpuestoFinal;
+            decimal compensaciones = m.TieneCompensaciones ? m.Compensaciones : 0;
+            decimal estimulos = m.TieneEstimulos ? m.Estimulos : 0;
+
+            m.TotalAplicaciones = compensaciones + estimulos;
+            decimal cantidad = impuestoACargo - m.TotalAplicaciones;
+            if (cantidad < 0) cantidad = 0;
+
+            m.CantidadACargoPago = cantidad;
+            m.CantidadAPagar = cantidad;
+
+            txtACargo.Text = impuestoACargo.ToString("N0");
+            txtTotalContrib1.Text = impuestoACargo.ToString("N0");
+            txtCompensaciones.Text = compensaciones.ToString("N0");
+            txtEstimulos.Text = estimulos.ToString("N0");
+            txtTotalApl1.Text = m.TotalAplicaciones.ToString("N0");
+            txtTotalContrib2.Text = impuestoACargo.ToString("N0");
+            txtTotalApl2.Text = m.TotalAplicaciones.ToString("N0");
+            txtCantACargo.Text = m.CantidadACargoPago.ToString("N0");
+            txtCantAPagar.Text = m.CantidadAPagar.ToString("N0");
+
+            AplicarVisibilidadFilas(m.TieneCompensaciones, m.TieneEstimulos);
+        }
+
+        private void AplicarVisibilidadFilas(bool comp, bool est)
+        {
+            tlpCamposPago.RowStyles[3] = comp ? new RowStyle(SizeType.Absolute, 35F) : new RowStyle(SizeType.Absolute, 0F);
+            lblCompensaciones.Visible = comp; lblSignoComp.Visible = comp; txtCompensaciones.Visible = comp; btnCapturarComp.Visible = comp;
+
+            tlpCamposPago.RowStyles[5] = est ? new RowStyle(SizeType.Absolute, 35F) : new RowStyle(SizeType.Absolute, 0F);
+            lblEstimulos.Visible = est; lblSignoEst.Visible = est; txtEstimulos.Visible = est; btnCapturarEst.Visible = est;
+        }
+
+        public void ActualizarEstadoPestañas()
+        {
+            EstadoPestanasHelper.Aplicar(btnTabDeterminacion, "Determinación", true, true, esPaginaActual: false);
+        }
+
         private void InterfazCapturaCompensacion(object sender, EventArgs e)
         {
             try
             {
-                // 1. Calculamos el límite real actual disponible para compensar
-                decimal limiteDisponible = (decimal)(impuestoACargoInicial - montoEstimulos);
-                if (limiteDisponible < 0) limiteDisponible = 0;
+                decimal limite = Program.modeloIva.ImpuestoFinal - Program.modeloIva.Estimulos;
+                if (limite < 0) limite = 0;
 
-                // 2. Creamos y mostramos el Overlay oscuro encima de fmPagoIVA
                 _overlayForm = new Form();
                 _overlayForm.FormBorderStyle = FormBorderStyle.None;
                 _overlayForm.BackColor = Color.Black;
-                _overlayForm.Opacity = 0.50; // 50% de opacidad oscura (efecto Figma)
+                _overlayForm.Opacity = 0.50;
                 _overlayForm.ShowInTaskbar = false;
                 _overlayForm.StartPosition = FormStartPosition.Manual;
-                _overlayForm.Bounds = this.Bounds; // Cubre exactamente toda la pantalla padre
+                _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
 
-                // 3. Abrimos el detalle flotante de compensaciones usando el constructor correcto
-                using (fmCapturaDetalleGenerico fDetalle = new fmCapturaDetalleGenerico(TipoCapturaEnum.Compensacion, limiteDisponible))
+                using (var fDetalle = new fmCapturaDetalleGenerico(TipoCapturaEnum.Compensacion, limite))
                 {
-                    // IMPORTANTE: Pasamos '_overlayForm' como dueño. Esto bloquea el fondo sin emitir sonidos ni parpadeos
                     if (fDetalle.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
-                        // Extraemos el monto directamente de la propiedad pública que ya programaste
-                        montoCompensaciones = (double)fDetalle.MontoCapturado;
+                        Program.modeloIva.Compensaciones = fDetalle.MontoCapturado;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al abrir Compensaciones: " + ex.Message, "Sistemas", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             finally
             {
-                // 4. Pase lo que pase (incluso con errores o cancelaciones), disolvemos el overlay y recuperamos el brillo
-                if (_overlayForm != null)
-                {
-                    _overlayForm.Close();
-                    _overlayForm.Dispose();
-                    _overlayForm = null;
-                }
+                if (_overlayForm != null) { _overlayForm.Close(); _overlayForm.Dispose(); _overlayForm = null; }
             }
-
-            // 5. Recalcula la tabla elástica con el nuevo valor capturado
-            EjecutarLogicaSATElastica();
+            RecalcularPago();
         }
 
         private void InterfazCapturaEstimulo(object sender, EventArgs e)
         {
             try
             {
-                // 1. Creamos y mostramos el Overlay oscuro encima de fmPagoIVA
                 _overlayForm = new Form();
                 _overlayForm.FormBorderStyle = FormBorderStyle.None;
                 _overlayForm.BackColor = Color.Black;
-                _overlayForm.Opacity = 0.50; // 50% de opacidad oscura (efecto Figma)
+                _overlayForm.Opacity = 0.50;
                 _overlayForm.ShowInTaskbar = false;
                 _overlayForm.StartPosition = FormStartPosition.Manual;
-                _overlayForm.Bounds = this.Bounds; // Cubre exactamente al padre
+                _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
 
-                // Usamos 'using' para asegurar que el formulario se destruya correctamente al cerrar
-                using (fmCapturaListaGenerica fLista = new fmCapturaListaGenerica())
+                using (var fLista = new fmCapturaListaGenerica())
                 {
-                    // 2. Configura los títulos, el modo y el límite antes de mostrarlo
-                    fLista.ConfigurarInterfaz("Estímulos", "Estímulos al impuesto a cargo", impuestoACargoInicial.ToString());
-
-                    // 3. Abre la interfaz flotante usando el OVERLAY como dueño para bloquear el fondo limpiamente
+                    fLista.ConfigurarInterfaz("Estímulos", "Estímulos al impuesto a cargo", Program.modeloIva.ImpuestoFinal.ToString());
                     if (fLista.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
-                        // 4. Al cerrar con OK, extrae el monto ya calculado por el propio formulario
-                        montoEstimulos = (double)fLista.MontoCapturado;
+                        Program.modeloIva.Estimulos = fLista.MontoCapturado;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al abrir Estímulos: " + ex.Message, "Sistemas", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             finally
             {
-                // 5. Pase lo que pase al cerrar, destruimos la cortina negra y regresamos el brillo original
-                if (_overlayForm != null)
-                {
-                    _overlayForm.Close();
-                    _overlayForm.Dispose();
-                    _overlayForm = null;
-                }
+                if (_overlayForm != null) { _overlayForm.Close(); _overlayForm.Dispose(); _overlayForm = null; }
             }
-
-            // Recalcula la tabla elástica tras cerrar la captura
-            EjecutarLogicaSATElastica();
+            RecalcularPago();
         }
 
         private void btnTabDeterminacion_Click(object sender, EventArgs e)
         {
             if (Program.formResico != null && !Program.formResico.IsDisposed)
             {
+                Program.formResico.ActualizarDesdeModelo();
                 NavegacionHelper.MostrarSinParpadeo(Program.formResico, this);
             }
-            else
-            {
-                this.Hide();
-            }
         }
 
-        private void tlpCamposPago_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+        private void tlpCamposPago_Paint(object sender, PaintEventArgs e) { }
         private void btnNavInicio_Click(object sender, EventArgs e)
         {
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
-
         private void btnNavCerrar_Click(object sender, EventArgs e)
         {
             if (Program.formResico != null && !Program.formResico.IsDisposed)
             {
                 NavegacionHelper.MostrarSinParpadeo(Program.formResico, this);
             }
-            else
-            {
-                this.Hide();
-            }
         }
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            GuardarYMarcarCompletado();
-        }
-
+        private void btnGuardar_Click(object sender, EventArgs e) { GuardarYMarcarCompletado(); }
         private void btnAdminDeclaracion_Click(object sender, EventArgs e)
         {
             GuardarYMarcarCompletado();
@@ -261,10 +210,12 @@ namespace SimuladorSAT
         private void GuardarYMarcarCompletado()
         {
             if (Program.declaracionActual == null) return;
-
             var conexion = new clsConexion();
             conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_iva_completado");
             Program.declaracionActual.ModuloIvaSimplificadoCompletado = true;
+
+            decimal monto = Program.modeloIva.EsImpuestoAFavor ? 0 : Program.modeloIva.CantidadAPagar;
+            Program.declaracionActual.MontoIva = monto;
 
             Program.formAdmin.AplicarModulosDeclaracionActual();
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);

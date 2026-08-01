@@ -15,19 +15,39 @@ namespace SimuladorSAT
                           ControlStyles.UserPaint, true);
             CargarImagenesCabecera();
             AsignarEventosNavegacion();
+
+            txtSubsidio.TextChanged += (s, e) => { GuardarSubsidioDesdeTexto(); RecalcularPago(); };
+            cmbEstimulos.SelectedIndexChanged += (s, e) =>
+            {
+                Program.modeloIsrSalarios.TieneEstimulos = cmbEstimulos.SelectedIndex == 1;
+                RecalcularPago();
+            };
+            txtSubsidio.Enter += SeleccionarTextoAlEntrar;
+            CargarValoresDesdeModelo();
+        }
+        private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
+        {
+            if (sender is TextBox txt)
+            {
+                txt.BeginInvoke((MethodInvoker)delegate { txt.SelectAll(); });
+            }
         }
         public void ActualizarInfoDeclaracion()
         {
             if (Program.declaracionActual == null) return;
-
             var d = Program.declaracionActual;
             DateTime vencimiento = d.CalcularVencimiento();
-
             lblDatosDerecha.Text =
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
         }
+
+        public void ActualizarDesdeModelo()
+        {
+            CargarValoresDesdeModelo();
+        }
+
         private void CargarImagenesCabecera()
         {
             try
@@ -38,15 +58,78 @@ namespace SimuladorSAT
                 if (File.Exists(rutaLogo)) picLogoUthh.Image = Image.FromFile(rutaLogo);
                 if (File.Exists(rutaEscudo)) picEscudoUthh.Image = Image.FromFile(rutaEscudo);
             }
-            catch { /* Evita interrupciones en tiempo de diseño */ }
+            catch { }
+        }
+
+        private void CargarValoresDesdeModelo()
+        {
+            var m = Program.modeloIsrSalarios;
+
+            // Subsidio empieza vacío si no se ha capturado nada; no es obligatorio
+            txtSubsidio.Text = m.SubsidioParaElEmpleo > 0 ? m.SubsidioParaElEmpleo.ToString("N0") : "";
+            cmbEstimulos.SelectedIndex = m.TieneEstimulos ? 1 : 0;
+
+            AplicarVisibilidadAplicaciones();
+            RecalcularPago();
+            ActualizarEstadoPestañas();
+        }
+
+        // Subsidio y Estímulos solo aparecen si el ISR a cargo (de Determinación) es mayor a 0
+        private void AplicarVisibilidadAplicaciones()
+        {
+            var m = Program.modeloIsrSalarios;
+            bool mostrar = m.ImpuestoACargo > 0;
+
+            lblSubsidio.Visible = mostrar;
+            txtSubsidio.Visible = mostrar;
+            lblTieneEstimulos.Visible = mostrar;
+            cmbEstimulos.Visible = mostrar;
+
+            tlpCamposSat.RowStyles[2] = mostrar
+                ? new RowStyle(SizeType.Absolute, 48F)
+                : new RowStyle(SizeType.Absolute, 0F);
+            tlpCamposSat.RowStyles[3] = mostrar
+                ? new RowStyle(SizeType.Absolute, 48F)
+                : new RowStyle(SizeType.Absolute, 0F);
+        }
+        private void GuardarSubsidioDesdeTexto()
+        {
+            string limpio = txtSubsidio.Text.Replace("$", "").Replace(",", "").Trim();
+            Program.modeloIsrSalarios.SubsidioParaElEmpleo = decimal.TryParse(limpio, out decimal v) ? v : 0;
+        }
+
+        private void RecalcularPago()
+        {
+            var m = Program.modeloIsrSalarios;
+
+            AplicarVisibilidadAplicaciones();
+
+            decimal subsidio = m.ImpuestoACargo > 0 ? m.SubsidioParaElEmpleo : 0;
+            m.TotalAplicaciones = subsidio; // Estímulos: solo visual por ahora, no se suma
+
+            decimal cantidad = m.ImpuestoACargo - m.TotalAplicaciones;
+            if (cantidad < 0) cantidad = 0;
+
+            m.CantidadACargo = cantidad;
+            m.CantidadAPagar = cantidad;
+
+            txtACargo.Text = m.ImpuestoACargo.ToString("N0");
+            txtTotalContribuciones1.Text = m.ImpuestoACargo.ToString("N0");
+            txtTotalAplicaciones1.Text = m.TotalAplicaciones.ToString("N0");
+            txtTotalContribuciones2.Text = m.ImpuestoACargo.ToString("N0");
+            txtTotalAplicaciones2.Text = m.TotalAplicaciones.ToString("N0");
+            txtCantidadACargo.Text = m.CantidadACargo.ToString("N0");
+            txtCantidadAPagar.Text = m.CantidadAPagar.ToString("N0");
+        }
+
+        public void ActualizarEstadoPestañas()
+        {
+            EstadoPestanasHelper.Aplicar(btnTabDeterminacion, "Determinación", true, true, esPaginaActual: false);
         }
 
         private void AsignarEventosNavegacion()
         {
-            // Primero desvinculamos para evitar que los eventos se acumulen si se llama más de una vez
             btnTabDeterminacion.Click -= BtnTabDeterminacion_Click;
-
-            // Asignación de eventos limpia
             btnTabDeterminacion.Click += BtnTabDeterminacion_Click;
             btnInicio.Click += (s, e) => IrAPresentarDeclaracion();
             btnCerrar.Click += (s, e) => IrAAdminDeclaracion();
@@ -59,6 +142,7 @@ namespace SimuladorSAT
             {
                 Program.formIsrSalarios = new fmIsrRetencionesSalarios();
             }
+            Program.formIsrSalarios.ActualizarDesdeModelo();
             NavegacionHelper.MostrarSinParpadeo(Program.formIsrSalarios, this);
         }
 
@@ -68,11 +152,7 @@ namespace SimuladorSAT
             {
                 Program.formAdmin = new fmAdminDeclaracion();
             }
-
             Program.formAdmin.WindowState = FormWindowState.Maximized;
-
-            // CORRECCIÓN CLAVE: Pasamos 'this' en lugar de 'null'.
-            // NavegacionHelper se encarga de mostrar 'formAdmin' y ocultar 'this' sin parpadeos ni NullReferenceException.
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
@@ -82,13 +162,10 @@ namespace SimuladorSAT
             {
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
             }
-
             Program.formPresentar.WindowState = FormWindowState.Maximized;
-
-            // CORRECCIÓN CLAVE: Pasamos 'this' en lugar de 'null'.
-            // Mantiene el Maximized correctamente y oculta la ventana actual de forma segura.
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
+
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             GuardarYMarcarCompletado();
@@ -103,10 +180,11 @@ namespace SimuladorSAT
         private void GuardarYMarcarCompletado()
         {
             if (Program.declaracionActual == null) return;
-
             var conexion = new clsConexion();
             conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_salarios_completado");
             Program.declaracionActual.ModuloIsrSalariosCompletado = true;
+            Program.declaracionActual.MontoIsrSalarios = Program.modeloIsrSalarios.CantidadAPagar;
+
             Program.formAdmin.AplicarModulosDeclaracionActual();
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

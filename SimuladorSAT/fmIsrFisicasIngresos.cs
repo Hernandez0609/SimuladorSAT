@@ -14,6 +14,7 @@ namespace SimuladorSAT
                           ControlStyles.UserPaint, true);
 
             CargarValoresDesdeModelo();
+
         }
         public void ActualizarInfoDeclaracion()
         {
@@ -55,6 +56,8 @@ namespace SimuladorSAT
                 lblIngresosDisminuirValor, lblSignoIngresosDisminuir, txtIngresosDisminuirValor, btnCapturarIngresosDisminuir);
             AplicarEstadoFila(6, modelo.TieneIngresosAdicionales,
                 lblIngresosAdicionalesValor, lblSignoIngresosAdicionales, txtIngresosAdicionalesValor, btnCapturarIngresosAdicionales);
+            RecalcularTotalPercibidos();
+            ActualizarEstadoPestañas();
         }
 
         // ====================================================================
@@ -81,6 +84,8 @@ namespace SimuladorSAT
             Program.modeloIsrFisicas.TieneIngresosADisminuir = esSi;
             AplicarEstadoFila(4, esSi,
                 lblIngresosDisminuirValor, lblSignoIngresosDisminuir, txtIngresosDisminuirValor, btnCapturarIngresosDisminuir);
+            RecalcularTotalPercibidos();
+            ActualizarEstadoPestañas();
         }
 
         // ====================================================================
@@ -92,6 +97,8 @@ namespace SimuladorSAT
             Program.modeloIsrFisicas.TieneIngresosAdicionales = esSi;
             AplicarEstadoFila(6, esSi,
                 lblIngresosAdicionalesValor, lblSignoIngresosAdicionales, txtIngresosAdicionalesValor, btnCapturarIngresosAdicionales);
+            RecalcularTotalPercibidos();
+            ActualizarEstadoPestañas();
         }
 
         // ====================================================================
@@ -114,7 +121,35 @@ namespace SimuladorSAT
 
             this.ResumeLayout(true);
         }
+        private void RecalcularTotalPercibidos()
+        {
+            var m = Program.modeloIsrFisicas;
+            decimal disminuir = m.TieneIngresosADisminuir ? m.IngresosADisminuir : 0;
+            decimal adicionales = m.TieneIngresosAdicionales ? m.IngresosAdicionales : 0;
+            decimal total = m.TotalIngresosCobrados - m.Descuentos - disminuir + adicionales;
+            m.TotalIngresosPercibidos = total;
+            txtTotalPercibidos.Text = total.ToString("N0");
+        }
 
+        public bool IngresosCompleto()
+        {
+            var m = Program.modeloIsrFisicas;
+            if (!m.DescuentosCapturado) return false;
+            if (m.TieneIngresosADisminuir && !m.IngresosADisminuirCapturado) return false;
+            if (m.TieneIngresosAdicionales && !m.IngresosAdicionalesCapturado) return false;
+            if (!m.TotalPercibidosCapturado) return false;
+            return true;
+        }
+
+        public void ActualizarEstadoPestañas()
+        {
+            var m = Program.modeloIsrFisicas;
+            bool ingresosOk = IngresosCompleto();
+
+            EstadoPestanasHelper.Aplicar(btnTabIngresos, "Ingresos", true, ingresosOk, esPaginaActual: true);
+            EstadoPestanasHelper.Aplicar(btnTabDeterminacion, "Determinación", ingresosOk, m.DeterminacionCompleta, esPaginaActual: false);
+            EstadoPestanasHelper.Aplicar(btnTabPago, "Pago", ingresosOk && m.DeterminacionCompleta, false, esPaginaActual: false);
+        }
         private void btnCapturarDescuentos_Click(object sender, EventArgs e)
         {
             try
@@ -128,12 +163,15 @@ namespace SimuladorSAT
                 _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
-
                 using (var dlg = new fmDetalleDescuentosIngresos())
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
+                        Program.modeloIsrFisicas.Descuentos = dlg.MontoCapturado;
+                        Program.modeloIsrFisicas.DescuentosCapturado = true;
                         txtDescuentos.Text = dlg.MontoCapturado.ToString("N0");
+                        RecalcularTotalPercibidos();
+                        ActualizarEstadoPestañas();
                     }
                 }
             }
@@ -161,12 +199,15 @@ namespace SimuladorSAT
                 _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
-
                 using (var dlg = new fmDetalleIngresosADisminuir())
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
+                        Program.modeloIsrFisicas.IngresosADisminuir = dlg.MontoCapturado;
+                        Program.modeloIsrFisicas.IngresosADisminuirCapturado = true;
                         txtIngresosDisminuirValor.Text = dlg.MontoCapturado.ToString("N0");
+                        RecalcularTotalPercibidos();
+                        ActualizarEstadoPestañas();
                     }
                 }
             }
@@ -194,12 +235,15 @@ namespace SimuladorSAT
                 _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
-
                 using (var dlg = new fmDetalleIngresosAdicionales())
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
+                        Program.modeloIsrFisicas.IngresosAdicionales = dlg.MontoCapturado;
+                        Program.modeloIsrFisicas.IngresosAdicionalesCapturado = true;
                         txtIngresosAdicionalesValor.Text = dlg.MontoCapturado.ToString("N0");
+                        RecalcularTotalPercibidos();
+                        ActualizarEstadoPestañas();
                     }
                 }
             }
@@ -227,12 +271,12 @@ namespace SimuladorSAT
                 _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
-
                 using (var dlg = new fmDetalleTotalIngresosPercibidos())
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
-                        txtTotalPercibidos.Text = dlg.MontoCapturado.ToString("N0");
+                        Program.modeloIsrFisicas.TotalPercibidosCapturado = true;
+                        ActualizarEstadoPestañas();
                     }
                 }
             }
@@ -252,16 +296,29 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnTabDeterminacion_Click(object sender, EventArgs e)
         {
+            if (!IngresosCompleto())
+            {
+                MessageBox.Show("Completa todos los campos obligatorios de Ingresos antes de continuar (Descuentos, y si aplica, Ingresos a disminuir/adicionales).",
+                    "Sección incompleta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (Program.formIsrFisicasDeterminacion == null || Program.formIsrFisicasDeterminacion.IsDisposed)
             {
                 Program.formIsrFisicasDeterminacion = new fmIsrFisicasDeterminacion();
             }
-            Program.formIsrFisicasDeterminacion.ActualizarDesdeModelo(); // ← NUEVO
+            Program.formIsrFisicasDeterminacion.ActualizarDesdeModelo();
             NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasDeterminacion, this);
         }
 
         private void btnTabPago_Click(object sender, EventArgs e)
         {
+            if (!IngresosCompleto() || !Program.modeloIsrFisicas.DeterminacionCompleta)
+            {
+                MessageBox.Show("Completa Ingresos y Determinación antes de continuar a Pago.",
+                    "Sección incompleta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             Program.formIsrFisicasPago.ActualizarDesdeModelo();
             NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasPago, this);
         }

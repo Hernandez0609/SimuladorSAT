@@ -11,27 +11,107 @@ namespace SimuladorSAT
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
+
+            txtIsrRegistro.TextChanged += (s, e) => { GuardarIsrRegistroDesdeTexto(); RecalcularDeterminacion(); ActualizarEstadoPestañas(); };
+            txtIsrRegistro.Enter += SeleccionarTextoAlEntrar;
+            CargarValoresDesdeModelo();
+        }
+        private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
+        {
+            if (sender is TextBox txt)
+            {
+                txt.BeginInvoke((MethodInvoker)delegate { txt.SelectAll(); });
+            }
         }
         public void ActualizarInfoDeclaracion()
         {
             if (Program.declaracionActual == null) return;
-
             var d = Program.declaracionActual;
             DateTime vencimiento = d.CalcularVencimiento();
-
             lblDatosDerecha.Text =
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
         }
+
+        public void ActualizarDesdeModelo()
+        {
+            CargarValoresDesdeModelo();
+        }
+
+        private void CargarValoresDesdeModelo()
+        {
+            var m = Program.modeloIsrSalarios;
+
+            txtTrabajadores.Text = m.NumeroTrabajadores.ToString();
+            txtPagoSueldos.Text = m.PagoSueldos.ToString("N0");
+            txtPagosExentos.Text = m.PagosExentos.ToString("N0");
+            txtIsrRetenido.Text = m.IsrRetenidoSueldos.ToString("N0");
+
+            // Solo escribe el valor si ya fue capturado antes; si no, se queda vacío
+            txtIsrRegistro.Text = m.IsrRetenidoRegistroCapturado
+                ? m.IsrRetenidoRegistroContribuyente.ToString("N0")
+                : "";
+
+            RecalcularDeterminacion();
+            ActualizarEstadoPestañas();
+        }
+        private void GuardarIsrRegistroDesdeTexto()
+        {
+            string limpio = txtIsrRegistro.Text.Replace("$", "").Replace(",", "").Trim();
+
+            if (string.IsNullOrEmpty(limpio))
+            {
+                Program.modeloIsrSalarios.IsrRetenidoRegistroContribuyente = 0;
+                Program.modeloIsrSalarios.IsrRetenidoRegistroCapturado = false;
+                return;
+            }
+
+            Program.modeloIsrSalarios.IsrRetenidoRegistroContribuyente = decimal.TryParse(limpio, out decimal v) ? v : 0;
+            Program.modeloIsrSalarios.IsrRetenidoRegistroCapturado = true;
+        }
+        private void RecalcularDeterminacion()
+        {
+            var m = Program.modeloIsrSalarios;
+            m.ImpuestoACargo = m.IsrRetenidoRegistroContribuyente;
+            txtImpuestoCargo.Text = m.ImpuestoACargo.ToString("N0");
+            m.DeterminacionCompleta = m.IsrRetenidoRegistroCapturado;
+        }
+
+        public bool DeterminacionCompleto()
+        {
+            return Program.modeloIsrSalarios.DeterminacionCompleta;
+        }
+
+        public void ActualizarEstadoPestañas()
+        {
+            var m = Program.modeloIsrSalarios;
+            EstadoPestanasHelper.Aplicar(btnTabDeterminacion, "Determinación", true, m.DeterminacionCompleta, esPaginaActual: true);
+            EstadoPestanasHelper.Aplicar(btnTabPago, "Pago", m.DeterminacionCompleta, false, esPaginaActual: false);
+        }
+
+        private void btnTabPago_Click(object sender, EventArgs e)
+        {
+            if (!DeterminacionCompleto())
+            {
+                MessageBox.Show("Captura el ISR retenido de acuerdo a los registros del contribuyente antes de continuar a Pago.",
+                    "Sección incompleta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (Program.formPagoIsr == null || Program.formPagoIsr.IsDisposed)
+            {
+                Program.formPagoIsr = new fmPagoISR();
+            }
+            Program.formPagoIsr.ActualizarDesdeModelo();
+            NavegacionHelper.MostrarSinParpadeo(Program.formPagoIsr, this);
+        }
+
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             if (Program.formAdmin == null || Program.formAdmin.IsDisposed)
             {
                 Program.formAdmin = new fmAdminDeclaracion();
             }
-
-            // Transición limpia utilizando el Helper
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
@@ -41,19 +121,29 @@ namespace SimuladorSAT
             {
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
             }
-
-            // Transición limpia utilizando el Helper
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
-        private void btnTabPago_Click(object sender, EventArgs e)
+        private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (Program.formPagoIsr == null || Program.formPagoIsr.IsDisposed)
-            {
-                Program.formPagoIsr = new fmPagoISR();
-            }
+            GuardarYMarcarCompletado();
+        }
 
-            NavegacionHelper.MostrarSinParpadeo(Program.formPagoIsr, this);
+        private void btnAdministracion_Click(object sender, EventArgs e)
+        {
+            GuardarYMarcarCompletado();
+            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+        }
+
+        private void GuardarYMarcarCompletado()
+        {
+            if (!DeterminacionCompleto())
+            {
+                MessageBox.Show("Completa el detalle de ISR retenido antes de guardar.", "Campo requerido",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

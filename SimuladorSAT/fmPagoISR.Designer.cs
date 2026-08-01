@@ -66,6 +66,10 @@
             this.txtCantidadACargo = new System.Windows.Forms.TextBox();
             this.lblCantidadAPagar = new System.Windows.Forms.Label();
             this.txtCantidadAPagar = new System.Windows.Forms.TextBox();
+            this.lblSubsidio = new System.Windows.Forms.Label();
+            this.txtSubsidio = new System.Windows.Forms.TextBox();
+            this.lblTieneEstimulos = new System.Windows.Forms.Label();
+            this.cmbEstimulos = new System.Windows.Forms.ComboBox();
             this.pnlLogosBlancos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoUthh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEscudoUthh)).BeginInit();
@@ -266,10 +270,11 @@
             this.btnTabDeterminacion.ForeColor = System.Drawing.Color.Silver;
             this.btnTabDeterminacion.Location = new System.Drawing.Point(46, 80);
             this.btnTabDeterminacion.Name = "btnTabDeterminacion";
-            this.btnTabDeterminacion.Size = new System.Drawing.Size(170, 34);
+            this.btnTabDeterminacion.Size = new System.Drawing.Size(210, 34);
             this.btnTabDeterminacion.TabIndex = 3;
             this.btnTabDeterminacion.Text = "Determinación";
             this.btnTabDeterminacion.UseVisualStyleBackColor = false;
+            this.btnTabDeterminacion.Click += new System.EventHandler(this.BtnTabDeterminacion_Click);
             // 
             // btnTabPago
             // 
@@ -277,7 +282,7 @@
             this.btnTabPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabPago.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.btnTabPago.ForeColor = System.Drawing.Color.White;
-            this.btnTabPago.Location = new System.Drawing.Point(216, 80);
+            this.btnTabPago.Location = new System.Drawing.Point(255, 80);
             this.btnTabPago.Name = "btnTabPago";
             this.btnTabPago.Size = new System.Drawing.Size(110, 34);
             this.btnTabPago.TabIndex = 4;
@@ -293,7 +298,7 @@
             this.pnlContenedorTabla.Controls.Add(this.tlpCamposSat);
             this.pnlContenedorTabla.Location = new System.Drawing.Point(46, 114);
             this.pnlContenedorTabla.Name = "pnlContenedorTabla";
-            this.pnlContenedorTabla.Size = new System.Drawing.Size(1279, 420);
+            this.pnlContenedorTabla.Size = new System.Drawing.Size(1279, 500);
             this.pnlContenedorTabla.TabIndex = 5;
             // 
             // lblObligatorio
@@ -317,22 +322,26 @@
             this.tlpCamposSat.Controls.Add(this.lblTotalContribuciones1, 0, 1);
             this.tlpCamposSat.Controls.Add(this.lblSimbolo1, 1, 1);
             this.tlpCamposSat.Controls.Add(this.txtTotalContribuciones1, 2, 1);
-            this.tlpCamposSat.Controls.Add(this.lblTotalAplicaciones1, 0, 2);
-            this.tlpCamposSat.Controls.Add(this.lblSimbolo2, 1, 2);
-            this.tlpCamposSat.Controls.Add(this.txtTotalAplicaciones1, 2, 2);
-            this.tlpCamposSat.Controls.Add(this.lblTotalContribuciones2, 0, 3);
-            this.tlpCamposSat.Controls.Add(this.txtTotalContribuciones2, 2, 3);
-            this.tlpCamposSat.Controls.Add(this.lblTotalAplicaciones2, 0, 4);
-            this.tlpCamposSat.Controls.Add(this.lblSimbolo3, 1, 4);
-            this.tlpCamposSat.Controls.Add(this.txtTotalAplicaciones2, 2, 4);
-            this.tlpCamposSat.Controls.Add(this.lblCantidadACargo, 0, 5);
-            this.tlpCamposSat.Controls.Add(this.lblSimbolo4, 1, 5);
-            this.tlpCamposSat.Controls.Add(this.txtCantidadACargo, 2, 5);
-            this.tlpCamposSat.Controls.Add(this.lblCantidadAPagar, 0, 6);
-            this.tlpCamposSat.Controls.Add(this.txtCantidadAPagar, 2, 6);
+            this.tlpCamposSat.Controls.Add(this.lblSubsidio, 0, 2);
+            this.tlpCamposSat.Controls.Add(this.txtSubsidio, 2, 2);
+            this.tlpCamposSat.Controls.Add(this.lblTieneEstimulos, 0, 3);
+            this.tlpCamposSat.Controls.Add(this.cmbEstimulos, 2, 3);
+            this.tlpCamposSat.Controls.Add(this.lblTotalAplicaciones1, 0, 4);
+            this.tlpCamposSat.Controls.Add(this.lblSimbolo2, 1, 4);
+            this.tlpCamposSat.Controls.Add(this.txtTotalAplicaciones1, 2, 4);
+            this.tlpCamposSat.Controls.Add(this.lblTotalContribuciones2, 0, 5);
+            this.tlpCamposSat.Controls.Add(this.txtTotalContribuciones2, 2, 5);
+            this.tlpCamposSat.Controls.Add(this.lblTotalAplicaciones2, 0, 6);
+            this.tlpCamposSat.Controls.Add(this.lblSimbolo3, 1, 6);
+            this.tlpCamposSat.Controls.Add(this.txtTotalAplicaciones2, 2, 6);
+            this.tlpCamposSat.Controls.Add(this.lblCantidadACargo, 0, 7);
+            this.tlpCamposSat.Controls.Add(this.lblSimbolo4, 1, 7);
+            this.tlpCamposSat.Controls.Add(this.txtCantidadACargo, 2, 7);
+            this.tlpCamposSat.Controls.Add(this.lblCantidadAPagar, 0, 8);
+            this.tlpCamposSat.Controls.Add(this.txtCantidadAPagar, 2, 8);
             this.tlpCamposSat.Location = new System.Drawing.Point(18, 40);
             this.tlpCamposSat.Name = "tlpCamposSat";
-            this.tlpCamposSat.RowCount = 7;
+            this.tlpCamposSat.RowCount = 9;
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
@@ -340,7 +349,9 @@
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
-            this.tlpCamposSat.Size = new System.Drawing.Size(750, 364);
+            this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tlpCamposSat.Size = new System.Drawing.Size(750, 460);
             this.tlpCamposSat.TabIndex = 1;
             // 
             // lblACargo
@@ -362,6 +373,24 @@
             this.txtACargo.Size = new System.Drawing.Size(220, 27);
             this.txtACargo.TabIndex = 1;
             this.txtACargo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+
+            this.lblSubsidio.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSubsidio.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblSubsidio.Text = "Subsidio para el empleo";
+            this.lblSubsidio.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtSubsidio.Name = "txtSubsidio";
+            this.txtSubsidio.Size = new System.Drawing.Size(220, 27);
+            this.txtSubsidio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+
+            this.lblTieneEstimulos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTieneEstimulos.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblTieneEstimulos.Text = "*¿Tienes estímulos por aplicar?";
+            this.lblTieneEstimulos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cmbEstimulos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEstimulos.Font = new System.Drawing.Font("Arial", 9F);
+            this.cmbEstimulos.Items.AddRange(new object[] { "No", "Sí" });
+            this.cmbEstimulos.SelectedIndex = 0;
+            this.cmbEstimulos.Size = new System.Drawing.Size(220, 25);
             // 
             // lblTotalContribuciones1
             // 
@@ -598,5 +627,10 @@
         private System.Windows.Forms.TextBox txtTotalAplicaciones2;
         private System.Windows.Forms.TextBox txtCantidadACargo;
         private System.Windows.Forms.TextBox txtCantidadAPagar;
+
+        private System.Windows.Forms.Label lblSubsidio;
+        private System.Windows.Forms.TextBox txtSubsidio;
+        private System.Windows.Forms.Label lblTieneEstimulos;
+        private System.Windows.Forms.ComboBox cmbEstimulos;
     }
 }

@@ -31,6 +31,10 @@ namespace SimuladorSAT
         //En lo que creo el login//
         public static int contribuyenteId = 1; // id de prueba, hasta que exista el login
 
+        public static ModeloIsrRetencionesSalarios modeloIsrSalarios = new ModeloIsrRetencionesSalarios();
+
+        public static ModeloIva modeloIva = new ModeloIva();
+
         [STAThread]
         static void Main()
         {

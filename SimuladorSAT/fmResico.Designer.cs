@@ -279,7 +279,7 @@
             this.btnTabDeterminacion.ForeColor = System.Drawing.Color.White;
             this.btnTabDeterminacion.Location = new System.Drawing.Point(46, 80);
             this.btnTabDeterminacion.Name = "btnTabDeterminacion";
-            this.btnTabDeterminacion.Size = new System.Drawing.Size(170, 34);
+            this.btnTabDeterminacion.Size = new System.Drawing.Size(210, 34);
             this.btnTabDeterminacion.TabIndex = 3;
             this.btnTabDeterminacion.Text = "Determinación";
             this.btnTabDeterminacion.UseVisualStyleBackColor = false;
@@ -290,7 +290,7 @@
             this.btnTabPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabPago.Font = new System.Drawing.Font("Arial", 10F);
             this.btnTabPago.ForeColor = System.Drawing.Color.Silver;
-            this.btnTabPago.Location = new System.Drawing.Point(210, 80);
+            this.btnTabPago.Location = new System.Drawing.Point(255, 80);
             this.btnTabPago.Name = "btnTabPago";
             this.btnTabPago.Size = new System.Drawing.Size(110, 34);
             this.btnTabPago.TabIndex = 4;
@@ -307,7 +307,7 @@
             this.pnlContenedorTabla.Controls.Add(this.tlpCamposSat);
             this.pnlContenedorTabla.Location = new System.Drawing.Point(46, 115);
             this.pnlContenedorTabla.Name = "pnlContenedorTabla";
-            this.pnlContenedorTabla.Size = new System.Drawing.Size(1354, 576);
+            this.pnlContenedorTabla.Size = new System.Drawing.Size(1354, 617);
             this.pnlContenedorTabla.TabIndex = 5;
             // 
             // lblAsteriscos
@@ -366,12 +366,12 @@
             this.tlpCamposSat.Controls.Add(this.lbl11, 0, 10);
             this.tlpCamposSat.Controls.Add(this.lblSigno11, 1, 10);
             this.tlpCamposSat.Controls.Add(this.txt11, 2, 10);
-            this.tlpCamposSat.Controls.Add(this.lbl12, 0, 11);
-            this.tlpCamposSat.Controls.Add(this.lblSigno12, 1, 11);
-            this.tlpCamposSat.Controls.Add(this.txt12, 2, 11);
+            this.tlpCamposSat.Controls.Add(this.lbl12, 0, 12);
+            this.tlpCamposSat.Controls.Add(this.lblSigno12, 1, 12);
+            this.tlpCamposSat.Controls.Add(this.txt12, 2, 12);
             this.tlpCamposSat.Location = new System.Drawing.Point(17, 37);
             this.tlpCamposSat.Name = "tlpCamposSat";
-            this.tlpCamposSat.RowCount = 12;
+            this.tlpCamposSat.RowCount = 13;
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
@@ -384,7 +384,8 @@
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
-            this.tlpCamposSat.Size = new System.Drawing.Size(1314, 491);
+            this.tlpCamposSat.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
+            this.tlpCamposSat.Size = new System.Drawing.Size(1314, 532);
             this.tlpCamposSat.TabIndex = 1;
             // 
             // lbl1
@@ -794,6 +795,29 @@
             this.txt12.TabIndex = 37;
             this.txt12.Text = "0";
             this.txt12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            //
+            this.lblAcreditamiento = new System.Windows.Forms.Label();
+            this.lblSignoAcreditamiento = new System.Windows.Forms.Label();
+            this.txtAcreditamiento = new System.Windows.Forms.TextBox();
+
+            this.lblAcreditamiento.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAcreditamiento.Font = new System.Drawing.Font("Arial", 10F);
+            this.lblAcreditamiento.Text = "Acreditamiento del saldo a favor de periodos anteriores";
+            this.lblAcreditamiento.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            this.lblSignoAcreditamiento.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.lblSignoAcreditamiento.Text = "(-)";
+            this.lblSignoAcreditamiento.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
+            this.txtAcreditamiento.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtAcreditamiento.Font = new System.Drawing.Font("Arial", 10F);
+            this.txtAcreditamiento.Size = new System.Drawing.Size(205, 22);
+            this.txtAcreditamiento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
+
+            this.tlpCamposSat.Controls.Add(this.lblAcreditamiento, 0, 11);
+            this.tlpCamposSat.Controls.Add(this.lblSignoAcreditamiento, 1, 11);
+            this.tlpCamposSat.Controls.Add(this.txtAcreditamiento, 2, 11);
             // 
             // fmResico
             // 
@@ -846,6 +870,9 @@
         private System.Windows.Forms.Panel pnlContenedorTabla;
         private System.Windows.Forms.TableLayoutPanel tlpCamposSat;
         private System.Windows.Forms.Label lblAsteriscos;
+        private System.Windows.Forms.Label lblAcreditamiento;
+        private System.Windows.Forms.Label lblSignoAcreditamiento;
+        private System.Windows.Forms.TextBox txtAcreditamiento;
 
         private System.Windows.Forms.Label lbl1; private System.Windows.Forms.TextBox txt1; private System.Windows.Forms.Button btn1;
         private System.Windows.Forms.Label lbl2; private System.Windows.Forms.TextBox txt2; private System.Windows.Forms.Button btn2;
