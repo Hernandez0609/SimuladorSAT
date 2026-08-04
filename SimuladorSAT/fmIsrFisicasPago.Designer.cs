@@ -40,7 +40,6 @@
             this.lblSigno1 = new System.Windows.Forms.Label();
             this.txtTotalContribuciones1 = new System.Windows.Forms.TextBox();
             this.lblSubsidio = new System.Windows.Forms.Label();
-            this.txtSubsidio = new System.Windows.Forms.TextBox();
             this.lblCompensaciones = new System.Windows.Forms.Label();
             this.cmbCompensaciones = new System.Windows.Forms.ComboBox();
             this.lblCompensacionesValor = new System.Windows.Forms.Label();
@@ -66,6 +65,7 @@
             this.txtCantidadACargo = new System.Windows.Forms.TextBox();
             this.lblCantidadAPagar = new System.Windows.Forms.Label();
             this.txtCantidadAPagar = new System.Windows.Forms.TextBox();
+            this.txtSubsidio = new System.Windows.Forms.TextBox();
             this.pnlLogosBlancos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoUthh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEscudoUthh)).BeginInit();
@@ -320,8 +320,6 @@
             // 
             // pnlContenedorTabla
             // 
-            this.pnlContenedorTabla.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlContenedorTabla.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlContenedorTabla.Controls.Add(this.lblAsteriscos);
             this.pnlContenedorTabla.Controls.Add(this.tlpCamposSat);
@@ -357,7 +355,6 @@
             this.tlpCamposSat.Controls.Add(this.lblSigno1, 1, 1);
             this.tlpCamposSat.Controls.Add(this.txtTotalContribuciones1, 2, 1);
             this.tlpCamposSat.Controls.Add(this.lblSubsidio, 0, 2);
-            this.tlpCamposSat.Controls.Add(this.txtSubsidio, 2, 2);
             this.tlpCamposSat.Controls.Add(this.lblCompensaciones, 0, 3);
             this.tlpCamposSat.Controls.Add(this.cmbCompensaciones, 2, 3);
             this.tlpCamposSat.Controls.Add(this.lblCompensacionesValor, 0, 4);
@@ -383,6 +380,7 @@
             this.tlpCamposSat.Controls.Add(this.txtCantidadACargo, 2, 10);
             this.tlpCamposSat.Controls.Add(this.lblCantidadAPagar, 0, 11);
             this.tlpCamposSat.Controls.Add(this.txtCantidadAPagar, 2, 11);
+            this.tlpCamposSat.Controls.Add(this.txtSubsidio, 2, 2);
             this.tlpCamposSat.Location = new System.Drawing.Point(18, 40);
             this.tlpCamposSat.Name = "tlpCamposSat";
             this.tlpCamposSat.RowCount = 12;
@@ -469,16 +467,6 @@
             this.lblSubsidio.TabIndex = 5;
             this.lblSubsidio.Text = "Subsidio para el empleo";
             // 
-            // txtSubsidio
-            // 
-            this.txtSubsidio.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.txtSubsidio.Font = new System.Drawing.Font("Arial", 9F);
-            this.txtSubsidio.Location = new System.Drawing.Point(527, 102);
-            this.txtSubsidio.Name = "txtSubsidio";
-            this.txtSubsidio.Size = new System.Drawing.Size(195, 25);
-            this.txtSubsidio.TabIndex = 6;
-            this.txtSubsidio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // lblCompensaciones
             // 
             this.lblCompensaciones.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -547,7 +535,7 @@
             this.btnCapturarCompensaciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapturarCompensaciones.Location = new System.Drawing.Point(751, 187);
             this.btnCapturarCompensaciones.Name = "btnCapturarCompensaciones";
-            this.btnCapturarCompensaciones.Size = new System.Drawing.Size(137, 28); 
+            this.btnCapturarCompensaciones.Size = new System.Drawing.Size(137, 1);
             this.btnCapturarCompensaciones.TabIndex = 12;
             this.btnCapturarCompensaciones.Text = "Capturar";
             this.btnCapturarCompensaciones.Visible = false;
@@ -621,7 +609,7 @@
             this.btnCapturarEstimulos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapturarEstimulos.Location = new System.Drawing.Point(751, 233);
             this.btnCapturarEstimulos.Name = "btnCapturarEstimulos";
-            this.btnCapturarEstimulos.Size = new System.Drawing.Size(137, 28);
+            this.btnCapturarEstimulos.Size = new System.Drawing.Size(137, 1);
             this.btnCapturarEstimulos.TabIndex = 18;
             this.btnCapturarEstimulos.Text = "Capturar";
             this.btnCapturarEstimulos.Visible = false;
@@ -775,6 +763,14 @@
             this.txtCantidadAPagar.TabIndex = 31;
             this.txtCantidadAPagar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // txtSubsidio
+            // 
+            this.txtSubsidio.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtSubsidio.Location = new System.Drawing.Point(527, 104);
+            this.txtSubsidio.Name = "txtSubsidio";
+            this.txtSubsidio.Size = new System.Drawing.Size(195, 22);
+            this.txtSubsidio.TabIndex = 32;
+            // 
             // fmIsrFisicasPago
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -834,7 +830,6 @@
         private System.Windows.Forms.Label lblSigno1;
         private System.Windows.Forms.TextBox txtTotalContribuciones1;
         private System.Windows.Forms.Label lblSubsidio;
-        private System.Windows.Forms.TextBox txtSubsidio;
         private System.Windows.Forms.Label lblCompensaciones;
         private System.Windows.Forms.ComboBox cmbCompensaciones;
         private System.Windows.Forms.Label lblCompensacionesValor;
@@ -860,5 +855,6 @@
         private System.Windows.Forms.TextBox txtCantidadACargo;
         private System.Windows.Forms.Label lblCantidadAPagar;
         private System.Windows.Forms.TextBox txtCantidadAPagar;
+        private System.Windows.Forms.TextBox txtSubsidio;
     }
 }

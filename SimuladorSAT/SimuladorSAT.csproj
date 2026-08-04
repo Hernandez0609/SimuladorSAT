@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="clsConexion.cs" />
     <Compile Include="clsGeneradorAcuse.cs" />
+    <Compile Include="clsValidacionNumerica.cs" />
     <Compile Include="EstadoPestanasHelper.cs" />
     <Compile Include="fmAdminDeclaracion.cs">
       <SubType>Form</SubType>
