@@ -223,16 +223,17 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = @"SELECT d.id, d.contribuyente_id, d.ejercicio, cp.descripcion AS periodicidad, cper.descripcion AS periodo,
-                 ctd.descripcion AS tipo_declaracion,
-                 d.modulo_isr_fisicas_seleccionado, d.modulo_isr_salarios_seleccionado, d.modulo_iva_seleccionado,
-                 d.modulo_isr_fisicas_completado, d.modulo_isr_salarios_completado, d.modulo_iva_completado,
-                 d.fecha_creacion, d.fecha_ultima_modificacion
-                   FROM declaraciones d
-                   JOIN cat_tipos_periodicidad cp ON cp.id = d.periodicidad_id
-                   JOIN cat_tipos_periodos cper ON cper.id = d.periodo_id
-                   JOIN cat_tipos_declaracion ctd ON ctd.id = d.tipo_declaracion_id
-                   WHERE d.contribuyente_id = @contribuyenteId AND d.concluida = 0
-                   ORDER BY d.fecha_ultima_modificacion DESC";
+                             ctd.descripcion AS tipo_declaracion,
+                             d.modulo_isr_fisicas_seleccionado, d.modulo_isr_salarios_seleccionado, d.modulo_iva_seleccionado,
+                             d.modulo_isr_fisicas_completado, d.modulo_isr_salarios_completado, d.modulo_iva_completado,
+                             d.monto_isr_fisicas, d.monto_isr_salarios, d.monto_iva,
+                             d.fecha_creacion, d.fecha_ultima_modificacion
+                        FROM declaraciones d
+                        JOIN cat_tipos_periodicidad cp ON cp.id = d.periodicidad_id
+                        JOIN cat_tipos_periodos cper ON cper.id = d.periodo_id
+                        JOIN cat_tipos_declaracion ctd ON ctd.id = d.tipo_declaracion_id
+                        WHERE d.contribuyente_id = @contribuyenteId AND d.concluida = 0
+                        ORDER BY d.fecha_ultima_modificacion DESC";
 
                 using (var cmd = new MySqlCommand(query, conexion))
                 {
@@ -258,6 +259,9 @@ namespace SimuladorSAT
                                 FechaCreacion = reader.GetDateTime("fecha_creacion"),
                                 FechaUltimaModificacion = reader.GetDateTime("fecha_ultima_modificacion"),
                                 ContribuyenteId = reader.GetInt32("contribuyente_id"),
+                                MontoIsrFisicas = reader.GetDecimal("monto_isr_fisicas"),
+                                MontoIsrSalarios = reader.GetDecimal("monto_isr_salarios"),
+                                MontoIva = reader.GetDecimal("monto_iva"),
                                 Concluida = false
                             });
                         }
