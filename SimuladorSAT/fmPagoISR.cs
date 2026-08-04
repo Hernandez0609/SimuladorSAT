@@ -132,10 +132,15 @@ namespace SimuladorSAT
             btnTabDeterminacion.Click -= BtnTabDeterminacion_Click;
             btnTabDeterminacion.Click += BtnTabDeterminacion_Click;
             btnInicio.Click += (s, e) => IrAPresentarDeclaracion();
-            btnCerrar.Click += (s, e) => IrAAdminDeclaracion();
+            btnCerrar.Click += (s, e) => IrAInicio();
             btnAdministracion.Click += (s, e) => IrAAdminDeclaracion();
         }
-
+        private void IrAInicio()   
+        {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
+        }
         private void BtnTabDeterminacion_Click(object sender, EventArgs e)
         {
             if (Program.formIsrSalarios == null || Program.formIsrSalarios.IsDisposed)
@@ -148,6 +153,9 @@ namespace SimuladorSAT
 
         private void IrAAdminDeclaracion()
         {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+
             if (Program.formAdmin == null || Program.formAdmin.IsDisposed)
             {
                 Program.formAdmin = new fmAdminDeclaracion();
@@ -158,6 +166,9 @@ namespace SimuladorSAT
 
         private void IrAPresentarDeclaracion()
         {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+
             if (Program.formPresentar == null || Program.formPresentar.IsDisposed)
             {
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
@@ -181,6 +192,7 @@ namespace SimuladorSAT
         {
             if (Program.declaracionActual == null) return;
             var conexion = new clsConexion();
+            conexion.GuardarTodosLosModulos(Program.declaracionActual);
             conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_salarios_completado");
             Program.declaracionActual.ModuloIsrSalariosCompletado = true;
             Program.declaracionActual.MontoIsrSalarios = Program.modeloIsrSalarios.CantidadAPagar;

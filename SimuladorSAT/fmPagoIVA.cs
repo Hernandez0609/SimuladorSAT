@@ -191,14 +191,15 @@ namespace SimuladorSAT
         private void tlpCamposPago_Paint(object sender, PaintEventArgs e) { }
         private void btnNavInicio_Click(object sender, EventArgs e)
         {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
         private void btnNavCerrar_Click(object sender, EventArgs e)
         {
-            if (Program.formResico != null && !Program.formResico.IsDisposed)
-            {
-                NavegacionHelper.MostrarSinParpadeo(Program.formResico, this);
-            }
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
         private void btnGuardar_Click(object sender, EventArgs e) { GuardarYMarcarCompletado(); }
         private void btnAdminDeclaracion_Click(object sender, EventArgs e)
@@ -211,11 +212,15 @@ namespace SimuladorSAT
         {
             if (Program.declaracionActual == null) return;
             var conexion = new clsConexion();
-            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_iva_completado");
-            Program.declaracionActual.ModuloIvaSimplificadoCompletado = true;
 
+            Program.declaracionActual.ModuloIvaSimplificadoCompletado = true;
             decimal monto = Program.modeloIva.EsImpuestoAFavor ? 0 : Program.modeloIva.CantidadAPagar;
             Program.declaracionActual.MontoIva = monto;
+
+            conexion.GuardarTodosLosModulos(Program.declaracionActual);
+            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_iva_completado");
+            conexion.GuardarMontosDeclaracion(Program.declaracionActual.Id,
+                Program.declaracionActual.MontoIsrFisicas, Program.declaracionActual.MontoIsrSalarios, Program.declaracionActual.MontoIva);
 
             Program.formAdmin.AplicarModulosDeclaracionActual();
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -250,12 +250,16 @@ namespace SimuladorSAT
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
         private void btnEnviarDeclaracion_Click(object sender, EventArgs e)
         {

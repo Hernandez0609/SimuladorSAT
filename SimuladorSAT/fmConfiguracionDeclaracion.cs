@@ -18,13 +18,13 @@ namespace SimuladorSAT
         private bool _completadoIsrFisicas = false;
         private bool _completadoIsrSalarios = false;
         private bool _completadoIva = false;
+
         public fmConfiguracionDeclaracion()
         {
             InitializeComponent();
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
-
             ConfigurarCirculos();
             CargarAnios();
         }
@@ -83,15 +83,11 @@ namespace SimuladorSAT
             btn.MouseLeave += (s, e) => { mouseHover = false; btn.Invalidate(); };
         }
 
-        // ====================================================================
-        // Cascada
-        // ====================================================================
         private void cmbEjercicio_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbEjercicio.SelectedIndex >= 0)
             {
                 cmbPeriocidad.Enabled = true; // ← Desbloquea el combo de periodicidad
-
                 if (cmbPeriocidad.SelectedIndex > 0)
                 {
                     CargarMeses();
@@ -125,6 +121,7 @@ namespace SimuladorSAT
                 ResetearDesdePeriodo();
             }
         }
+
         private void ResetearDesdePeriocidad()
         {
             cmbPeriocidad.SelectedIndex = 0;
@@ -174,7 +171,6 @@ namespace SimuladorSAT
             bool hay = cmbPeriodo.SelectedIndex > 0;
             lblTipoDeclaracion.Visible = hay;
             cmbTipoDeclaracion.Visible = hay;
-
             ResetearDesdeTipoDeclaracion();
 
             if (hay)
@@ -227,8 +223,10 @@ namespace SimuladorSAT
                 cmbTipoComplementaria.Visible = true;
                 // Los círculos NO se muestran aquí — esperan a que elijan el tipo
             }
+
             AplicarCentrado();
         }
+
         private void cmbTipoComplementaria_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbTipoComplementaria.SelectedIndex > 0)
@@ -239,8 +237,10 @@ namespace SimuladorSAT
             {
                 OcultarModulosYSiguiente();
             }
+
             AplicarCentrado();
         }
+
         private void MostrarCirculosParaNormal()
         {
             btnCircIsrFisicas.Visible = true;
@@ -340,13 +340,9 @@ namespace SimuladorSAT
             AplicarCentrado();
         }
 
-        // ====================================================================
-        // Siguiente — crea la declaración y navega a Admin
-        // ====================================================================
         private void btnSiguiente_Click(object sender, EventArgs e)
         {
             var conexion = new clsConexion();
-
             int ejercicio = int.Parse(cmbEjercicio.SelectedItem.ToString());
             string periocidadTexto = cmbPeriocidad.SelectedItem.ToString();
             string periodoTexto = cmbPeriodo.SelectedItem.ToString();
@@ -383,7 +379,6 @@ namespace SimuladorSAT
                         if (dialogoConfirmar.SeEligioReemplazar)
                         {
                             conexion.EliminarDeclaracion(declaracionExistenteId);
-
                             // Quita de la lista en memoria la que acabamos de borrar de la BD
                             Program.listaDeclaraciones.RemoveAll(d => d.Id == declaracionExistenteId);
 
@@ -394,6 +389,7 @@ namespace SimuladorSAT
                             nueva = new ModeloDeclaracion
                             {
                                 Id = nuevoId,
+                                ContribuyenteId = Program.contribuyenteId,
                                 Ejercicio = ejercicio,
                                 Periocidad = periocidadTexto,
                                 Periodo = periodoTexto,
@@ -421,6 +417,7 @@ namespace SimuladorSAT
                                 nueva.Id = declaracionExistenteId;
                                 Program.listaDeclaraciones.Add(nueva);
                             }
+                            conexion.CargarModulosEnMemoria(declaracionExistenteId);
                         }
                     }
 
@@ -436,6 +433,7 @@ namespace SimuladorSAT
                 nueva = new ModeloDeclaracion
                 {
                     Id = nuevoId,
+                    ContribuyenteId = Program.contribuyenteId,
                     Ejercicio = ejercicio,
                     Periocidad = periocidadTexto,
                     Periodo = periodoTexto,
@@ -451,11 +449,13 @@ namespace SimuladorSAT
 
                 Program.listaDeclaraciones.Add(nueva);
             }
+
             Program.declaracionActual = nueva;
             Program.formAdmin.AplicarModulosDeclaracionActual();
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
             AplicarCentrado();
         }
+
         //CENTRAR
         private void fmConfiguracionDeclaracion_Load(object sender, EventArgs e)
         {
@@ -474,12 +474,16 @@ namespace SimuladorSAT
 
             lblEjercicio.Left = baseX;
             cmbEjercicio.Left = baseX;
+
             lblPeriocidad.Left = baseX;
             cmbPeriocidad.Left = baseX;
+
             lblPeriodo.Left = baseX + 354;
             cmbPeriodo.Left = baseX + 354;
+
             lblTipoDeclaracion.Left = baseX;
             cmbTipoDeclaracion.Left = baseX;
+
             lblTipoComplementaria.Left = baseX + 354;
             cmbTipoComplementaria.Left = baseX + 354;
 
@@ -501,7 +505,6 @@ namespace SimuladorSAT
             {
                 int x = startX + i * (circleWidth + gap);
                 visibles[i].btn.Left = x;
-
                 // Centra el texto respecto al círculo usando el ancho REAL del label
                 visibles[i].lbl.Left = x - (visibles[i].lbl.Width - circleWidth) / 2;
             }
@@ -514,12 +517,24 @@ namespace SimuladorSAT
         // ====================================================================
         private void btnInicio_Click(object sender, EventArgs e)
         {
+            GuardarSiHayDeclaracionActiva();
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
+            GuardarSiHayDeclaracionActiva();
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
+        }
+
+        // Guarda los 3 módulos en BD si ya hay una declaración activa en memoria.
+        // En esta pantalla normalmente no habrá nada que guardar (declaracionActual
+        // se define hasta btnSiguiente_Click), pero si se regresa aquí a medio flujo,
+        // esto evita perder cualquier avance ya capturado.
+        private void GuardarSiHayDeclaracionActiva()
+        {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
         }
     }
 }

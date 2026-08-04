@@ -220,11 +220,15 @@ namespace SimuladorSAT
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -238,7 +242,6 @@ namespace SimuladorSAT
         private void GuardarYMarcarCompletado()
         {
             if (Program.declaracionActual == null) return;
-
             var m = Program.modeloIsrFisicas;
             if (m.TieneCompensaciones && !m.CompensacionesCapturado)
             {
@@ -252,12 +255,11 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             var conexion = new clsConexion();
+            conexion.GuardarTodosLosModulos(Program.declaracionActual);   // ← LÍNEA NUEVA
             conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_fisicas_completado");
             Program.declaracionActual.ModuloIsrFisicasCompletado = true;
             Program.declaracionActual.MontoIsrFisicas = m.CantidadAPagar;
-
             Program.formAdmin.AplicarModulosDeclaracionActual();
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

@@ -130,7 +130,11 @@ namespace SimuladorSAT
             Program.formIsrFisicasPago.ActualizarDesdeModelo();
             NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasPago, this);
         }
-
+        private void GuardarProgreso()
+        {
+            if (Program.declaracionActual == null) return;
+            new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+        }
         private void btnTabDatosAdicionales_Click(object sender, EventArgs e)
         {
             // Se conectará cuando exista fmIsrFisicasDatosAdicionales
@@ -138,15 +142,18 @@ namespace SimuladorSAT
 
         private void btnAdministracion_Click(object sender, EventArgs e)
         {
+            GuardarProgreso();
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
         private void btnInicio_Click(object sender, EventArgs e)
         {
+            GuardarProgreso();
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+            GuardarProgreso();
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
     }
 }

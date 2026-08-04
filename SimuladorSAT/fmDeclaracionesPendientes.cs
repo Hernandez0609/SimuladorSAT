@@ -31,7 +31,7 @@ namespace SimuladorSAT
 
             var conexion = new clsConexion();
             conexion.ActualizarFechaModificacion(d.Id);
-
+            conexion.CargarModulosEnMemoria(d.Id);
             Program.formAdmin.AplicarModulosDeclaracionActual();
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
@@ -131,11 +131,20 @@ namespace SimuladorSAT
             {
                 var conexion = new clsConexion();
                 conexion.EliminarDeclaracion(d.Id);
-
-
-
                 Program.listaDeclaraciones.Remove(d);
-                ActualizarLista();
+
+                if (Program.declaracionActual != null && Program.declaracionActual.Id == d.Id)
+                    Program.declaracionActual = null;   // ← LÍNEA NUEVA
+
+                if (Program.listaDeclaraciones.Count == 0)
+                {
+                    Program.formConfiguracionDeclaracion.ReiniciarFormulario();
+                    NavegacionHelper.MostrarSinParpadeo(Program.formConfiguracionDeclaracion, this);
+                }
+                else
+                {
+                    ActualizarLista();
+                }
             }
         }
 
@@ -152,7 +161,7 @@ namespace SimuladorSAT
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
     }
 }

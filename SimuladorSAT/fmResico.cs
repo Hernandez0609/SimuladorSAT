@@ -12,6 +12,7 @@ namespace SimuladorSAT
         public fmResico()
         {
             InitializeComponent();
+            this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
         }
 
         public fmResico(Form ventanaAnterior)
@@ -289,10 +290,14 @@ namespace SimuladorSAT
         }
         private void btnInicio_Click(object sender, EventArgs e)
         {
+            GuardarProgreso();
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
-        private void btnCerrar_Click(object sender, EventArgs e) { RegresarAAdmin(); }
-
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            GuardarProgreso();
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
+        }
         private void btnTabPago_Click(object sender, EventArgs e)
         {
             if (!Program.modeloIva.DeterminacionCompleta)
@@ -308,7 +313,23 @@ namespace SimuladorSAT
             Program.formPagoIva.ActualizarDesdeModelo();
             NavegacionHelper.MostrarSinParpadeo(Program.formPagoIva, this);
         }
+        private void GuardarProgreso()
+        {
+            if (Program.declaracionActual == null) return;
+            new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+        }
 
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            GuardarProgreso();
+            MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnAdminDeclaracion_Click(object sender, EventArgs e)
+        {
+            GuardarProgreso();
+            RegresarAAdmin();
+        }
         private void pnlContenedorPrincipal_Paint(object sender, PaintEventArgs e) { }
         private void picEscudoUthh_Click(object sender, EventArgs e) { }
     }

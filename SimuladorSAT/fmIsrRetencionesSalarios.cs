@@ -108,15 +108,16 @@ namespace SimuladorSAT
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            if (Program.formAdmin == null || Program.formAdmin.IsDisposed)
-            {
-                Program.formAdmin = new fmAdminDeclaracion();
-            }
-            NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
 
         private void btnInicio_Click(object sender, EventArgs e)
         {
+            if (Program.declaracionActual != null)
+                new clsConexion().GuardarTodosLosModulos(Program.declaracionActual);
+
             if (Program.formPresentar == null || Program.formPresentar.IsDisposed)
             {
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
@@ -143,6 +144,17 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            if (Program.declaracionActual == null) return;
+
+            var conexion = new clsConexion();
+            conexion.GuardarTodosLosModulos(Program.declaracionActual);
+            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_salarios_completado");
+
+            Program.declaracionActual.ModuloIsrSalariosCompletado = true;
+            Program.declaracionActual.MontoIsrSalarios = Program.modeloIsrSalarios.CantidadAPagar;
+            Program.formAdmin.AplicarModulosDeclaracionActual();
+
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
