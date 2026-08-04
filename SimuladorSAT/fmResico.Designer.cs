@@ -270,6 +270,7 @@
             this.btnGuardar.TabIndex = 2;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = false;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnTabDeterminacion
             // 
@@ -283,6 +284,7 @@
             this.btnTabDeterminacion.TabIndex = 3;
             this.btnTabDeterminacion.Text = "Determinación";
             this.btnTabDeterminacion.UseVisualStyleBackColor = false;
+            this.btnAdminDeclaracion.Click += new System.EventHandler(this.btnAdminDeclaracion_Click);
             // 
             // btnTabPago
             // 
@@ -813,7 +815,6 @@
             this.txtAcreditamiento.Font = new System.Drawing.Font("Arial", 10F);
             this.txtAcreditamiento.Size = new System.Drawing.Size(205, 22);
             this.txtAcreditamiento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
 
             this.tlpCamposSat.Controls.Add(this.lblAcreditamiento, 0, 11);
             this.tlpCamposSat.Controls.Add(this.lblSignoAcreditamiento, 1, 11);

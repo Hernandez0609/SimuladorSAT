@@ -5,6 +5,8 @@ namespace SimuladorSAT
 {
     public class ModeloDeclaracion
     {
+        public int Id { get; set; }
+        public int ContribuyenteId { get; set; }
         public int Ejercicio { get; set; }
         public string Periocidad { get; set; }
         public string Periodo { get; set; }
@@ -19,14 +21,10 @@ namespace SimuladorSAT
         public decimal MontoIsrFisicas { get; set; }
         public decimal MontoIsrSalarios { get; set; }
         public decimal MontoIva { get; set; }
-        // ==========================================================
-
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaUltimaModificacion { get; set; }
         public bool Concluida { get; set; } = false;
         public string NumeroOperacion { get; set; }
-
-        public int Id { get; set; }
 
         public string NombreMes()
         {
