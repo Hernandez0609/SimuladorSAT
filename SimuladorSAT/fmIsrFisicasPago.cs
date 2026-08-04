@@ -243,6 +243,7 @@ namespace SimuladorSAT
         {
             if (Program.declaracionActual == null) return;
             var m = Program.modeloIsrFisicas;
+
             if (m.TieneCompensaciones && !m.CompensacionesCapturado)
             {
                 MessageBox.Show("Captura el monto de compensaciones antes de guardar.", "Campo requerido",
@@ -255,11 +256,17 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             var conexion = new clsConexion();
-            conexion.GuardarTodosLosModulos(Program.declaracionActual);   // ← LÍNEA NUEVA
-            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_fisicas_completado");
+
             Program.declaracionActual.ModuloIsrFisicasCompletado = true;
             Program.declaracionActual.MontoIsrFisicas = m.CantidadAPagar;
+
+            conexion.GuardarTodosLosModulos(Program.declaracionActual);
+            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_fisicas_completado");
+            conexion.GuardarMontosDeclaracion(Program.declaracionActual.Id,
+                Program.declaracionActual.MontoIsrFisicas, Program.declaracionActual.MontoIsrSalarios, Program.declaracionActual.MontoIva);
+
             Program.formAdmin.AplicarModulosDeclaracionActual();
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

@@ -192,10 +192,14 @@ namespace SimuladorSAT
         {
             if (Program.declaracionActual == null) return;
             var conexion = new clsConexion();
-            conexion.GuardarTodosLosModulos(Program.declaracionActual);
-            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_salarios_completado");
+
             Program.declaracionActual.ModuloIsrSalariosCompletado = true;
             Program.declaracionActual.MontoIsrSalarios = Program.modeloIsrSalarios.CantidadAPagar;
+
+            conexion.GuardarTodosLosModulos(Program.declaracionActual);
+            conexion.MarcarModuloCompletado(Program.declaracionActual.Id, "modulo_isr_salarios_completado");
+            conexion.GuardarMontosDeclaracion(Program.declaracionActual.Id,
+                Program.declaracionActual.MontoIsrFisicas, Program.declaracionActual.MontoIsrSalarios, Program.declaracionActual.MontoIva);
 
             Program.formAdmin.AplicarModulosDeclaracionActual();
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
