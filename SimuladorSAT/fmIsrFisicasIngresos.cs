@@ -13,8 +13,24 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
 
+            txtTotalCobrados.TextChanged += (s, e) => { GuardarTotalCobradosDesdeTexto(); RecalcularTotalPercibidos(); ActualizarEstadoPestañas(); };   // ← ESTA LÍNEA TE FALTÓ
+            txtTotalCobrados.Enter += SeleccionarTextoAlEntrar;
+
             CargarValoresDesdeModelo();
 
+        }
+        private void GuardarTotalCobradosDesdeTexto()
+        {
+            string limpio = txtTotalCobrados.Text.Replace("$", "").Replace(",", "").Trim();
+            Program.modeloIsrFisicas.TotalIngresosCobrados = decimal.TryParse(limpio, out decimal v) ? v : 0;
+        }
+
+        private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
+        {
+            if (sender is TextBox txt)
+            {
+                txt.BeginInvoke((MethodInvoker)delegate { txt.SelectAll(); });
+            }
         }
         public void ActualizarInfoDeclaracion()
         {
