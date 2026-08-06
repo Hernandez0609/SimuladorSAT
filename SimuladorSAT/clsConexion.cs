@@ -331,12 +331,14 @@ namespace SimuladorSAT
         }
         public void GuardarIsrFisicas(int declaracionId, int contribuyenteId, int periodoMes, int periodoAnio, int tipoDeclaracionId, ModeloIsrPersonasFisicas modelo)
         {
+            int ingresosIsrId;
             using (var conexion = AbrirConexion())
             {
                 int idExistente = ObtenerIdModulo(conexion, "ingresos_isr", declaracionId);
 
                 if (idExistente > 0)
                 {
+                    ingresosIsrId = idExistente;
                     string queryUpdate = @"UPDATE ingresos_isr SET
                 total_ingresos_cobrados = @totalIngresosCobrados,
                 descuentos_devoluciones_bonificaciones = @descuentos,
@@ -369,7 +371,8 @@ namespace SimuladorSAT
                 (@declaracionId, @contribuyenteId, @periodoMes, @periodoAnio, @tipoDeclaracionId,
                  @totalIngresosCobrados, @descuentos, @ingresosADisminuir,
                  @ingresosAdicionales, @totalIngresosPercibidos, @tasaAplicable, @impuestoMensual,
-                 @isrRetenidoPm, @impuestoACargo, @subsidioEmpleo, @compensaciones, @estimulos)";
+                 @isrRetenidoPm, @impuestoACargo, @subsidioEmpleo, @compensaciones, @estimulos);
+                SELECT LAST_INSERT_ID();";
                     using (var cmd = new MySqlCommand(queryInsert, conexion))
                     {
                         cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
@@ -378,10 +381,15 @@ namespace SimuladorSAT
                         cmd.Parameters.AddWithValue("@periodoAnio", periodoAnio);
                         cmd.Parameters.AddWithValue("@tipoDeclaracionId", tipoDeclaracionId);
                         AgregarParametrosIsrFisicas(cmd, modelo);
-                        cmd.ExecuteNonQuery();
+                        ingresosIsrId = Convert.ToInt32(cmd.ExecuteScalar());
                     }
                 }
             }
+
+            // Guarda las 3 listas de detalle contra el id real de ingresos_isr
+            GuardarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId, modelo.ListaTotalPercibidosDetalle);
+            GuardarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId, modelo.ListaIngresosADisminuir);
+            GuardarDetalleIngresos("ingresos_adicionales", ingresosIsrId, modelo.ListaIngresosAdicionales);
         }
 
         private void AgregarParametrosIsrFisicas(MySqlCommand cmd, ModeloIsrPersonasFisicas modelo)
@@ -588,8 +596,10 @@ namespace SimuladorSAT
         private void CargarIsrFisicas(int declaracionId)
         {
             var m = new ModeloIsrPersonasFisicas();
+            int ingresosIsrId = 0;
             using (var conexion = AbrirConexion())
             {
+                ingresosIsrId = ObtenerIdModulo(conexion, "ingresos_isr", declaracionId);
                 string query = "SELECT * FROM ingresos_isr WHERE declaracion_id = @declaracionId LIMIT 1";
                 using (var cmd = new MySqlCommand(query, conexion))
                 {
@@ -627,6 +637,12 @@ namespace SimuladorSAT
                         }
                     }
                 }
+            }
+            if (ingresosIsrId > 0)   
+            {
+                m.ListaTotalPercibidosDetalle = CargarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId);
+                m.ListaIngresosADisminuir = CargarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId);
+                m.ListaIngresosAdicionales = CargarDetalleIngresos("ingresos_adicionales", ingresosIsrId);
             }
             Program.modeloIsrFisicas = m;
         }
@@ -746,6 +762,61 @@ namespace SimuladorSAT
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+        // Guarda una lista de renglones (concepto/importe) en una tabla de detalle de ingresos.
+        // Borra todo lo existente para ese ingresos_isr_id y vuelve a insertar (más simple y confiable que hacer diff).
+        public void GuardarDetalleIngresos(string tabla, int ingresosIsrId, List<(string Concepto, decimal Importe)> lista)
+        {
+            var tablasValidas = new HashSet<string> { "ingresos_adicionales", "ingresos_detalles_disminuir", "ingresos_detalles_cobrados" };
+            if (!tablasValidas.Contains(tabla))
+                throw new ArgumentException("Tabla de detalle no válida: " + tabla);
+
+            using (var conexion = AbrirConexion())
+            {
+                string queryDelete = $"DELETE FROM {tabla} WHERE ingresos_isr_id = @ingresosIsrId";
+                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                {
+                    cmdDelete.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                    cmdDelete.ExecuteNonQuery();
+                }
+
+                foreach (var renglon in lista)
+                {
+                    string queryInsert = $"INSERT INTO {tabla} (ingresos_isr_id, concepto, importe) VALUES (@ingresosIsrId, @concepto, @importe)";
+                    using (var cmdInsert = new MySqlCommand(queryInsert, conexion))
+                    {
+                        cmdInsert.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                        cmdInsert.Parameters.AddWithValue("@concepto", renglon.Concepto);
+                        cmdInsert.Parameters.AddWithValue("@importe", renglon.Importe);
+                        cmdInsert.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public List<(string Concepto, decimal Importe)> CargarDetalleIngresos(string tabla, int ingresosIsrId)
+        {
+            var tablasValidas = new HashSet<string> { "ingresos_adicionales", "ingresos_detalles_disminuir", "ingresos_detalles_cobrados" };
+            if (!tablasValidas.Contains(tabla))
+                throw new ArgumentException("Tabla de detalle no válida: " + tabla);
+
+            var lista = new List<(string, decimal)>();
+            using (var conexion = AbrirConexion())
+            {
+                string query = $"SELECT concepto, importe FROM {tabla} WHERE ingresos_isr_id = @ingresosIsrId";
+                using (var cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add((reader.GetString("concepto"), reader.GetDecimal("importe")));
+                        }
+                    }
+                }
+            }
+            return lista;
         }
     }
 }
