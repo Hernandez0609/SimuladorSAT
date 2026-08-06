@@ -46,24 +46,93 @@ namespace SimuladorSAT
         {
             var modelo = Program.modeloIsrFisicas;
 
-            txtACargo.Text = modelo.ImpuestoACargo.ToString("N0");
-            txtSubsidio.Text = modelo.SubsidioParaElEmpleo.ToString("N0");
-            cmbCompensaciones.SelectedIndex = modelo.TieneCompensaciones ? 1 : 0;
-            cmbEstimulos.SelectedIndex = modelo.TieneEstimulos ? 1 : 0;
-            txtCompensacionesValor.Text = modelo.Compensaciones.ToString("N0");
-            txtEstimulosValor.Text = modelo.Estimulos.ToString("N0");
-
-            AplicarEstadoFila(4, modelo.TieneCompensaciones,
-                lblCompensacionesValor, lblSignoCompensaciones, txtCompensacionesValor, btnCapturarCompensaciones);
-            AplicarEstadoFila(6, modelo.TieneEstimulos,
-                lblEstimulosValor, lblSignoEstimulos, txtEstimulosValor, btnCapturarEstimulos);
-
-            btnTabDatosAdicionales.Visible = modelo.EsCopropiedad;
-
-            RecalcularPago();
+            if (modelo.EsImpuestoAFavor)
+            {
+                MostrarModoFavor(modelo.ImpuestoAFavor);
+            }
+            else
+            {
+                MostrarModoCargo();
+                txtACargo.Text = modelo.ImpuestoACargo.ToString("N0");
+                txtSubsidio.Text = modelo.SubsidioParaElEmpleo.ToString("N0");
+                cmbCompensaciones.SelectedIndex = modelo.TieneCompensaciones ? 1 : 0;
+                cmbEstimulos.SelectedIndex = modelo.TieneEstimulos ? 1 : 0;
+                txtCompensacionesValor.Text = modelo.Compensaciones.ToString("N0");
+                txtEstimulosValor.Text = modelo.Estimulos.ToString("N0");
+                AplicarEstadoFila(4, modelo.TieneCompensaciones,
+                    lblCompensacionesValor, lblSignoCompensaciones, txtCompensacionesValor, btnCapturarCompensaciones);
+                AplicarEstadoFila(6, modelo.TieneEstimulos,
+                    lblEstimulosValor, lblSignoEstimulos, txtEstimulosValor, btnCapturarEstimulos);
+                btnTabDatosAdicionales.Visible = modelo.EsCopropiedad;
+                RecalcularPago();
+            }
             ActualizarEstadoPestañas();
         }
+        private void MostrarModoFavor(decimal monto)
+        {
+            lblACargo.Text = "A favor";
+            txtACargo.Text = monto.ToString("N0");
 
+            lblTotalContribuciones1.Visible = false;
+            lblSigno1.Visible = false;
+            txtTotalContribuciones1.Visible = false;
+            lblSubsidio.Visible = false;
+            txtSubsidio.Visible = false;
+            lblCompensaciones.Visible = false;
+            cmbCompensaciones.Visible = false;
+            lblCompensacionesValor.Visible = false;
+            lblSignoCompensaciones.Visible = false;
+            txtCompensacionesValor.Visible = false;
+            btnCapturarCompensaciones.Visible = false;
+            lblEstimulos.Visible = false;
+            cmbEstimulos.Visible = false;
+            lblEstimulosValor.Visible = false;
+            lblSignoEstimulos.Visible = false;
+            txtEstimulosValor.Visible = false;
+            btnCapturarEstimulos.Visible = false;
+            lblTotalAplicaciones1.Visible = false;
+            lblSigno2.Visible = false;
+            txtTotalAplicaciones1.Visible = false;
+            lblTotalContribuciones2.Visible = false;
+            txtTotalContribuciones2.Visible = false;
+            lblTotalAplicaciones2.Visible = false;
+            lblSigno3.Visible = false;
+            txtTotalAplicaciones2.Visible = false;
+            lblCantidadACargo.Visible = false;
+            lblSigno4.Visible = false;
+            txtCantidadACargo.Visible = false;
+            lblCantidadAPagar.Visible = false;
+            txtCantidadAPagar.Visible = false;
+
+            Program.modeloIsrFisicas.CantidadACargo = 0;
+            Program.modeloIsrFisicas.CantidadAPagar = 0;
+        }
+        private void MostrarModoCargo()
+        {
+            lblACargo.Text = "A cargo";
+            lblTotalContribuciones1.Visible = true;
+            lblSigno1.Visible = true;
+            txtTotalContribuciones1.Visible = true;
+            lblSubsidio.Visible = true;
+            txtSubsidio.Visible = true;
+            lblCompensaciones.Visible = true;
+            cmbCompensaciones.Visible = true;
+            lblEstimulos.Visible = true;
+            cmbEstimulos.Visible = true;
+            lblTotalAplicaciones1.Visible = true;
+            lblSigno2.Visible = true;
+            txtTotalAplicaciones1.Visible = true;
+            lblTotalContribuciones2.Visible = true;
+            txtTotalContribuciones2.Visible = true;
+            lblTotalAplicaciones2.Visible = true;
+            lblSigno3.Visible = true;
+            txtTotalAplicaciones2.Visible = true;
+            lblCantidadACargo.Visible = true;
+            lblSigno4.Visible = true;
+            txtCantidadACargo.Visible = true;
+            lblCantidadAPagar.Visible = true;
+            txtCantidadAPagar.Visible = true;
+        }
         private void GuardarSubsidioDesdeTexto()
         {
             string limpio = txtSubsidio.Text.Replace("$", "").Replace(",", "").Trim();
@@ -73,18 +142,15 @@ namespace SimuladorSAT
         private void RecalcularPago()
         {
             var m = Program.modeloIsrFisicas;
+            if (m.EsImpuestoAFavor) return;   
 
             decimal compensaciones = m.TieneCompensaciones ? m.Compensaciones : 0;
             decimal estimulos = m.TieneEstimulos ? m.Estimulos : 0;
-
             m.TotalAplicaciones = m.SubsidioParaElEmpleo + compensaciones + estimulos;
-
             decimal cantidad = m.ImpuestoACargo - m.TotalAplicaciones;
             if (cantidad < 0) cantidad = 0;
-
             m.CantidadACargo = cantidad;
             m.CantidadAPagar = cantidad;
-
             txtTotalContribuciones1.Text = m.ImpuestoACargo.ToString("N0");
             txtTotalAplicaciones1.Text = m.TotalAplicaciones.ToString("N0");
             txtTotalContribuciones2.Text = m.ImpuestoACargo.ToString("N0");

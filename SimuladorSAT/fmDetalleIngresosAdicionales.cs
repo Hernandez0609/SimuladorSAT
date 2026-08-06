@@ -25,10 +25,17 @@ namespace SimuladorSAT
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
-
+            CargarRegistrosDesdeModelo();
             ActualizarEstadoLista();
         }
-
+        private void CargarRegistrosDesdeModelo()   
+        {
+            dgvRegistros.Rows.Clear();
+            foreach (var registro in Program.modeloIsrFisicas.ListaIngresosAdicionales)
+            {
+                dgvRegistros.Rows.Add(registro.Concepto, registro.Importe.ToString("N0"));
+            }
+        }
         private void CentrarPaginacion()
         {
             int centroX = (this.ClientSize.Width - lblPagina.Width) / 2;
@@ -70,7 +77,7 @@ namespace SimuladorSAT
             }
 
             dgvRegistros.Rows.Add(cmbConcepto.SelectedItem.ToString(), importe.ToString("N0"));
-
+            Program.modeloIsrFisicas.ListaIngresosAdicionales.Add((cmbConcepto.SelectedItem.ToString(), importe));
             LimpiarFormularioCaptura();
             pnlFormularioCaptura.Visible = false;
             btnAgregar.Visible = true;
@@ -97,6 +104,7 @@ namespace SimuladorSAT
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == colEliminar.Index)
             {
+                Program.modeloIsrFisicas.ListaIngresosAdicionales.RemoveAt(e.RowIndex);
                 dgvRegistros.Rows.RemoveAt(e.RowIndex);
                 ActualizarEstadoLista();
             }
