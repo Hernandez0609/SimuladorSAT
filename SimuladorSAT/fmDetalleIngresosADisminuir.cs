@@ -6,24 +6,30 @@ namespace SimuladorSAT
     public partial class fmDetalleIngresosADisminuir : Form
     {
         public decimal MontoCapturado { get; private set; } = 0;
-
-        public fmDetalleIngresosADisminuir()
+        private readonly decimal _montoMaximo;
+        public fmDetalleIngresosADisminuir(decimal montoMaximo)
         {
             InitializeComponent();
+            _montoMaximo = montoMaximo;
             this.ShowInTaskbar = false;
-
-            // Ajusta el tamaño real: 80% ancho, 60% alto de la pantalla, usando ClientSize
             var area = Screen.PrimaryScreen.WorkingArea;
             this.ClientSize = new System.Drawing.Size((int)(area.Width * 0.80), (int)(area.Height * 0.60));
-
             CentrarPaginacion();
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
-
+            CargarRegistrosDesdeModelo();
             ActualizarEstadoLista();
 
             txtImporte.KeyPress += clsValidacionNumerica.SoloNumeros;
+        }
+        private void CargarRegistrosDesdeModelo()  
+        {
+            dgvRegistros.Rows.Clear();
+            foreach (var registro in Program.modeloIsrFisicas.ListaIngresosADisminuir)
+            {
+                dgvRegistros.Rows.Add(registro.Concepto, registro.Importe.ToString("N0"));
+            }
         }
         private void CentrarPaginacion()
         {
@@ -65,7 +71,6 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             if (!decimal.TryParse(txtImporte.Text, out decimal importe) || importe <= 0)
             {
                 MessageBox.Show("Ingresa un importe válido.", "Campo requerido",
@@ -73,12 +78,19 @@ namespace SimuladorSAT
                 return;
             }
 
-            dgvRegistros.Rows.Add(cmbConcepto.SelectedItem.ToString(), importe.ToString("N0"));
+            decimal totalActual = ObtenerTotalActual();
+            if (totalActual + importe > _montoMaximo)
+            {
+                MessageBox.Show("No puedes disminuir más de lo que cobraste.", "Monto excedido",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            dgvRegistros.Rows.Add(cmbConcepto.SelectedItem.ToString(), importe.ToString("N0"));
+            Program.modeloIsrFisicas.ListaIngresosADisminuir.Add((cmbConcepto.SelectedItem.ToString(), importe));   
             LimpiarFormularioCaptura();
             pnlFormularioCaptura.Visible = false;
             btnAgregar.Visible = true;
-
             ActualizarEstadoLista();
         }
 
@@ -104,11 +116,21 @@ namespace SimuladorSAT
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == colEliminar.Index)
             {
+                Program.modeloIsrFisicas.ListaIngresosADisminuir.RemoveAt(e.RowIndex);   
                 dgvRegistros.Rows.RemoveAt(e.RowIndex);
                 ActualizarEstadoLista();
             }
         }
-
+        private decimal ObtenerTotalActual()
+        {
+            decimal total = 0;
+            foreach (DataGridViewRow fila in dgvRegistros.Rows)
+            {
+                if (decimal.TryParse(fila.Cells[colImporte.Index].Value?.ToString(), out decimal valorFila))
+                    total += valorFila;
+            }
+            return total;
+        }
         // ====================================================================
         // Actualiza contador, paginación, mensaje de alerta y total
         // ====================================================================
@@ -117,18 +139,9 @@ namespace SimuladorSAT
             int totalRegistros = dgvRegistros.Rows.Count;
             lblTotalRegistros.Text = $"Total de registros            {totalRegistros}";
             lblPagina.Text = totalRegistros > 0 ? "< Página 1 de 1 >" : "< Página 1 de 0 >";
-            CentrarPaginacion(); // NUEVO — recentra cada vez que el texto cambia de tamaño
+            CentrarPaginacion();
             lblMensajeAlerta.Visible = totalRegistros == 0;
-
-            decimal total = 0;
-            foreach (DataGridViewRow fila in dgvRegistros.Rows)
-            {
-                if (decimal.TryParse(fila.Cells[colImporte.Index].Value?.ToString(), out decimal valorFila))
-                {
-                    total += valorFila;
-                }
-            }
-            txtTotalIngresosADisminuir.Text = total.ToString("N0");
+            txtTotalIngresosADisminuir.Text = ObtenerTotalActual().ToString("N0");
         }
 
         // ====================================================================

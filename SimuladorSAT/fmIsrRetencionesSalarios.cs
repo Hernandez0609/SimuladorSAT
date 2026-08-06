@@ -12,6 +12,16 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
 
+            txtTrabajadores.TextChanged += (s, e) => { GuardarTrabajadoresDesdeTexto(); ActualizarEstadoPestañas(); };
+            txtPagoSueldos.TextChanged += (s, e) => { GuardarPagoSueldosDesdeTexto(); ActualizarEstadoPestañas(); };
+            txtPagosExentos.TextChanged += (s, e) => { GuardarPagosExentosDesdeTexto(); ActualizarEstadoPestañas(); };
+            txtIsrRetenido.TextChanged += (s, e) => { GuardarIsrRetenidoSueldosDesdeTexto(); ActualizarEstadoPestañas(); };
+
+            txtTrabajadores.Enter += SeleccionarTextoAlEntrar;
+            txtPagoSueldos.Enter += SeleccionarTextoAlEntrar;
+            txtPagosExentos.Enter += SeleccionarTextoAlEntrar;
+            txtIsrRetenido.Enter += SeleccionarTextoAlEntrar;
+
             txtIsrRegistro.TextChanged += (s, e) => { GuardarIsrRegistroDesdeTexto(); RecalcularDeterminacion(); ActualizarEstadoPestañas(); };
             txtIsrRegistro.Enter += SeleccionarTextoAlEntrar;
             txtTrabajadores.KeyPress += clsValidacionNumerica.SoloNumeros;
@@ -76,6 +86,29 @@ namespace SimuladorSAT
 
             Program.modeloIsrSalarios.IsrRetenidoRegistroContribuyente = decimal.TryParse(limpio, out decimal v) ? v : 0;
             Program.modeloIsrSalarios.IsrRetenidoRegistroCapturado = true;
+        }
+        private void GuardarTrabajadoresDesdeTexto()
+        {
+            string limpio = txtTrabajadores.Text.Trim();
+            Program.modeloIsrSalarios.NumeroTrabajadores = int.TryParse(limpio, out int v) ? v : 0;
+        }
+
+        private void GuardarPagoSueldosDesdeTexto()
+        {
+            string limpio = txtPagoSueldos.Text.Replace("$", "").Replace(",", "").Trim();
+            Program.modeloIsrSalarios.PagoSueldos = decimal.TryParse(limpio, out decimal v) ? v : 0;
+        }
+
+        private void GuardarPagosExentosDesdeTexto()
+        {
+            string limpio = txtPagosExentos.Text.Replace("$", "").Replace(",", "").Trim();
+            Program.modeloIsrSalarios.PagosExentos = decimal.TryParse(limpio, out decimal v) ? v : 0;
+        }
+
+        private void GuardarIsrRetenidoSueldosDesdeTexto()
+        {
+            string limpio = txtIsrRetenido.Text.Replace("$", "").Replace(",", "").Trim();
+            Program.modeloIsrSalarios.IsrRetenidoSueldos = decimal.TryParse(limpio, out decimal v) ? v : 0;
         }
         private void RecalcularDeterminacion()
         {

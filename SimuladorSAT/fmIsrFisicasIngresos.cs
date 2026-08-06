@@ -6,12 +6,16 @@ namespace SimuladorSAT
 {
     public partial class fmIsrFisicasIngresos : Form, IInfoDeclaracion
     {
+        private bool _cargandoDesdeModelo = false;
         public fmIsrFisicasIngresos()
         {
             InitializeComponent();
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
+
+            txtTotalCobrados.TextChanged += (s, e) => { GuardarTotalCobradosDesdeTexto(); RecalcularTotalPercibidos(); ActualizarEstadoPestañas(); };   // ← ESTA LÍNEA TE FALTÓ
+            txtTotalCobrados.Enter += SeleccionarTextoAlEntrar;
 
             CargarValoresDesdeModelo();
 
@@ -21,6 +25,19 @@ namespace SimuladorSAT
             txtIngresosAdicionalesValor.KeyPress += clsValidacionNumerica.SoloNumeros;
 
 
+        }
+        private void GuardarTotalCobradosDesdeTexto()
+        {
+            string limpio = txtTotalCobrados.Text.Replace("$", "").Replace(",", "").Trim();
+            Program.modeloIsrFisicas.TotalIngresosCobrados = decimal.TryParse(limpio, out decimal v) ? v : 0;
+        }
+
+        private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
+        {
+            if (sender is TextBox txt)
+            {
+                txt.BeginInvoke((MethodInvoker)delegate { txt.SelectAll(); });
+            }
         }
         public void ActualizarInfoDeclaracion()
         {
@@ -45,6 +62,7 @@ namespace SimuladorSAT
         // ====================================================================
         private void CargarValoresDesdeModelo()
         {
+            _cargandoDesdeModelo = true;
             var modelo = Program.modeloIsrFisicas;
 
             cmbCopropiedad.SelectedIndex = modelo.EsCopropiedad ? 1 : 0;
@@ -64,6 +82,7 @@ namespace SimuladorSAT
                 lblIngresosAdicionalesValor, lblSignoIngresosAdicionales, txtIngresosAdicionalesValor, btnCapturarIngresosAdicionales);
             RecalcularTotalPercibidos();
             ActualizarEstadoPestañas();
+            _cargandoDesdeModelo = false;
         }
 
         // ====================================================================
@@ -133,10 +152,29 @@ namespace SimuladorSAT
             decimal disminuir = m.TieneIngresosADisminuir ? m.IngresosADisminuir : 0;
             decimal adicionales = m.TieneIngresosAdicionales ? m.IngresosAdicionales : 0;
             decimal total = m.TotalIngresosCobrados - m.Descuentos - disminuir + adicionales;
+            if (total < 0) total = 0;
             m.TotalIngresosPercibidos = total;
             txtTotalPercibidos.Text = total.ToString("N0");
-        }
 
+            if (!_cargandoDesdeModelo)
+            {
+                m.TotalPercibidosCapturado = false;
+                m.IsrRetenidoPersonasMorales = 0;
+                m.IsrRetenidoCapturado = false;
+                m.DeterminacionCompleta = false;
+                m.EsImpuestoAFavor = false;
+                m.ImpuestoACargo = 0;
+                m.ImpuestoAFavor = 0;
+                m.TieneCompensaciones = false;
+                m.CompensacionesCapturado = false;
+                m.Compensaciones = 0;
+                m.TieneEstimulos = false;
+                m.EstimulosCapturado = false;
+                m.Estimulos = 0;
+                m.CantidadACargo = 0;
+                m.CantidadAPagar = 0;
+            }
+        }
         public bool IngresosCompleto()
         {
             var m = Program.modeloIsrFisicas;
@@ -205,7 +243,9 @@ namespace SimuladorSAT
                 _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
-                using (var dlg = new fmDetalleIngresosADisminuir())
+
+                decimal montoMaximo = Program.modeloIsrFisicas.TotalIngresosCobrados - Program.modeloIsrFisicas.Descuentos;   // ← LÍNEA NUEVA
+                using (var dlg = new fmDetalleIngresosADisminuir(montoMaximo))   // ← CAMBIO: pasa el límite
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
@@ -277,11 +317,10 @@ namespace SimuladorSAT
                 _overlayForm.Bounds = this.Bounds;
                 _overlayForm.Owner = this;
                 _overlayForm.Show();
-                using (var dlg = new fmDetalleTotalIngresosPercibidos())
+                using (var dlg = new fmDetalleTotalIngresosPercibidos(Program.modeloIsrFisicas.TotalIngresosPercibidos))  
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
-                        Program.modeloIsrFisicas.TotalPercibidosCapturado = true;
                         ActualizarEstadoPestañas();
                     }
                 }

@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SimuladorSAT
 {
     public class ModeloIsrPersonasFisicas
     {
+
+        public bool EsImpuestoAFavor { get; set; }
+        public List<(string Concepto, decimal Importe)> ListaIngresosADisminuir { get; set; } = new List<(string, decimal)>();
+        public List<(string Concepto, decimal Importe)> ListaIngresosAdicionales { get; set; } = new List<(string, decimal)>();
+        public List<(string Concepto, decimal Importe)> ListaTotalPercibidosDetalle { get; set; } = new List<(string, decimal)>();
+        public decimal ImpuestoAFavor { get; set; }
         // Apartado: Ingresos
         public bool EsCopropiedad { get; set; } = false;
         public decimal TotalIngresosCobrados { get; set; }

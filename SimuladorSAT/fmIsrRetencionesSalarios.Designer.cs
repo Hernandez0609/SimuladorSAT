@@ -354,7 +354,7 @@
             // 
             this.txtTrabajadores.Location = new System.Drawing.Point(398, 3);
             this.txtTrabajadores.Name = "txtTrabajadores";
-            this.txtTrabajadores.ReadOnly = true;
+            this.txtTrabajadores.ReadOnly = false;
             this.txtTrabajadores.Size = new System.Drawing.Size(205, 22);
             this.txtTrabajadores.TabIndex = 1;
             this.txtTrabajadores.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -374,7 +374,7 @@
             // 
             this.txtPagoSueldos.Location = new System.Drawing.Point(398, 48);
             this.txtPagoSueldos.Name = "txtPagoSueldos";
-            this.txtPagoSueldos.ReadOnly = true;
+            this.txtPagoSueldos.ReadOnly = false;
             this.txtPagoSueldos.Size = new System.Drawing.Size(205, 22);
             this.txtPagoSueldos.TabIndex = 3;
             this.txtPagoSueldos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -394,7 +394,7 @@
             // 
             this.txtPagosExentos.Location = new System.Drawing.Point(398, 93);
             this.txtPagosExentos.Name = "txtPagosExentos";
-            this.txtPagosExentos.ReadOnly = true;
+            this.txtPagosExentos.ReadOnly = false;
             this.txtPagosExentos.Size = new System.Drawing.Size(205, 22);
             this.txtPagosExentos.TabIndex = 5;
             this.txtPagosExentos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -414,7 +414,7 @@
             // 
             this.txtIsrRetenido.Location = new System.Drawing.Point(398, 138);
             this.txtIsrRetenido.Name = "txtIsrRetenido";
-            this.txtIsrRetenido.ReadOnly = true;
+            this.txtIsrRetenido.ReadOnly = false;
             this.txtIsrRetenido.Size = new System.Drawing.Size(205, 22);
             this.txtIsrRetenido.TabIndex = 7;
             this.txtIsrRetenido.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;

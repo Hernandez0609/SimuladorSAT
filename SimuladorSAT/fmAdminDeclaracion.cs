@@ -227,6 +227,7 @@ namespace SimuladorSAT
                     Size = this.Size
                 };
             }
+            Program.formResico.ActualizarDesdeModelo();   
             NavegacionHelper.MostrarSinParpadeo(Program.formResico, this);
         }
 
@@ -236,6 +237,7 @@ namespace SimuladorSAT
             {
                 Program.formIsrFisicasIngresos = new fmIsrFisicasIngresos();
             }
+            Program.formIsrFisicasIngresos.ActualizarDesdeModelo();  
             NavegacionHelper.MostrarSinParpadeo(Program.formIsrFisicasIngresos, this);
         }
 
@@ -245,6 +247,7 @@ namespace SimuladorSAT
             {
                 Program.formIsrSalarios = new fmIsrRetencionesSalarios();
             }
+            Program.formIsrSalarios.ActualizarDesdeModelo(); 
             NavegacionHelper.MostrarSinParpadeo(Program.formIsrSalarios, this);
         }
 

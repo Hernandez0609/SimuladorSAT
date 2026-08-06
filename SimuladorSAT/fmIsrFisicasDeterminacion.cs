@@ -60,15 +60,31 @@ namespace SimuladorSAT
         private void RecalcularDeterminacion()
         {
             var m = Program.modeloIsrFisicas;
-
             m.TasaAplicable = ObtenerTasaAplicable(m.TotalIngresosPercibidos);
             m.ImpuestoMensual = Math.Round(m.TotalIngresosPercibidos * (m.TasaAplicable / 100m), 2);
-            m.ImpuestoACargo = m.ImpuestoMensual - m.IsrRetenidoPersonasMorales;
+
+            decimal diferencia = m.ImpuestoMensual - m.IsrRetenidoPersonasMorales;
 
             txtTasaAplicable.Text = m.TasaAplicable.ToString("N2") + "%";
             txtImpuestoMensual.Text = m.ImpuestoMensual.ToString("N0");
             txtIsrRetenido.Text = m.IsrRetenidoPersonasMorales.ToString("N0");
-            txtImpuestoACargo.Text = m.ImpuestoACargo.ToString("N0");
+
+            if (diferencia >= 0)
+            {
+                m.EsImpuestoAFavor = false;
+                m.ImpuestoACargo = diferencia;
+                m.ImpuestoAFavor = 0;
+                lblImpuestoACargo.Text = "Impuesto a cargo";
+                txtImpuestoACargo.Text = m.ImpuestoACargo.ToString("N0");
+            }
+            else
+            {
+                m.EsImpuestoAFavor = true;
+                m.ImpuestoACargo = 0;
+                m.ImpuestoAFavor = Math.Abs(diferencia);
+                lblImpuestoACargo.Text = "Impuesto a favor";
+                txtImpuestoACargo.Text = m.ImpuestoAFavor.ToString("N0");
+            }
 
             m.DeterminacionCompleta = m.IsrRetenidoCapturado;
         }
@@ -84,13 +100,23 @@ namespace SimuladorSAT
                 cortinaOcursa.Bounds = this.Bounds;
                 cortinaOcursa.ShowInTaskbar = false;
                 cortinaOcursa.Show(this);
-
-                using (fmDetalleIsrRetenido dialogoDetalle = new fmDetalleIsrRetenido())
+                using (fmDetalleIsrRetenido dialogoDetalle = new fmDetalleIsrRetenido(Program.modeloIsrFisicas.TotalIngresosPercibidos))
                 {
                     if (dialogoDetalle.ShowDialog(cortinaOcursa) == DialogResult.OK)
                     {
                         Program.modeloIsrFisicas.IsrRetenidoPersonasMorales = dialogoDetalle.MontoCapturado;
                         Program.modeloIsrFisicas.IsrRetenidoCapturado = true;
+
+                        var m = Program.modeloIsrFisicas;
+                        m.TieneCompensaciones = false;
+                        m.CompensacionesCapturado = false;
+                        m.Compensaciones = 0;
+                        m.TieneEstimulos = false;
+                        m.EstimulosCapturado = false;
+                        m.Estimulos = 0;
+                        m.CantidadACargo = 0;
+                        m.CantidadAPagar = 0;
+
                         RecalcularDeterminacion();
                         ActualizarEstadoPestañas();
                     }

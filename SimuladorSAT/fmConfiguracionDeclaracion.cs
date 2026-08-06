@@ -31,9 +31,9 @@ namespace SimuladorSAT
 
         public void ReiniciarFormulario()
         {
-            cmbEjercicio.SelectedIndex = -1;
+            cmbEjercicio.SelectedIndex = 0;         
             cmbPeriocidad.SelectedIndex = 0;
-            cmbPeriocidad.Enabled = false;
+            cmbPeriocidad.Enabled = true;           
             OcultarDesde(lblPeriodo);
             _isrFisicasSel = _isrSalariosSel = _ivaSel = false;
             Invalidate(true);
@@ -43,8 +43,10 @@ namespace SimuladorSAT
         {
             cmbEjercicio.Items.Clear();
             int anioActual = DateTime.Now.Year;
-            for (int anio = 2022; anio <= anioActual; anio++)
+            for (int anio = anioActual; anio >= 2022; anio--)
                 cmbEjercicio.Items.Add(anio.ToString());
+
+            cmbEjercicio.SelectedIndex = 0;
         }
 
         private void ConfigurarCirculos()

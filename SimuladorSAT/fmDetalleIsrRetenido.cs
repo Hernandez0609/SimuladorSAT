@@ -7,10 +7,12 @@ namespace SimuladorSAT
     public partial class fmDetalleIsrRetenido : Form
     {
         public decimal MontoCapturado { get; private set; } = 0;
+        private readonly decimal _montoMaximo;
 
-        public fmDetalleIsrRetenido()
+        public fmDetalleIsrRetenido(decimal montoMaximo)
         {
             InitializeComponent();
+            _montoMaximo = montoMaximo;
             this.ShowInTaskbar = false;
             this.DoubleBuffered = true;
 
@@ -23,7 +25,6 @@ namespace SimuladorSAT
             txtCampo2.TextChanged += (s, e) => RecalcularTotal();
             txtCampo3.TextChanged += (s, e) => RecalcularTotal();
         }
-
         private void fmDetalleIsrRetenido_Load(object sender, EventArgs e)
         {
             InicializarEsqueletoTablas();
@@ -70,10 +71,9 @@ namespace SimuladorSAT
             decimal campo1 = ParsearMonto(txtCampo1.Text);
             decimal campo2 = ParsearMonto(txtCampo2.Text);
             decimal campo3 = ParsearMonto(txtCampo3.Text);
-
             decimal total = campo1 + campo2 - campo3;
             if (total < 0) total = 0;
-
+            if (total > _montoMaximo) total = _montoMaximo;   
             txtCampo4.Text = total.ToString("N0");
         }
 
