@@ -13,6 +13,17 @@ namespace SimuladorSAT
         {
             InitializeComponent();
             this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
+
+            txt1.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt2.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt3.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt4.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt5.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt6.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt7.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt8.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt9.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txt10.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
 
         public fmResico(Form ventanaAnterior)

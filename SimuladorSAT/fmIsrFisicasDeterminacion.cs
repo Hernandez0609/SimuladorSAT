@@ -12,6 +12,11 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
             CargarValoresDesdeModelo();
+
+            txtTotalPercibidos.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtTasaAplicable.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtImpuestoMensual.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtImpuestoACargo.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
 
         public void ActualizarInfoDeclaracion()

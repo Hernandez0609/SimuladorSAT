@@ -32,6 +32,10 @@ namespace SimuladorSAT
                           ControlStyles.UserPaint, true);
 
             ActualizarEstadoLista();
+
+            txtMontoPorDetallar.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtMontoDetallado.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtImporte.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
 
         private void CentrarPaginacion()

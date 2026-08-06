@@ -32,6 +32,9 @@ namespace SimuladorSAT
             this.Load += (s, e) => CentrarEnPantalla();
 
             ActualizarEstadoLista();
+
+            txtPorAplicar.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtLimiteAplicar.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
 
         private void CentrarEnPantalla()

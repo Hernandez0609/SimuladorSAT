@@ -19,6 +19,9 @@ namespace SimuladorSAT
             AjustarPosicionesUI(false);
             this.Owner = null;
             ActualizarEstadoLista();
+
+            txtMontoPorAplicar.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtLimite.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
 
         public void ConfigurarInterfaz(string modo, string titulo, string montoLimite = "")

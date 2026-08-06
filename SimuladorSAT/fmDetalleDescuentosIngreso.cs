@@ -16,6 +16,8 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
 
+            txtCampo2.KeyPress += clsValidacionNumerica.SoloNumeros;
+
             this.SuspendLayout();
             CargarDatosTabla();
             CargarValorExistente();

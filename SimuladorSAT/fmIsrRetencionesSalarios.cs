@@ -14,6 +14,13 @@ namespace SimuladorSAT
 
             txtIsrRegistro.TextChanged += (s, e) => { GuardarIsrRegistroDesdeTexto(); RecalcularDeterminacion(); ActualizarEstadoPestañas(); };
             txtIsrRegistro.Enter += SeleccionarTextoAlEntrar;
+            txtTrabajadores.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtPagoSueldos.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtPagosExentos.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtIsrRetenido.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtIsrRegistro.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtImpuestoCargo.KeyPress += clsValidacionNumerica.SoloNumeros;
+
             CargarValoresDesdeModelo();
         }
         private void SeleccionarTextoAlEntrar(object sender, EventArgs e)

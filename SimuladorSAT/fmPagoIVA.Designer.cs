@@ -65,6 +65,8 @@
             this.txtCantACargo = new System.Windows.Forms.TextBox();
             this.lblCantAPagar = new System.Windows.Forms.Label();
             this.txtCantAPagar = new System.Windows.Forms.TextBox();
+            this.lblAFavor = new System.Windows.Forms.Label();
+            this.txtAFavor = new System.Windows.Forms.TextBox();
             this.pnlLogosBlancos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoUthh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEscudoUthh)).BeginInit();
@@ -300,6 +302,8 @@
             this.pnlContenedorTabla.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlContenedorTabla.Controls.Add(this.lblAsteriscos);
             this.pnlContenedorTabla.Controls.Add(this.tlpCamposPago);
+            this.pnlContenedorTabla.Controls.Add(this.lblAFavor);
+            this.pnlContenedorTabla.Controls.Add(this.txtAFavor);
             this.pnlContenedorTabla.Location = new System.Drawing.Point(46, 115);
             this.pnlContenedorTabla.Name = "pnlContenedorTabla";
             this.pnlContenedorTabla.Size = new System.Drawing.Size(1354, 490);
@@ -717,7 +721,7 @@
             this.lblCantAPagar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.lblCantAPagar.Location = new System.Drawing.Point(3, 280);
             this.lblCantAPagar.Name = "lblCantAPagar";
-            this.lblCantAPagar.Size = new System.Drawing.Size(575, 38);
+            this.lblCantAPagar.Size = new System.Drawing.Size(575, 170);
             this.lblCantAPagar.TabIndex = 28;
             this.lblCantAPagar.Text = "Cantidad a pagar";
             this.lblCantAPagar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -727,32 +731,35 @@
             this.txtCantAPagar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtCantAPagar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txtCantAPagar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.txtCantAPagar.Location = new System.Drawing.Point(637, 285);
+            this.txtCantAPagar.Location = new System.Drawing.Point(637, 351);
             this.txtCantAPagar.Name = "txtCantAPagar";
             this.txtCantAPagar.ReadOnly = true;
             this.txtCantAPagar.Size = new System.Drawing.Size(195, 27);
             this.txtCantAPagar.TabIndex = 29;
             this.txtCantAPagar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            //
-            this.lblAFavor = new System.Windows.Forms.Label();
-            this.txtAFavor = new System.Windows.Forms.TextBox();
-
+            // 
+            // lblAFavor
+            // 
             this.lblAFavor.AutoSize = true;
             this.lblAFavor.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.lblAFavor.Location = new System.Drawing.Point(20, 60);
+            this.lblAFavor.Name = "lblAFavor";
+            this.lblAFavor.Size = new System.Drawing.Size(64, 19);
+            this.lblAFavor.TabIndex = 2;
             this.lblAFavor.Text = "A favor";
-
-            this.txtAFavor.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
+            this.lblAFavor.Visible = false;
+            // 
+            // txtAFavor
+            // 
+            this.txtAFavor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.txtAFavor.Font = new System.Drawing.Font("Arial", 10F);
             this.txtAFavor.Location = new System.Drawing.Point(637, 57);
+            this.txtAFavor.Name = "txtAFavor";
             this.txtAFavor.ReadOnly = true;
-            this.txtAFavor.Size = new System.Drawing.Size(195, 25);
+            this.txtAFavor.Size = new System.Drawing.Size(195, 27);
+            this.txtAFavor.TabIndex = 3;
             this.txtAFavor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtAFavor.Visible = false;
-            this.lblAFavor.Visible = false;
-
-            this.pnlContenedorTabla.Controls.Add(this.lblAFavor);
-            this.pnlContenedorTabla.Controls.Add(this.txtAFavor);
             // 
             // fmPagoIVA
             // 

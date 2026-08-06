@@ -24,6 +24,12 @@ namespace SimuladorSAT
             _modo = modoPantalla;
             ConfigurarPantalla(modoPantalla, valorPrefil, subValor1, subValor2);
             this.ResumeLayout(true);
+
+            txtCampo1.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtCampo2.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtCampo3.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtCampo4.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtCampo5.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
         private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
         {

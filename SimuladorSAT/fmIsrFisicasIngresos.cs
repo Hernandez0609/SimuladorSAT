@@ -15,6 +15,12 @@ namespace SimuladorSAT
 
             CargarValoresDesdeModelo();
 
+            txtTotalCobrados.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtDescuentos.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtIngresosDisminuirValor.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtIngresosAdicionalesValor.KeyPress += clsValidacionNumerica.SoloNumeros;
+
+
         }
         public void ActualizarInfoDeclaracion()
         {

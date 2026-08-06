@@ -14,6 +14,9 @@ namespace SimuladorSAT
             this.ShowInTaskbar = false;
             this.DoubleBuffered = true;
 
+            txtCampo2.KeyPress += clsValidacionNumerica.SoloNumeros;
+            txtCampo3.KeyPress += clsValidacionNumerica.SoloNumeros;
+
             txtCampo1.Text = "0";
             txtCampo2.Text = "0";
             txtCampo3.Text = "0";

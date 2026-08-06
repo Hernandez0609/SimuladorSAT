@@ -282,6 +282,9 @@
     <EmbeddedResource Include="fmDetalle.resx">
       <DependentUpon>fmDetalle.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="fmDetalleIsrRetenido.resx">
+      <DependentUpon>fmDetalleIsrRetenido.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmInicio.resx">
       <DependentUpon>fmInicio.cs</DependentUpon>
     </EmbeddedResource>

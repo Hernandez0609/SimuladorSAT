@@ -540,7 +540,7 @@
             this.btnCapturarIngresosDisminuir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapturarIngresosDisminuir.Location = new System.Drawing.Point(751, 211);
             this.btnCapturarIngresosDisminuir.Name = "btnCapturarIngresosDisminuir";
-            this.btnCapturarIngresosDisminuir.Size = new System.Drawing.Size(137, 28);
+            this.btnCapturarIngresosDisminuir.Size = new System.Drawing.Size(137, 1);
             this.btnCapturarIngresosDisminuir.TabIndex = 5;
             this.btnCapturarIngresosDisminuir.Text = "Capturar";
             this.btnCapturarIngresosDisminuir.Visible = false;
@@ -614,7 +614,7 @@
             this.btnCapturarIngresosAdicionales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapturarIngresosAdicionales.Location = new System.Drawing.Point(751, 263);
             this.btnCapturarIngresosAdicionales.Name = "btnCapturarIngresosAdicionales";
-            this.btnCapturarIngresosAdicionales.Size = new System.Drawing.Size(137, 28);
+            this.btnCapturarIngresosAdicionales.Size = new System.Drawing.Size(137, 1);
             this.btnCapturarIngresosAdicionales.TabIndex = 5;
             this.btnCapturarIngresosAdicionales.Text = "Capturar";
             this.btnCapturarIngresosAdicionales.Visible = false;
