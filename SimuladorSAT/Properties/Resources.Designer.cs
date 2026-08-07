@@ -73,6 +73,16 @@ namespace SimuladorSAT.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap logo_empresa {
+            get {
+                object obj = ResourceManager.GetObject("logo_empresa", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logouthh {
             get {
                 object obj = ResourceManager.GetObject("logouthh", resourceCulture);

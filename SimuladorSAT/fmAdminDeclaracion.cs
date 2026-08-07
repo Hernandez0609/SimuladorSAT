@@ -82,13 +82,13 @@ namespace SimuladorSAT
         private void ActualizarLabelsMonto()
         {
             lblMontoIsrFisicas.Visible = isrFisicasCompletado;
-            lblMontoIsrFisicas.Text = $"Cantidad a pagar:\n${montoIsrFisicas:N0}";
+            lblMontoIsrFisicas.Text = $"A pagar:\n${montoIsrFisicas:N0}";
 
             lblMontoIsrSalarios.Visible = isrSalariosCompletado;
-            lblMontoIsrSalarios.Text = $"Cantidad a pagar:\n${montoIsrSalarios:N0}";
+            lblMontoIsrSalarios.Text = $"A pagar:\n${montoIsrSalarios:N0}";
 
             lblMontoIva.Visible = ivaSimplificadoCompletado;
-            lblMontoIva.Text = $"Cantidad a pagar:\n${montoIvaSimplificado:N0}";
+            lblMontoIva.Text = $"A pagar:\n${montoIvaSimplificado:N0}";
         }
 
         private void PosicionarCirculosVisibles()

@@ -16,13 +16,13 @@
             this.btnNavInicio = new System.Windows.Forms.Label();
             this.btnNavPersonas = new System.Windows.Forms.Label();
             this.btnNavEmpresa = new System.Windows.Forms.Label();
-            this.picUserIcon = new System.Windows.Forms.PictureBox();
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.lblBienvenida = new System.Windows.Forms.Label();
             this.picLogoCentral = new System.Windows.Forms.PictureBox();
+            this.picUserIcon = new System.Windows.Forms.PictureBox();
             this.pnlNavbar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picUserIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoCentral)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picUserIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlNavbar
@@ -76,18 +76,6 @@
             this.btnNavEmpresa.Text = "Empresa";
             this.btnNavEmpresa.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // picUserIcon
-            // 
-            this.picUserIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.picUserIcon.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picUserIcon.Location = new System.Drawing.Point(1800, 20);
-            this.picUserIcon.Name = "picUserIcon";
-            this.picUserIcon.Size = new System.Drawing.Size(60, 60);
-            this.picUserIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picUserIcon.TabIndex = 3;
-            this.picUserIcon.TabStop = false;
-            this.picUserIcon.Click += new System.EventHandler(this.picUserIcon_Click);
-            // 
             // pnlFooter
             // 
             this.pnlFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(78)))), ((int)(((byte)(92)))));
@@ -112,12 +100,25 @@
             // picLogoCentral
             // 
             this.picLogoCentral.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.picLogoCentral.Image = global::SimuladorSAT.Properties.Resources.logo_empresa;
             this.picLogoCentral.Location = new System.Drawing.Point(710, 480);
             this.picLogoCentral.Name = "picLogoCentral";
             this.picLogoCentral.Size = new System.Drawing.Size(500, 350);
             this.picLogoCentral.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogoCentral.TabIndex = 3;
             this.picLogoCentral.TabStop = false;
+            // 
+            // picUserIcon
+            // 
+            this.picUserIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.picUserIcon.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picUserIcon.Location = new System.Drawing.Point(1800, 20);
+            this.picUserIcon.Name = "picUserIcon";
+            this.picUserIcon.Size = new System.Drawing.Size(60, 60);
+            this.picUserIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picUserIcon.TabIndex = 3;
+            this.picUserIcon.TabStop = false;
+            this.picUserIcon.Click += new System.EventHandler(this.picUserIcon_Click);
             // 
             // fmInicio
             // 
@@ -136,8 +137,8 @@
             this.Load += new System.EventHandler(this.fmInicio_Load);
             this.Resize += new System.EventHandler(this.fmInicio_Resize);
             this.pnlNavbar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picUserIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoCentral)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picUserIcon)).EndInit();
             this.ResumeLayout(false);
 
         }
