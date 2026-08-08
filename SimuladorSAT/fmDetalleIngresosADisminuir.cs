@@ -10,6 +10,8 @@ namespace SimuladorSAT
         public fmDetalleIngresosADisminuir(decimal montoMaximo)
         {
             InitializeComponent();
+            dgvRegistros.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(238, 238, 238);
+            dgvRegistros.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             _montoMaximo = montoMaximo;
             this.ShowInTaskbar = false;
             var area = Screen.PrimaryScreen.WorkingArea;
@@ -71,13 +73,24 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            string conceptoElegido = cmbConcepto.SelectedItem.ToString();
+            foreach (DataGridViewRow fila in dgvRegistros.Rows)
+            {
+                if (fila.Cells[0].Value?.ToString() == conceptoElegido)
+                {
+                    MessageBox.Show("Ya capturaste ese concepto. Selecciona otro.", "Concepto repetido",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             if (!decimal.TryParse(txtImporte.Text, out decimal importe) || importe <= 0)
             {
                 MessageBox.Show("Ingresa un importe válido.", "Campo requerido",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             decimal totalActual = ObtenerTotalActual();
             if (totalActual + importe > _montoMaximo)
             {
@@ -85,9 +98,8 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            dgvRegistros.Rows.Add(cmbConcepto.SelectedItem.ToString(), importe.ToString("N0"));
-            Program.modeloIsrFisicas.ListaIngresosADisminuir.Add((cmbConcepto.SelectedItem.ToString(), importe));   
+            dgvRegistros.Rows.Add(conceptoElegido, importe.ToString("N0"));
+            Program.modeloIsrFisicas.ListaIngresosADisminuir.Add((conceptoElegido, importe));
             LimpiarFormularioCaptura();
             pnlFormularioCaptura.Visible = false;
             btnAgregar.Visible = true;

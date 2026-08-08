@@ -54,6 +54,7 @@ namespace SimuladorSAT
             decimal.TryParse(txtCampo2.Text, out decimal valor);
             MontoCapturado = valor;
             Program.modeloIsrFisicas.Descuentos = valor;
+            Program.modeloIsrFisicas.DescuentosCapturado = true;   
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

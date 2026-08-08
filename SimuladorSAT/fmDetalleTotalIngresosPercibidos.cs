@@ -73,13 +73,24 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            string conceptoElegido = cmbConcepto.SelectedItem.ToString();
+            foreach (DataGridViewRow fila in dgvRegistros.Rows)
+            {
+                if (fila.Cells[0].Value?.ToString() == conceptoElegido)
+                {
+                    MessageBox.Show("Ya capturaste ese concepto. Selecciona otro.", "Concepto repetido",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             if (!decimal.TryParse(txtImporte.Text, out decimal importe) || importe <= 0)
             {
                 MessageBox.Show("Ingresa un importe válido.", "Campo requerido",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             decimal restante = _montoMaximo - ObtenerTotalDetallado();
             if (importe > restante)
             {
@@ -87,15 +98,13 @@ namespace SimuladorSAT
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            dgvRegistros.Rows.Add(cmbConcepto.SelectedItem.ToString(), importe.ToString("N0"));
-            Program.modeloIsrFisicas.ListaTotalPercibidosDetalle.Add((cmbConcepto.SelectedItem.ToString(), importe));  
+            dgvRegistros.Rows.Add(conceptoElegido, importe.ToString("N0"));
+            Program.modeloIsrFisicas.ListaTotalPercibidosDetalle.Add((conceptoElegido, importe));
             LimpiarFormularioCaptura();
             pnlFormularioCaptura.Visible = false;
             btnAgregar.Visible = true;
             ActualizarEstadoLista();
         }
-
         private void btnCancelarCaptura_Click(object sender, EventArgs e)
         {
             LimpiarFormularioCaptura();
@@ -110,7 +119,6 @@ namespace SimuladorSAT
             txtImporte.Enabled = false;
             txtImporte.BackColor = System.Drawing.Color.FromArgb(238, 238, 238);
         }
-
         private void dgvRegistros_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == colEliminar.Index)

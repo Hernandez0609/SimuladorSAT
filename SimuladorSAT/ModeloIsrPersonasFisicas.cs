@@ -5,7 +5,7 @@ namespace SimuladorSAT
 {
     public class ModeloIsrPersonasFisicas
     {
-
+        public List<(string TipoEstimulo, decimal PorAplicar)> ListaEstimulos { get; set; } = new List<(string, decimal)>();
         public bool EsImpuestoAFavor { get; set; }
         public List<(string Concepto, decimal Importe)> ListaIngresosADisminuir { get; set; } = new List<(string, decimal)>();
         public List<(string Concepto, decimal Importe)> ListaIngresosAdicionales { get; set; } = new List<(string, decimal)>();

@@ -86,12 +86,12 @@ namespace SimuladorSAT
 
         private void BtnInicio_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
+           
         }
 
         private void BtnCerrar_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
     }
 }
