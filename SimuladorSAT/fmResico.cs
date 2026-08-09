@@ -242,7 +242,17 @@ namespace SimuladorSAT
         }
         private void btn7_Click(object sender, EventArgs e)
         {
-            try { ActivarCortinaOscura(); new fmDetalle("IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas", "Junio").ShowDialog(_overlayForm); }
+            try
+            {
+                ActivarCortinaOscura();
+                using (var dlg = new fmDetalle("IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas", "Junio", Program.modeloIva.TotalIvaACargo))
+                {
+                    if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
+                    {
+                        RecalcularDeterminacion();
+                    }
+                }
+            }
             finally { DesactivarCortinaOscura(); }
         }
         private void btn8_Click(object sender, EventArgs e)

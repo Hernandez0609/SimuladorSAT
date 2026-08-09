@@ -11,7 +11,12 @@ namespace SimuladorSAT
         public List<(string Concepto, decimal Importe)> ListaIngresosAdicionales { get; set; } = new List<(string, decimal)>();
         public List<(string Concepto, decimal Importe)> ListaTotalPercibidosDetalle { get; set; } = new List<(string, decimal)>();
         public decimal ImpuestoAFavor { get; set; }
+        public int DetalleEgresosFacturasCanceladas { get; set; }
+        public int DetalleEgresosFacturasVigentes { get; set; }
+        public decimal DetalleEgresosSubtotal { get; set; }
+        public decimal DetalleEgresosDescuento { get; set; }
         // Apartado: Ingresos
+        public decimal DescuentosCopropiedad { get; set; }
         public bool EsCopropiedad { get; set; } = false;
         public decimal TotalIngresosCobrados { get; set; }
         public decimal Descuentos { get; set; }

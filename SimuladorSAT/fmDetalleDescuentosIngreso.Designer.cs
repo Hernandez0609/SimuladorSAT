@@ -91,7 +91,7 @@
             // ====================================================================
             this.dgvTabla.AllowUserToAddRows = false;
             this.dgvTabla.AllowUserToDeleteRows = false;
-            this.dgvTabla.ReadOnly = true;
+            this.dgvTabla.ReadOnly = false;
             this.dgvTabla.RowHeadersVisible = false;
             this.dgvTabla.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgvTabla.Font = new System.Drawing.Font("Arial", 9F);
@@ -126,6 +126,8 @@
             this.colSubtotalDescuento.HeaderText = "Subtotal- Descuento";
             this.colSubtotalDescuento.Name = "colSubtotalDescuento";
             this.colSubtotalDescuento.FillWeight = 120;
+            this.colMes.ReadOnly = true;
+            this.colSubtotalDescuento.ReadOnly = true;
 
             this.dgvTabla.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
         this.colMes, this.colFacturasCanceladas, this.colFacturasVigentes,

@@ -390,6 +390,7 @@ namespace SimuladorSAT
             GuardarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId, modelo.ListaTotalPercibidosDetalle);
             GuardarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId, modelo.ListaIngresosADisminuir);
             GuardarDetalleIngresos("ingresos_adicionales", ingresosIsrId, modelo.ListaIngresosAdicionales);
+            GuardarDetalleEgresos(ingresosIsrId, modelo);
         }
 
         private void AgregarParametrosIsrFisicas(MySqlCommand cmd, ModeloIsrPersonasFisicas modelo)
@@ -643,6 +644,7 @@ namespace SimuladorSAT
                 m.ListaTotalPercibidosDetalle = CargarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId);
                 m.ListaIngresosADisminuir = CargarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId);
                 m.ListaIngresosAdicionales = CargarDetalleIngresos("ingresos_adicionales", ingresosIsrId);
+                CargarDetalleEgresos(ingresosIsrId, m);
             }
             Program.modeloIsrFisicas = m;
         }
@@ -817,6 +819,64 @@ namespace SimuladorSAT
                 }
             }
             return lista;
+        }
+        public void GuardarDetalleEgresos(int ingresosIsrId, ModeloIsrPersonasFisicas modelo)
+        {
+            using (var conexion = AbrirConexion())
+            {
+                string queryDelete = "DELETE FROM ingresos_detalles_egresos WHERE ingresos_isr_id = @id";
+                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                {
+                    cmdDelete.Parameters.AddWithValue("@id", ingresosIsrId);
+                    cmdDelete.ExecuteNonQuery();
+                }
+
+                string queryInsert = @"INSERT INTO ingresos_detalles_egresos
+            (ingresos_isr_id, mes_nombre, facturas_canceladas_cant, facturas_vigentes_cant,
+             facturas_subtotal, facturas_descuento, facturas_neto, total_egresos_sat,
+             descuentos_copropiedad, total_descuentos_aplicados)
+            VALUES
+            (@id, @mes, @canceladas, @vigentes, @subtotal, @descuento, @neto, @neto, @copropiedad, @total)";
+                using (var cmd = new MySqlCommand(queryInsert, conexion))
+                {
+                    decimal neto = modelo.DetalleEgresosSubtotal - modelo.DetalleEgresosDescuento;
+                    if (neto < 0) neto = 0;
+
+                    cmd.Parameters.AddWithValue("@id", ingresosIsrId);
+                    cmd.Parameters.AddWithValue("@mes", Program.declaracionActual?.Periodo ?? "");
+                    cmd.Parameters.AddWithValue("@canceladas", modelo.DetalleEgresosFacturasCanceladas);
+                    cmd.Parameters.AddWithValue("@vigentes", modelo.DetalleEgresosFacturasVigentes);
+                    cmd.Parameters.AddWithValue("@subtotal", modelo.DetalleEgresosSubtotal);
+                    cmd.Parameters.AddWithValue("@descuento", modelo.DetalleEgresosDescuento);
+                    cmd.Parameters.AddWithValue("@neto", neto);
+                    cmd.Parameters.AddWithValue("@copropiedad", modelo.DescuentosCopropiedad);
+                    cmd.Parameters.AddWithValue("@total", modelo.Descuentos);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void CargarDetalleEgresos(int ingresosIsrId, ModeloIsrPersonasFisicas modelo)
+        {
+            using (var conexion = AbrirConexion())
+            {
+                string query = "SELECT * FROM ingresos_detalles_egresos WHERE ingresos_isr_id = @id LIMIT 1";
+                using (var cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@id", ingresosIsrId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            modelo.DetalleEgresosFacturasCanceladas = reader.GetInt32("facturas_canceladas_cant");
+                            modelo.DetalleEgresosFacturasVigentes = reader.GetInt32("facturas_vigentes_cant");
+                            modelo.DetalleEgresosSubtotal = reader.GetDecimal("facturas_subtotal");
+                            modelo.DetalleEgresosDescuento = reader.GetDecimal("facturas_descuento");
+                            modelo.DescuentosCopropiedad = reader.GetDecimal("descuentos_copropiedad");
+                        }
+                    }
+                }
+            }
         }
     }
 }
