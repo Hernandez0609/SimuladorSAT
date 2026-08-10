@@ -709,6 +709,7 @@ namespace SimuladorSAT
                 }
             }
             if (ivaId > 0)   
+
             {
                 CargarDetalleDevolucionesIva(ivaId, m);
             }
