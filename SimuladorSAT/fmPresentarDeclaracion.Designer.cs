@@ -27,41 +27,28 @@
             this.btnCerrar = new System.Windows.Forms.Button();
             this.pnlCuerpo = new System.Windows.Forms.Panel();
             this.picLogoApp = new System.Windows.Forms.PictureBox();
-
             this.pnlLogos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEscudo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogoDer)).BeginInit();
             this.pnlDatosUsuario.SuspendLayout();
             this.pnlNavBar.SuspendLayout();
             this.pnlCuerpo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picEscudo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogoDer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoApp)).BeginInit();
             this.SuspendLayout();
-
-            // FORM — idéntico a fmResico
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1445, 778);
-            this.Font = new System.Drawing.Font("Arial", 9F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-            this.MaximizeBox = true;
-            this.MinimumSize = new System.Drawing.Size(1168, 637);
-            this.Name = "fmPresentarDeclaracion";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Simulador SAT";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-
-            // pnlLogos — Dock Top, se estira automático
+            // 
+            // pnlLogos
+            // 
             this.pnlLogos.BackColor = System.Drawing.Color.White;
+            this.pnlLogos.Controls.Add(this.picEscudo);
+            this.pnlLogos.Controls.Add(this.picLogoDer);
             this.pnlLogos.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlLogos.Location = new System.Drawing.Point(0, 0);
             this.pnlLogos.Name = "pnlLogos";
             this.pnlLogos.Size = new System.Drawing.Size(1445, 85);
             this.pnlLogos.TabIndex = 3;
-            this.pnlLogos.Controls.Add(this.picEscudo);
-            this.pnlLogos.Controls.Add(this.picLogoDer);
-
-            // picEscudo — igual que picLogoUthh en fmResico
+            // 
+            // picEscudo
+            // 
             this.picEscudo.Image = global::SimuladorSAT.Properties.Resources.logouthh;
             this.picEscudo.Location = new System.Drawing.Point(20, 8);
             this.picEscudo.Name = "picEscudo";
@@ -69,11 +56,10 @@
             this.picEscudo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picEscudo.TabIndex = 0;
             this.picEscudo.TabStop = false;
-
-            // picLogoDer — igual que picEscudoUthh en fmResico: Anchor Top|Right
-            this.picLogoDer.Anchor = ((System.Windows.Forms.AnchorStyles)(
-                                        System.Windows.Forms.AnchorStyles.Top |
-                                        System.Windows.Forms.AnchorStyles.Right));
+            // 
+            // picLogoDer
+            // 
+            this.picLogoDer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picLogoDer.Image = global::SimuladorSAT.Properties.Resources.escudo;
             this.picLogoDer.Location = new System.Drawing.Point(1335, 5);
             this.picLogoDer.Name = "picLogoDer";
@@ -81,31 +67,31 @@
             this.picLogoDer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogoDer.TabIndex = 1;
             this.picLogoDer.TabStop = false;
-
-            // pnlDatosUsuario — Dock Top
-            this.pnlDatosUsuario.BackColor = System.Drawing.Color.FromArgb(242, 242, 242);
+            // 
+            // pnlDatosUsuario
+            // 
+            this.pnlDatosUsuario.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.pnlDatosUsuario.Controls.Add(this.lblDatosIzq);
+            this.pnlDatosUsuario.Controls.Add(this.lblTituloDecl);
             this.pnlDatosUsuario.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlDatosUsuario.Location = new System.Drawing.Point(0, 85);
             this.pnlDatosUsuario.Name = "pnlDatosUsuario";
             this.pnlDatosUsuario.Size = new System.Drawing.Size(1445, 80);
             this.pnlDatosUsuario.TabIndex = 2;
-            this.pnlDatosUsuario.Controls.Add(this.lblDatosIzq);
-            this.pnlDatosUsuario.Controls.Add(this.lblTituloDecl);
-
-            // lblDatosIzq — fijo izquierda con salto de línea para el nombre
+            // 
+            // lblDatosIzq
+            // 
             this.lblDatosIzq.Font = new System.Drawing.Font("Arial", 11F);
             this.lblDatosIzq.Location = new System.Drawing.Point(23, 11);
             this.lblDatosIzq.Name = "lblDatosIzq";
             this.lblDatosIzq.Size = new System.Drawing.Size(343, 59);
             this.lblDatosIzq.TabIndex = 0;
             this.lblDatosIzq.Text = "RFC: xxxxxxxxx | FULANO PEREZ \r\nPEREZ";
-
-            // lblTituloDecl — Anchor Top|Left|Right con salto de línea para "Federales"
-            this.lblTituloDecl.Anchor = ((System.Windows.Forms.AnchorStyles)(
-                                           System.Windows.Forms.AnchorStyles.Top |
-                                           System.Windows.Forms.AnchorStyles.Left |
-                                           System.Windows.Forms.AnchorStyles.Right));
-            this.lblTituloDecl.AutoSize = false;
+            // 
+            // lblTituloDecl
+            // 
+            this.lblTituloDecl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTituloDecl.Font = new System.Drawing.Font("Arial", 13F);
             this.lblTituloDecl.Location = new System.Drawing.Point(437, 11);
             this.lblTituloDecl.Name = "lblTituloDecl";
@@ -113,19 +99,22 @@
             this.lblTituloDecl.TabIndex = 1;
             this.lblTituloDecl.Text = "Declaración Provisional o Definitiva de Impuestos\r\nFederales";
             this.lblTituloDecl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            //
-            // pnlNavBar — Dock Top
-            this.pnlNavBar.BackColor = System.Drawing.Color.FromArgb(13, 78, 92);
+            // 
+            // pnlNavBar
+            // 
+            this.pnlNavBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(78)))), ((int)(((byte)(92)))));
+            this.pnlNavBar.Controls.Add(this.btnPresentar);
+            this.pnlNavBar.Controls.Add(this.btnInicio);
+            this.pnlNavBar.Controls.Add(this.btnCerrar);
             this.pnlNavBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlNavBar.Location = new System.Drawing.Point(0, 165);
             this.pnlNavBar.Name = "pnlNavBar";
             this.pnlNavBar.Size = new System.Drawing.Size(1445, 48);
             this.pnlNavBar.TabIndex = 1;
-            this.pnlNavBar.Controls.Add(this.btnPresentar);
-            this.pnlNavBar.Controls.Add(this.btnInicio);
-            this.pnlNavBar.Controls.Add(this.btnCerrar);
-
-            // btnPresentar — fijo izquierda, sin Anchor especial
+            // 
+            // btnPresentar
+            // 
+            this.btnPresentar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPresentar.FlatAppearance.BorderSize = 0;
             this.btnPresentar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPresentar.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
@@ -136,12 +125,11 @@
             this.btnPresentar.TabIndex = 0;
             this.btnPresentar.Text = "Presentar declaración";
             this.btnPresentar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPresentar.Cursor = System.Windows.Forms.Cursors.Hand;
-
-            // btnInicio — Anchor Top|Right
-            this.btnInicio.Anchor = ((System.Windows.Forms.AnchorStyles)(
-                                       System.Windows.Forms.AnchorStyles.Top |
-                                       System.Windows.Forms.AnchorStyles.Right));
+            // 
+            // btnInicio
+            // 
+            this.btnInicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInicio.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnInicio.FlatAppearance.BorderSize = 0;
             this.btnInicio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInicio.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
@@ -151,12 +139,11 @@
             this.btnInicio.Size = new System.Drawing.Size(95, 48);
             this.btnInicio.TabIndex = 1;
             this.btnInicio.Text = "Inicio";
-            this.btnInicio.Cursor = System.Windows.Forms.Cursors.Hand;
-
-            // btnCerrar — Anchor Top|Right
-            this.btnCerrar.Anchor = ((System.Windows.Forms.AnchorStyles)(
-                                       System.Windows.Forms.AnchorStyles.Top |
-                                       System.Windows.Forms.AnchorStyles.Right));
+            // 
+            // btnCerrar
+            // 
+            this.btnCerrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCerrar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCerrar.FlatAppearance.BorderSize = 0;
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrar.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
@@ -166,42 +153,54 @@
             this.btnCerrar.Size = new System.Drawing.Size(95, 48);
             this.btnCerrar.TabIndex = 2;
             this.btnCerrar.Text = "Cerrar";
-            this.btnCerrar.Cursor = System.Windows.Forms.Cursors.Hand;
-
-            // pnlCuerpo — Dock Fill
+            // 
+            // pnlCuerpo
+            // 
             this.pnlCuerpo.BackColor = System.Drawing.Color.White;
+            this.pnlCuerpo.Controls.Add(this.picLogoApp);
             this.pnlCuerpo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlCuerpo.Location = new System.Drawing.Point(0, 213);
             this.pnlCuerpo.Name = "pnlCuerpo";
             this.pnlCuerpo.Size = new System.Drawing.Size(1445, 565);
             this.pnlCuerpo.TabIndex = 0;
-            this.pnlCuerpo.Controls.Add(this.picLogoApp);
-
-            // picLogoApp — Anchor None
+            // 
+            // picLogoApp
+            // 
             this.picLogoApp.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picLogoApp.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
+            this.picLogoApp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.picLogoApp.Image = global::SimuladorSAT.Properties.Resources.logo_empresa;
             this.picLogoApp.Location = new System.Drawing.Point(568, 128);
             this.picLogoApp.Name = "picLogoApp";
             this.picLogoApp.Size = new System.Drawing.Size(310, 310);
             this.picLogoApp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogoApp.TabIndex = 0;
             this.picLogoApp.TabStop = false;
-
-            // AGREGAR AL FORM
+            // 
+            // fmPresentarDeclaracion
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(1445, 778);
             this.Controls.Add(this.pnlCuerpo);
             this.Controls.Add(this.pnlNavBar);
             this.Controls.Add(this.pnlDatosUsuario);
             this.Controls.Add(this.pnlLogos);
-
+            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.MinimumSize = new System.Drawing.Size(1168, 637);
+            this.Name = "fmPresentarDeclaracion";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Simulador SAT";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.pnlLogos.ResumeLayout(false);
-            this.pnlDatosUsuario.ResumeLayout(false);
-            this.pnlDatosUsuario.PerformLayout();
-            this.pnlNavBar.ResumeLayout(false);
-            this.pnlCuerpo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picEscudo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoDer)).EndInit();
+            this.pnlDatosUsuario.ResumeLayout(false);
+            this.pnlNavBar.ResumeLayout(false);
+            this.pnlCuerpo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogoApp)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion

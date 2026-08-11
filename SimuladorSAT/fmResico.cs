@@ -13,7 +13,7 @@ namespace SimuladorSAT
         {
             InitializeComponent();
             this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
-
+            this.FormBorderStyle = FormBorderStyle.None;
             txt1.KeyPress += clsValidacionNumerica.SoloNumeros;
             txt2.KeyPress += clsValidacionNumerica.SoloNumeros;
             txt3.KeyPress += clsValidacionNumerica.SoloNumeros;
@@ -242,7 +242,18 @@ namespace SimuladorSAT
         }
         private void btn7_Click(object sender, EventArgs e)
         {
-            try { ActivarCortinaOscura(); new fmDetalle("IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas", "Junio").ShowDialog(_overlayForm); }
+            try
+            {
+                ActivarCortinaOscura();
+                using (var dlg = new fmDetalle("IVA no cobrado por devoluciones, descuentos y bonificaciones de ventas", "Junio", Program.modeloIva.TotalIvaACargo))
+                {
+                    if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
+                    {
+                        txt7.Text = Program.modeloIva.IvaNoCobradoDevoluciones.ToString("N0");   
+                        RecalcularDeterminacion();
+                    }
+                }
+            }
             finally { DesactivarCortinaOscura(); }
         }
         private void btn8_Click(object sender, EventArgs e)

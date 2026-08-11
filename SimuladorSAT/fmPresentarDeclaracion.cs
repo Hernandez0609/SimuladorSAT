@@ -27,6 +27,7 @@ namespace SimuladorSAT
             btnPresentar.Click += BtnPresentar_Click;
             btnInicio.Click += BtnInicio_Click;
             btnCerrar.Click += BtnCerrar_Click;
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         private void ConfigurarSegunRegimen()
@@ -86,12 +87,12 @@ namespace SimuladorSAT
 
         private void BtnInicio_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
+           
         }
 
         private void BtnCerrar_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
+            NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
         }
     }
 }

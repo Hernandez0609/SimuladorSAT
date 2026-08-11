@@ -30,13 +30,19 @@ namespace SimuladorSAT
                           ControlStyles.UserPaint, true);
 
             this.Load += (s, e) => CentrarEnPantalla();
-
+            CargarRegistrosDesdeModelo();
             ActualizarEstadoLista();
-
             txtPorAplicar.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtLimiteAplicar.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
-
+        private void CargarRegistrosDesdeModelo()
+        {
+            dgvRegistros.Rows.Clear();
+            foreach (var registro in Program.modeloIsrFisicas.ListaEstimulos)
+            {
+                dgvRegistros.Rows.Add(registro.TipoEstimulo, registro.PorAplicar.ToString("N0"));
+            }
+        }
         private void CentrarEnPantalla()
         {
             var pantalla = Screen.FromControl(this.Owner ?? this).Bounds;
@@ -74,13 +80,23 @@ namespace SimuladorSAT
                 return;
             }
 
+            string conceptoElegido = cmbTipoEstimulo.SelectedItem.ToString();
+            foreach (DataGridViewRow fila in dgvRegistros.Rows)
+            {
+                if (fila.Cells[0].Value?.ToString() == conceptoElegido)
+                {
+                    MessageBox.Show("Ya capturaste ese tipo de estímulo. Selecciona otro.", "Concepto repetido",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             if (!decimal.TryParse(txtPorAplicar.Text, out decimal importe) || importe <= 0)
             {
                 MessageBox.Show("Ingresa un importe válido.", "Campo requerido",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             decimal totalActual = SumarRegistros();
             if (totalActual + importe > _limiteAplicar)
             {
@@ -88,13 +104,11 @@ namespace SimuladorSAT
                     "Límite excedido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            dgvRegistros.Rows.Add(cmbTipoEstimulo.SelectedItem.ToString(), importe.ToString("N0"));
-
+            dgvRegistros.Rows.Add(conceptoElegido, importe.ToString("N0"));   
+            Program.modeloIsrFisicas.ListaEstimulos.Add((conceptoElegido, importe));
             LimpiarFormularioCaptura();
             pnlFormularioCaptura.Visible = false;
             btnAgregar.Visible = true;
-
             ActualizarEstadoLista();
         }
 
@@ -117,6 +131,7 @@ namespace SimuladorSAT
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == colEliminar.Index)
             {
+                Program.modeloIsrFisicas.ListaEstimulos.RemoveAt(e.RowIndex);
                 dgvRegistros.Rows.RemoveAt(e.RowIndex);
                 ActualizarEstadoLista();
             }

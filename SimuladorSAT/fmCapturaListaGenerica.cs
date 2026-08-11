@@ -17,13 +17,21 @@ namespace SimuladorSAT
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
             AjustarPosicionesUI(false);
+            CargarRegistrosDesdeModelo();
             this.Owner = null;
             ActualizarEstadoLista();
 
             txtMontoPorAplicar.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtLimite.KeyPress += clsValidacionNumerica.SoloNumeros;
         }
-
+        private void CargarRegistrosDesdeModelo()
+        {
+            dgvRegistros.Rows.Clear();
+            foreach (var registro in Program.modeloIva.ListaEstimulos)
+            {
+                dgvRegistros.Rows.Add(registro.Concepto, registro.Importe.ToString("N0"));
+            }
+        }
         public void ConfigurarInterfaz(string modo, string titulo, string montoLimite = "")
         {
             this.ModoCaptura = modo;
@@ -95,13 +103,23 @@ namespace SimuladorSAT
                 return;
             }
 
+            string conceptoElegido = cmbTipoEstimulo.SelectedItem.ToString();
+            foreach (DataGridViewRow fila in dgvRegistros.Rows)
+            {
+                if (fila.Cells[0].Value?.ToString() == conceptoElegido)
+                {
+                    MessageBox.Show("Ya capturaste ese tipo de estímulo. Selecciona otro.", "Concepto repetido",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             if (!decimal.TryParse(txtMontoPorAplicar.Text, out decimal importe) || importe <= 0)
             {
                 MessageBox.Show("Ingresa un importe válido.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             decimal totalActual = SumarRegistros();
             if (_limiteAplicar > 0 && totalActual + importe > _limiteAplicar)
             {
@@ -109,9 +127,8 @@ namespace SimuladorSAT
                     "Límite excedido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            dgvRegistros.Rows.Add(cmbTipoEstimulo.SelectedItem.ToString(), importe.ToString("N0"));
-
+            dgvRegistros.Rows.Add(conceptoElegido, importe.ToString("N0"));
+            Program.modeloIva.ListaEstimulos.Add((cmbTipoEstimulo.SelectedItem.ToString(), importe));
             LimpiarFormularioCaptura();
             AjustarPosicionesUI(false);
             ActualizarEstadoLista();
@@ -132,6 +149,7 @@ namespace SimuladorSAT
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == colEliminar.Index)
             {
+                Program.modeloIva.ListaEstimulos.RemoveAt(e.RowIndex);
                 dgvRegistros.Rows.RemoveAt(e.RowIndex);
                 ActualizarEstadoLista();
             }

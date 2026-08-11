@@ -19,6 +19,7 @@ namespace SimuladorSAT
             AsignarEfectoHover(lblMenuInicio);
             AsignarEfectoHover(lblMenuPersonas);
             AsignarEfectoHover(lblMenuEmpresa);
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         private void Form1_Load(object sender, EventArgs e)

@@ -346,7 +346,7 @@ namespace SimuladorSAT
                 Font = new Font("Arial", 11F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(13, 78, 92),
                 Location = new Point(15, 10),
-                Text = $"Compensación {contadorTarjetas + 1}"
+                Text = $"{(_modo == TipoCapturaEnum.Compensacion ? "Compensación" : "Estímulo")} {contadorTarjetas + 1}"
             };
             card.Controls.Add(lblHeader);
 

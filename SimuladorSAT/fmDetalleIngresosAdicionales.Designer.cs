@@ -119,11 +119,7 @@
             this.cmbConcepto.TabIndex = 1;
             this.cmbConcepto.Items.AddRange(new object[] {
                 "Selecciona",
-                "Intereses cobrados",
-                "Ganancia cambiaria",
-                "Enajenación de activos fijos",
-                "Recuperación de seguros y fianzas",
-                "Otros ingresos acumulables"
+                "Ingresos no considerados en el prellenado"
             });
             this.cmbConcepto.SelectedIndex = 0;
             this.cmbConcepto.SelectedIndexChanged += new System.EventHandler(this.cmbConcepto_SelectedIndexChanged);

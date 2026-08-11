@@ -353,6 +353,7 @@
     <Content Include="escudo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Imagenes %28Iconos%29\logo_empresa.png" />
     <Content Include="logouthh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

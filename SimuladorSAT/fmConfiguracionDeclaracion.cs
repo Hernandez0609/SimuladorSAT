@@ -27,6 +27,7 @@ namespace SimuladorSAT
                           ControlStyles.UserPaint, true);
             ConfigurarCirculos();
             CargarAnios();
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         public void ReiniciarFormulario()

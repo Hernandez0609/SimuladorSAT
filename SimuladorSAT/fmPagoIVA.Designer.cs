@@ -485,7 +485,7 @@
             // txtCompensaciones
             // 
             this.txtCompensaciones.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.txtCompensaciones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.txtCompensaciones.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
             this.txtCompensaciones.Font = new System.Drawing.Font("Arial", 9F);
             this.txtCompensaciones.Location = new System.Drawing.Point(637, 108);
             this.txtCompensaciones.Name = "txtCompensaciones";
@@ -506,7 +506,7 @@
             this.btnCapturarComp.Location = new System.Drawing.Point(867, 105);
             this.btnCapturarComp.Margin = new System.Windows.Forms.Padding(30, 0, 0, 0);
             this.btnCapturarComp.Name = "btnCapturarComp";
-            this.btnCapturarComp.Size = new System.Drawing.Size(130, 1);
+            this.btnCapturarComp.Size = new System.Drawing.Size(130, 28);
             this.btnCapturarComp.TabIndex = 10;
             this.btnCapturarComp.Text = "Capturar";
             this.btnCapturarComp.UseVisualStyleBackColor = false;
@@ -563,7 +563,7 @@
             // txtEstimulos
             // 
             this.txtEstimulos.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.txtEstimulos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.txtEstimulos.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
             this.txtEstimulos.Font = new System.Drawing.Font("Arial", 9F);
             this.txtEstimulos.Location = new System.Drawing.Point(637, 143);
             this.txtEstimulos.Name = "txtEstimulos";
@@ -584,7 +584,7 @@
             this.btnCapturarEst.Location = new System.Drawing.Point(867, 140);
             this.btnCapturarEst.Margin = new System.Windows.Forms.Padding(30, 0, 0, 0);
             this.btnCapturarEst.Name = "btnCapturarEst";
-            this.btnCapturarEst.Size = new System.Drawing.Size(130, 1);
+            this.btnCapturarEst.Size = new System.Drawing.Size(130, 28);
             this.btnCapturarEst.TabIndex = 16;
             this.btnCapturarEst.Text = "Capturar";
             this.btnCapturarEst.UseVisualStyleBackColor = false;

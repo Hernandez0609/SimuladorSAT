@@ -24,6 +24,7 @@ namespace SimuladorSAT
             };
             txtSubsidio.Enter += SeleccionarTextoAlEntrar;
             CargarValoresDesdeModelo();
+            this.FormBorderStyle = FormBorderStyle.None;
         }
         private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
         {

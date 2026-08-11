@@ -331,12 +331,14 @@ namespace SimuladorSAT
         }
         public void GuardarIsrFisicas(int declaracionId, int contribuyenteId, int periodoMes, int periodoAnio, int tipoDeclaracionId, ModeloIsrPersonasFisicas modelo)
         {
+            int ingresosIsrId;
             using (var conexion = AbrirConexion())
             {
                 int idExistente = ObtenerIdModulo(conexion, "ingresos_isr", declaracionId);
 
                 if (idExistente > 0)
                 {
+                    ingresosIsrId = idExistente;
                     string queryUpdate = @"UPDATE ingresos_isr SET
                 total_ingresos_cobrados = @totalIngresosCobrados,
                 descuentos_devoluciones_bonificaciones = @descuentos,
@@ -369,7 +371,8 @@ namespace SimuladorSAT
                 (@declaracionId, @contribuyenteId, @periodoMes, @periodoAnio, @tipoDeclaracionId,
                  @totalIngresosCobrados, @descuentos, @ingresosADisminuir,
                  @ingresosAdicionales, @totalIngresosPercibidos, @tasaAplicable, @impuestoMensual,
-                 @isrRetenidoPm, @impuestoACargo, @subsidioEmpleo, @compensaciones, @estimulos)";
+                 @isrRetenidoPm, @impuestoACargo, @subsidioEmpleo, @compensaciones, @estimulos);
+                SELECT LAST_INSERT_ID();";
                     using (var cmd = new MySqlCommand(queryInsert, conexion))
                     {
                         cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
@@ -378,10 +381,16 @@ namespace SimuladorSAT
                         cmd.Parameters.AddWithValue("@periodoAnio", periodoAnio);
                         cmd.Parameters.AddWithValue("@tipoDeclaracionId", tipoDeclaracionId);
                         AgregarParametrosIsrFisicas(cmd, modelo);
-                        cmd.ExecuteNonQuery();
+                        ingresosIsrId = Convert.ToInt32(cmd.ExecuteScalar());
                     }
                 }
             }
+
+            // Guarda las 3 listas de detalle contra el id real de ingresos_isr
+            GuardarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId, modelo.ListaTotalPercibidosDetalle);
+            GuardarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId, modelo.ListaIngresosADisminuir);
+            GuardarDetalleIngresos("ingresos_adicionales", ingresosIsrId, modelo.ListaIngresosAdicionales);
+            GuardarDetalleEgresos(ingresosIsrId, modelo);
         }
 
         private void AgregarParametrosIsrFisicas(MySqlCommand cmd, ModeloIsrPersonasFisicas modelo)
@@ -402,25 +411,26 @@ namespace SimuladorSAT
 
         public void GuardarIva(int declaracionId, int contribuyenteId, int periodoMes, int periodoAnio, int tipoDeclaracionId, ModeloIva modelo)
         {
+            int ivaSimplificadoId;   // ← LÍNEA NUEVA: declarada aquí, fuera del if/else
             using (var conexion = AbrirConexion())
             {
                 int idExistente = ObtenerIdModulo(conexion, "iva_simplificado", declaracionId);
-
                 if (idExistente > 0)
                 {
+                    ivaSimplificadoId = idExistente;   // ← LÍNEA NUEVA
                     string queryUpdate = @"UPDATE iva_simplificado SET
-                actividades_16 = @actividades16,
-                actividades_0 = @actividades0,
-                actividades_exentas = @actividadesExentas,
-                actividades_no_objeto = @actividadesNoObjeto,
-                iva_devoluciones_ventas = @ivaDevolucionesVentas,
-                iva_retenido = @ivaRetenido,
-                iva_acreditable = @ivaAcreditable,
-                iva_devoluciones_gastos = @ivaDevolucionesGastos,
-                saldo_favor_anterior = @saldoFavorAnterior,
-                compensaciones_aplicadas = @compensaciones,
-                estimulos_aplicados = @estimulos
-                WHERE id = @id";
+        actividades_16 = @actividades16,
+        actividades_0 = @actividades0,
+        actividades_exentas = @actividadesExentas,
+        actividades_no_objeto = @actividadesNoObjeto,
+        iva_devoluciones_ventas = @ivaDevolucionesVentas,
+        iva_retenido = @ivaRetenido,
+        iva_acreditable = @ivaAcreditable,
+        iva_devoluciones_gastos = @ivaDevolucionesGastos,
+        saldo_favor_anterior = @saldoFavorAnterior,
+        compensaciones_aplicadas = @compensaciones,
+        estimulos_aplicados = @estimulos
+        WHERE id = @id";
                     using (var cmd = new MySqlCommand(queryUpdate, conexion))
                     {
                         AgregarParametrosIva(cmd, modelo);
@@ -431,15 +441,16 @@ namespace SimuladorSAT
                 else
                 {
                     string queryInsert = @"INSERT INTO iva_simplificado
-                (declaracion_id, contribuyente_id, periodo_mes, periodo_anio, tipo_declaracion_id,
-                 actividades_16, actividades_0, actividades_exentas, actividades_no_objeto,
-                 iva_devoluciones_ventas, iva_retenido, iva_acreditable, iva_devoluciones_gastos,
-                 saldo_favor_anterior, compensaciones_aplicadas, estimulos_aplicados)
-                VALUES
-                (@declaracionId, @contribuyenteId, @periodoMes, @periodoAnio, @tipoDeclaracionId,
-                 @actividades16, @actividades0, @actividadesExentas, @actividadesNoObjeto,
-                 @ivaDevolucionesVentas, @ivaRetenido, @ivaAcreditable, @ivaDevolucionesGastos,
-                 @saldoFavorAnterior, @compensaciones, @estimulos)";
+        (declaracion_id, contribuyente_id, periodo_mes, periodo_anio, tipo_declaracion_id,
+         actividades_16, actividades_0, actividades_exentas, actividades_no_objeto,
+         iva_devoluciones_ventas, iva_retenido, iva_acreditable, iva_devoluciones_gastos,
+         saldo_favor_anterior, compensaciones_aplicadas, estimulos_aplicados)
+        VALUES
+        (@declaracionId, @contribuyenteId, @periodoMes, @periodoAnio, @tipoDeclaracionId,
+         @actividades16, @actividades0, @actividadesExentas, @actividadesNoObjeto,
+         @ivaDevolucionesVentas, @ivaRetenido, @ivaAcreditable, @ivaDevolucionesGastos,
+         @saldoFavorAnterior, @compensaciones, @estimulos);
+        SELECT LAST_INSERT_ID();";   // ← LÍNEA NUEVA: para obtener el id recién creado
                     using (var cmd = new MySqlCommand(queryInsert, conexion))
                     {
                         cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
@@ -448,9 +459,10 @@ namespace SimuladorSAT
                         cmd.Parameters.AddWithValue("@periodoAnio", periodoAnio);
                         cmd.Parameters.AddWithValue("@tipoDeclaracionId", tipoDeclaracionId);
                         AgregarParametrosIva(cmd, modelo);
-                        cmd.ExecuteNonQuery();
+                        ivaSimplificadoId = Convert.ToInt32(cmd.ExecuteScalar());   // ← CAMBIO: antes era ExecuteNonQuery
                     }
                 }
+                GuardarDetalleDevolucionesIva(ivaSimplificadoId, modelo);
             }
         }
 
@@ -588,8 +600,10 @@ namespace SimuladorSAT
         private void CargarIsrFisicas(int declaracionId)
         {
             var m = new ModeloIsrPersonasFisicas();
+            int ingresosIsrId = 0;
             using (var conexion = AbrirConexion())
             {
+                ingresosIsrId = ObtenerIdModulo(conexion, "ingresos_isr", declaracionId);
                 string query = "SELECT * FROM ingresos_isr WHERE declaracion_id = @declaracionId LIMIT 1";
                 using (var cmd = new MySqlCommand(query, conexion))
                 {
@@ -628,14 +642,23 @@ namespace SimuladorSAT
                     }
                 }
             }
+            if (ingresosIsrId > 0)   
+            {
+                m.ListaTotalPercibidosDetalle = CargarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId);
+                m.ListaIngresosADisminuir = CargarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId);
+                m.ListaIngresosAdicionales = CargarDetalleIngresos("ingresos_adicionales", ingresosIsrId);
+                CargarDetalleEgresos(ingresosIsrId, m);
+            }
             Program.modeloIsrFisicas = m;
         }
 
         private void CargarIva(int declaracionId)
         {
             var m = new ModeloIva();
+            int ivaId = 0;   // ← LÍNEA NUEVA
             using (var conexion = AbrirConexion())
             {
+                ivaId = ObtenerIdModulo(conexion, "iva_simplificado", declaracionId);   // ← LÍNEA NUEVA
                 string query = "SELECT * FROM iva_simplificado WHERE declaracion_id = @declaracionId LIMIT 1";
                 using (var cmd = new MySqlCommand(query, conexion))
                 {
@@ -659,13 +682,10 @@ namespace SimuladorSAT
                             m.TieneCompensaciones = m.Compensaciones != 0;
                             m.Estimulos = reader.GetDecimal("estimulos_aplicados");
                             m.TieneEstimulos = m.Estimulos != 0;
-
-                            // Recalcula lo derivado con la misma fórmula que usa fmResico
                             m.IvaACargo16 = Math.Round(m.ActividadesGravadas16 * 0.16m, 2);
                             m.TotalIvaACargo = m.IvaACargo16;
                             decimal cantidadCargoCruda = m.TotalIvaACargo - m.IvaNoCobradoDevoluciones
                                 - m.IvaRetenido - m.IvaAcreditablePeriodo + m.IvaPorDevolucionesGastos;
-
                             if (cantidadCargoCruda >= 0)
                             {
                                 m.EsImpuestoAFavor = false;
@@ -678,9 +698,7 @@ namespace SimuladorSAT
                                 m.EsImpuestoAFavor = true;
                                 m.ImpuestoFinal = Math.Abs(cantidadCargoCruda);
                             }
-
                             m.DeterminacionCompleta = m.ActividadesGravadas0Capturado && m.IvaAcreditablePeriodoCapturado;
-
                             decimal totalAplic = m.TieneCompensaciones ? m.Compensaciones : 0;
                             totalAplic += m.TieneEstimulos ? m.Estimulos : 0;
                             m.TotalAplicaciones = totalAplic;
@@ -689,6 +707,11 @@ namespace SimuladorSAT
                         }
                     }
                 }
+            }
+            if (ivaId > 0)   
+
+            {
+                CargarDetalleDevolucionesIva(ivaId, m);
             }
             Program.modeloIva = m;
         }
@@ -744,6 +767,174 @@ namespace SimuladorSAT
                     cmd.Parameters.AddWithValue("@montoIva", montoIva);
                     cmd.Parameters.AddWithValue("@id", declaracionId);
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        // Guarda una lista de renglones (concepto/importe) en una tabla de detalle de ingresos.
+        // Borra todo lo existente para ese ingresos_isr_id y vuelve a insertar (más simple y confiable que hacer diff).
+        public void GuardarDetalleIngresos(string tabla, int ingresosIsrId, List<(string Concepto, decimal Importe)> lista)
+        {
+            var tablasValidas = new HashSet<string> { "ingresos_adicionales", "ingresos_detalles_disminuir", "ingresos_detalles_cobrados" };
+            if (!tablasValidas.Contains(tabla))
+                throw new ArgumentException("Tabla de detalle no válida: " + tabla);
+
+            using (var conexion = AbrirConexion())
+            {
+                string queryDelete = $"DELETE FROM {tabla} WHERE ingresos_isr_id = @ingresosIsrId";
+                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                {
+                    cmdDelete.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                    cmdDelete.ExecuteNonQuery();
+                }
+
+                foreach (var renglon in lista)
+                {
+                    string queryInsert = $"INSERT INTO {tabla} (ingresos_isr_id, concepto, importe) VALUES (@ingresosIsrId, @concepto, @importe)";
+                    using (var cmdInsert = new MySqlCommand(queryInsert, conexion))
+                    {
+                        cmdInsert.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                        cmdInsert.Parameters.AddWithValue("@concepto", renglon.Concepto);
+                        cmdInsert.Parameters.AddWithValue("@importe", renglon.Importe);
+                        cmdInsert.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public List<(string Concepto, decimal Importe)> CargarDetalleIngresos(string tabla, int ingresosIsrId)
+        {
+            var tablasValidas = new HashSet<string> { "ingresos_adicionales", "ingresos_detalles_disminuir", "ingresos_detalles_cobrados" };
+            if (!tablasValidas.Contains(tabla))
+                throw new ArgumentException("Tabla de detalle no válida: " + tabla);
+
+            var lista = new List<(string, decimal)>();
+            using (var conexion = AbrirConexion())
+            {
+                string query = $"SELECT concepto, importe FROM {tabla} WHERE ingresos_isr_id = @ingresosIsrId";
+                using (var cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add((reader.GetString("concepto"), reader.GetDecimal("importe")));
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+        public void GuardarDetalleEgresos(int ingresosIsrId, ModeloIsrPersonasFisicas modelo)
+        {
+            using (var conexion = AbrirConexion())
+            {
+                string queryDelete = "DELETE FROM ingresos_detalles_egresos WHERE ingresos_isr_id = @id";
+                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                {
+                    cmdDelete.Parameters.AddWithValue("@id", ingresosIsrId);
+                    cmdDelete.ExecuteNonQuery();
+                }
+
+                string queryInsert = @"INSERT INTO ingresos_detalles_egresos
+            (ingresos_isr_id, mes_nombre, facturas_canceladas_cant, facturas_vigentes_cant,
+             facturas_subtotal, facturas_descuento, facturas_neto, total_egresos_sat,
+             descuentos_copropiedad, total_descuentos_aplicados)
+            VALUES
+            (@id, @mes, @canceladas, @vigentes, @subtotal, @descuento, @neto, @neto, @copropiedad, @total)";
+                using (var cmd = new MySqlCommand(queryInsert, conexion))
+                {
+                    decimal neto = modelo.DetalleEgresosSubtotal - modelo.DetalleEgresosDescuento;
+                    if (neto < 0) neto = 0;
+
+                    cmd.Parameters.AddWithValue("@id", ingresosIsrId);
+                    cmd.Parameters.AddWithValue("@mes", Program.declaracionActual?.Periodo ?? "");
+                    cmd.Parameters.AddWithValue("@canceladas", modelo.DetalleEgresosFacturasCanceladas);
+                    cmd.Parameters.AddWithValue("@vigentes", modelo.DetalleEgresosFacturasVigentes);
+                    cmd.Parameters.AddWithValue("@subtotal", modelo.DetalleEgresosSubtotal);
+                    cmd.Parameters.AddWithValue("@descuento", modelo.DetalleEgresosDescuento);
+                    cmd.Parameters.AddWithValue("@neto", neto);
+                    cmd.Parameters.AddWithValue("@copropiedad", modelo.DescuentosCopropiedad);
+                    cmd.Parameters.AddWithValue("@total", modelo.Descuentos);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void CargarDetalleEgresos(int ingresosIsrId, ModeloIsrPersonasFisicas modelo)
+        {
+            using (var conexion = AbrirConexion())
+            {
+                string query = "SELECT * FROM ingresos_detalles_egresos WHERE ingresos_isr_id = @id LIMIT 1";
+                using (var cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@id", ingresosIsrId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            modelo.DetalleEgresosFacturasCanceladas = reader.GetInt32("facturas_canceladas_cant");
+                            modelo.DetalleEgresosFacturasVigentes = reader.GetInt32("facturas_vigentes_cant");
+                            modelo.DetalleEgresosSubtotal = reader.GetDecimal("facturas_subtotal");
+                            modelo.DetalleEgresosDescuento = reader.GetDecimal("facturas_descuento");
+                            modelo.DescuentosCopropiedad = reader.GetDecimal("descuentos_copropiedad");
+                        }
+                    }
+                }
+            }
+        }
+        public void GuardarDetalleDevolucionesIva(int ivaSimplificadoId, ModeloIva modelo)
+        {
+            using (var conexion = AbrirConexion())
+            {
+                string queryDelete = "DELETE FROM iva_detalles_devoluciones WHERE iva_simplificado_id = @id";
+                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                {
+                    cmdDelete.Parameters.AddWithValue("@id", ivaSimplificadoId);
+                    cmdDelete.ExecuteNonQuery();
+                }
+
+                string queryInsert = @"INSERT INTO iva_detalles_devoluciones
+            (iva_simplificado_id, mes_nombre, facturas_canceladas_cant, facturas_vigentes_cant,
+             facturas_subtotal, facturas_descuento, iva_8_egresos, iva_16_egresos, total_iva_no_cobrado)
+            VALUES
+            (@id, @mes, @canceladas, @vigentes, @subtotal, @descuento, @iva8, @iva16, @total)";
+                using (var cmd = new MySqlCommand(queryInsert, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@id", ivaSimplificadoId);
+                    cmd.Parameters.AddWithValue("@mes", Program.declaracionActual?.Periodo ?? "");
+                    cmd.Parameters.AddWithValue("@canceladas", modelo.DetalleDevolucionesFacturasCanceladas);
+                    cmd.Parameters.AddWithValue("@vigentes", modelo.DetalleDevolucionesFacturasVigentes);
+                    cmd.Parameters.AddWithValue("@subtotal", modelo.DetalleDevolucionesSubtotal);
+                    cmd.Parameters.AddWithValue("@descuento", modelo.DetalleDevolucionesDescuento);
+                    cmd.Parameters.AddWithValue("@iva8", modelo.Iva8PorcentoEgresos);
+                    cmd.Parameters.AddWithValue("@iva16", modelo.Iva16PorcentoEgresos);
+                    cmd.Parameters.AddWithValue("@total", modelo.IvaNoCobradoDevoluciones);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void CargarDetalleDevolucionesIva(int ivaSimplificadoId, ModeloIva modelo)
+        {
+            using (var conexion = AbrirConexion())
+            {
+                string query = "SELECT * FROM iva_detalles_devoluciones WHERE iva_simplificado_id = @id LIMIT 1";
+                using (var cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@id", ivaSimplificadoId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            modelo.DetalleDevolucionesFacturasCanceladas = reader.GetInt32("facturas_canceladas_cant");
+                            modelo.DetalleDevolucionesFacturasVigentes = reader.GetInt32("facturas_vigentes_cant");
+                            modelo.DetalleDevolucionesSubtotal = reader.GetDecimal("facturas_subtotal");
+                            modelo.DetalleDevolucionesDescuento = reader.GetDecimal("facturas_descuento");
+                            modelo.Iva8PorcentoEgresos = reader.GetDecimal("iva_8_egresos");
+                            modelo.Iva16PorcentoEgresos = reader.GetDecimal("iva_16_egresos");
+                        }
+                    }
                 }
             }
         }

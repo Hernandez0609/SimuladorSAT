@@ -22,6 +22,7 @@ namespace SimuladorSAT
             btnCapturarEst.Click += InterfazCapturaEstimulo;
 
             CargarValoresDesdeModelo();
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         public void ActualizarInfoDeclaracion()

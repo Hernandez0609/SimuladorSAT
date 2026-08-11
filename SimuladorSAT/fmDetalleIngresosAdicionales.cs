@@ -70,19 +70,28 @@ namespace SimuladorSAT
                 return;
             }
 
+            string conceptoElegido = cmbConcepto.SelectedItem.ToString();
+            foreach (DataGridViewRow fila in dgvRegistros.Rows)
+            {
+                if (fila.Cells[0].Value?.ToString() == conceptoElegido)
+                {
+                    MessageBox.Show("Captura la cantidad requerida.", "Concepto repetido",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             if (!decimal.TryParse(txtImporte.Text, out decimal importe) || importe <= 0)
             {
                 MessageBox.Show("Ingresa un importe válido.", "Campo requerido",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            dgvRegistros.Rows.Add(cmbConcepto.SelectedItem.ToString(), importe.ToString("N0"));
-            Program.modeloIsrFisicas.ListaIngresosAdicionales.Add((cmbConcepto.SelectedItem.ToString(), importe));
+            dgvRegistros.Rows.Add(conceptoElegido, importe.ToString("N0"));
+            Program.modeloIsrFisicas.ListaIngresosAdicionales.Add((conceptoElegido, importe));
             LimpiarFormularioCaptura();
             pnlFormularioCaptura.Visible = false;
             btnAgregar.Visible = true;
-
             ActualizarEstadoLista();
         }
 

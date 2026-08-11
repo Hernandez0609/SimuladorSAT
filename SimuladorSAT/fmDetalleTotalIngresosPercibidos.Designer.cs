@@ -161,11 +161,12 @@
             this.cmbConcepto.Size = new System.Drawing.Size(300, 28);
             this.cmbConcepto.TabIndex = 1;
             this.cmbConcepto.Items.AddRange(new object[] {
-                "Selecciona",
-                "Actividad empresarial",
-                "Actividad profesional",
-                "Arrendamiento",
-                "Otros ingresos por la actividad"
+                 "Selecciona",
+                 "Actividad empresarial",
+                 "Servicios profesionales (Honorarios)",
+                 "Actividades agrícolas, ganaderas, silvícolas o pesqueras",
+                 "Enajenación de activos fijos y terrenos de su propiedad afectos a su actividad",
+                 "Uso o goce temporal de bienes"
             });
             this.cmbConcepto.SelectedIndex = 0;
             this.cmbConcepto.SelectedIndexChanged += new System.EventHandler(this.cmbConcepto_SelectedIndexChanged);

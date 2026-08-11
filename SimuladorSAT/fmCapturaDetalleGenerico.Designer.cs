@@ -276,14 +276,14 @@
             this.btnContinuar.Size = new System.Drawing.Size(160, 38);
             this.btnContinuar.Text = "Continuar";
             this.btnContinuar.UseVisualStyleBackColor = false;
-            //this.btnContinuar.Click += new System.EventHandler(this.btnContinuar_Click);
+            this.btnContinuar.Click += new System.EventHandler(this.BtnContinuar_Click);
 
             this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEliminar.Font = new System.Drawing.Font("Arial", 10F);
             this.btnEliminar.Location = new System.Drawing.Point(180, 150);
             this.btnEliminar.Size = new System.Drawing.Size(160, 38);
             this.btnEliminar.Text = "Eliminar";
-            //this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            this.btnEliminar.Click += new System.EventHandler(this.BtnEliminar_Click);
 
             // ---- Divisor ----
             this.pnlDivisor.BackColor = System.Drawing.Color.FromArgb(220, 220, 220);
