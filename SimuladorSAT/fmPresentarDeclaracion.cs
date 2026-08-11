@@ -27,6 +27,7 @@ namespace SimuladorSAT
             btnPresentar.Click += BtnPresentar_Click;
             btnInicio.Click += BtnInicio_Click;
             btnCerrar.Click += BtnCerrar_Click;
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         private void ConfigurarSegunRegimen()

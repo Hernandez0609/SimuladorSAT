@@ -13,7 +13,7 @@ namespace SimuladorSAT
         {
             InitializeComponent();
             this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
-
+            this.FormBorderStyle = FormBorderStyle.None;
             txt1.KeyPress += clsValidacionNumerica.SoloNumeros;
             txt2.KeyPress += clsValidacionNumerica.SoloNumeros;
             txt3.KeyPress += clsValidacionNumerica.SoloNumeros;
@@ -249,6 +249,7 @@ namespace SimuladorSAT
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
+                        txt7.Text = Program.modeloIva.IvaNoCobradoDevoluciones.ToString("N0");   
                         RecalcularDeterminacion();
                     }
                 }

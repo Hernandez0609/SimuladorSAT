@@ -32,6 +32,7 @@ namespace SimuladorSAT
             txtImpuestoCargo.KeyPress += clsValidacionNumerica.SoloNumeros;
 
             CargarValoresDesdeModelo();
+            this.FormBorderStyle = FormBorderStyle.None;
         }
         private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
         {

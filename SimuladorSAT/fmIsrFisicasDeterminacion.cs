@@ -17,6 +17,7 @@ namespace SimuladorSAT
             txtTasaAplicable.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtImpuestoMensual.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtImpuestoACargo.KeyPress += clsValidacionNumerica.SoloNumeros;
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         public void ActualizarInfoDeclaracion()

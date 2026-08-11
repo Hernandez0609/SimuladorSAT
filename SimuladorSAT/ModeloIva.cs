@@ -1,4 +1,6 @@
-﻿namespace SimuladorSAT
+﻿using System.Collections.Generic;
+
+namespace SimuladorSAT
 {
     public class ModeloIva
     {
@@ -40,5 +42,6 @@
         public decimal Tasa0Exportacion { get; set; }
         public decimal AcreditableGravado16 { get; set; }
         public decimal AcreditableMixtas { get; set; }
+        public List<(string Concepto, decimal Importe)> ListaEstimulos { get; set; } = new List<(string, decimal)>();
     }
 }

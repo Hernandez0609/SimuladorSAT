@@ -16,6 +16,7 @@ namespace SimuladorSAT
             txtSubsidio.TextChanged += (s, e) => { GuardarSubsidioDesdeTexto(); RecalcularPago(); };
             txtSubsidio.Enter += SeleccionarTextoAlEntrar;
             txtSubsidio.KeyPress += clsValidacionNumerica.SoloNumeros;
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         public void ActualizarInfoDeclaracion()

@@ -12,6 +12,7 @@ namespace SimuladorSAT
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         private void fmDeclaracionesPendientes_Load(object sender, EventArgs e)

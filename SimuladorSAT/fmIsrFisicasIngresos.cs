@@ -19,6 +19,7 @@ namespace SimuladorSAT
             txtDescuentos.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtIngresosDisminuirValor.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtIngresosAdicionalesValor.KeyPress += clsValidacionNumerica.SoloNumeros;
+            this.FormBorderStyle = FormBorderStyle.None;
         }
     
         private void GuardarTotalCobradosDesdeTexto()
