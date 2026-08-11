@@ -422,7 +422,6 @@
             this.txtTotalCobrados.Font = new System.Drawing.Font("Arial", 9F);
             this.txtTotalCobrados.Location = new System.Drawing.Point(527, 65);
             this.txtTotalCobrados.Name = "txtTotalCobrados";
-            this.txtTotalCobrados.ReadOnly = false;
             this.txtTotalCobrados.Size = new System.Drawing.Size(195, 25);
             this.txtTotalCobrados.TabIndex = 3;
             this.txtTotalCobrados.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;

@@ -28,8 +28,9 @@ namespace SimuladorSAT
         public static ModeloDeclaracion declaracionActual;
         public static fmConfiguracionDeclaracion formConfiguracionDeclaracion;
         public static fmDeclaracionesPendientes formDeclaracionesPendientes;
-        //En lo que creo el login//
-        public static int contribuyenteId = 1; // id de prueba, hasta que exista el login
+
+        // Se actualiza automáticamente con el ID real de MySQL
+        public static int contribuyenteId = 1;
 
         public static ModeloIsrRetencionesSalarios modeloIsrSalarios = new ModeloIsrRetencionesSalarios();
 
@@ -40,6 +41,28 @@ namespace SimuladorSAT
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // --- VERIFICACIÓN DE REGISTRO PERSISTENTE ---
+            if (clsUsuario.ExisteRegistroLocal())
+            {
+                // Si la carpeta existe, recupera los datos y asigna el contribuyenteId real
+                clsUsuario usuario = clsUsuario.CargarLocal();
+                if (usuario != null)
+                {
+                    contribuyenteId = usuario.Id;
+                }
+            }
+            else
+            {
+                // Si es la primera vez, solicita los datos al alumno antes de cargar la aplicación
+                using (fmDatos formDatos = new fmDatos())
+                {
+                    if (formDatos.ShowDialog() != DialogResult.OK)
+                    {
+                        return; // Si cierra sin guardar, se cancela la ejecución
+                    }
+                }
+            }
 
             // 1. Instanciamos fmInicio
             formInicio = new fmInicio();
@@ -72,11 +95,13 @@ namespace SimuladorSAT
             ForzarCreacionHandle(formIsrFisicasPago);
             ForzarCreacionHandle(formConfiguracionDeclaracion);
             ForzarCreacionHandle(formDeclaracionesPendientes);
+
             Application.Run(formInicio);
         }
+
         private static void ForzarCreacionHandle(Form f)
         {
-            var handle = f.Handle; 
+            var handle = f.Handle;
         }
     }
 }

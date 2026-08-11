@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="clsConexion.cs" />
     <Compile Include="clsGeneradorAcuse.cs" />
+    <Compile Include="clsUsuario.cs" />
     <Compile Include="clsValidacionNumerica.cs" />
     <Compile Include="EstadoPestanasHelper.cs" />
     <Compile Include="fmAdminDeclaracion.cs">
@@ -162,6 +163,12 @@
     </Compile>
     <Compile Include="fmConfirmarReemplazo.Designer.cs">
       <DependentUpon>fmConfirmarReemplazo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmDatos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmDatos.Designer.cs">
+      <DependentUpon>fmDatos.cs</DependentUpon>
     </Compile>
     <Compile Include="fmDeclaracionesPendientes.cs">
       <SubType>Form</SubType>
