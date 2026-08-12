@@ -1,37 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+using System.Data.SQLite;
+using System.IO;
 
 namespace SimuladorSAT
 {
     internal class clsConexion
     {
-        // Cadena donde indica los datos con la que se conecta al sistema 
-        private readonly string cadenaConexion = "server=localhost;port=3306;database=satcontaduria;user=root;password=''";
+        private static readonly string RutaBD = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "SimuladorSAT_Datos",
+            "satcontaduria.db"
+        );
 
-        // Método para conectar
-        public MySqlConnection AbrirConexion()
+        private readonly string cadenaConexion = $"Data Source={RutaBD};Version=3;Journal Mode=Wal;";
+
+        // Bandera estática para evitar el bucle infinito y ejecutar la inicialización 1 sola vez
+        private static bool _baseDatosInicializada = false;
+
+        public SQLiteConnection AbrirConexion()
         {
-            var conexion = new MySqlConnection(cadenaConexion);
-            try
+            // 1. Asegurar que el directorio de datos en %AppData% exista
+            string directorio = Path.GetDirectoryName(RutaBD);
+            if (!string.IsNullOrEmpty(directorio) && !Directory.Exists(directorio))
             {
-                conexion.Open();
-                return conexion;
+                Directory.CreateDirectory(directorio);
             }
-            catch (Exception ex)
+
+            // 2. Si la base de datos no existe en %AppData%, copiar el archivo predefinido del ejecutable
+            if (!File.Exists(RutaBD))
             {
-                throw new Exception("Error al conectar a la base de datos: " + ex.Message, ex);
+                string rutaBDOrigen = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "satcontaduria.db");
+                if (File.Exists(rutaBDOrigen))
+                {
+                    File.Copy(rutaBDOrigen, RutaBD, true);
+                }
             }
+
+            // 3. Ejecutar la inicialización pública de la clase clsUsuario solo una vez al iniciar la app
+            if (!_baseDatosInicializada)
+            {
+                _baseDatosInicializada = true;
+                clsUsuario.InicializarBaseDatos();
+            }
+
+            SQLiteConnection conexion = new SQLiteConnection(cadenaConexion);
+            conexion.Open();
+            return conexion;
         }
+
         public int ObtenerIdCatalogo(string tabla, string columnaDescripcion, string valor)
         {
             using (var conexion = AbrirConexion())
             {
                 string query = $"SELECT id FROM {tabla} WHERE {columnaDescripcion} = @valor LIMIT 1";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@valor", valor);
                     object resultado = cmd.ExecuteScalar();
@@ -39,6 +62,7 @@ namespace SimuladorSAT
                 }
             }
         }
+
         public bool ExisteDeclaracionPendiente(int ejercicio, int periodoId, int tipoDeclaracionId, int contribuyenteId, out int declaracionId)
         {
             declaracionId = 0;
@@ -51,7 +75,7 @@ namespace SimuladorSAT
                           AND contribuyente_id = @contribuyenteId 
                           AND concluida = 0 
                           LIMIT 1";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@ejercicio", ejercicio);
                     cmd.Parameters.AddWithValue("@periodoId", periodoId);
@@ -67,6 +91,7 @@ namespace SimuladorSAT
                 }
             }
         }
+
         public int InsertarDeclaracion(int contribuyenteId, int ejercicio, int periodicidadId, int periodoId, int tipoDeclaracionId,
                                         bool modIsrFisicas, bool modIsrSalarios, bool modIva)
         {
@@ -77,9 +102,9 @@ namespace SimuladorSAT
              modulo_isr_fisicas_seleccionado, modulo_isr_salarios_seleccionado, modulo_iva_seleccionado)
             VALUES (@contribuyenteId, @ejercicio, @periodicidadId, @periodoId, @tipoDeclaracionId,
              @modIsrFisicas, @modIsrSalarios, @modIva);
-            SELECT LAST_INSERT_ID();";
+            SELECT last_insert_rowid();";
 
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@contribuyenteId", contribuyenteId);
                     cmd.Parameters.AddWithValue("@ejercicio", ejercicio);
@@ -99,13 +124,14 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = "DELETE FROM declaraciones WHERE id = @id";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", declaracionId);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+
         public ModeloDeclaracion ObtenerDeclaracionPorId(int declaracionId)
         {
             using (var conexion = AbrirConexion())
@@ -122,7 +148,7 @@ namespace SimuladorSAT
                     JOIN cat_tipos_declaracion ctd ON ctd.id = d.tipo_declaracion_id
                     WHERE d.id = @id";
 
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", declaracionId);
                     using (var reader = cmd.ExecuteReader())
@@ -131,22 +157,22 @@ namespace SimuladorSAT
                         {
                             return new ModeloDeclaracion
                             {
-                                Ejercicio = reader.GetInt32("ejercicio"),
-                                Periocidad = reader.GetString("periodicidad"),
-                                Periodo = reader.GetString("periodo"),
-                                TipoDeclaracion = reader.GetString("tipo_declaracion"),
-                                ModuloIsrFisicasSeleccionado = reader.GetBoolean("modulo_isr_fisicas_seleccionado"),
-                                ModuloIsrSalariosSeleccionado = reader.GetBoolean("modulo_isr_salarios_seleccionado"),
-                                ModuloIvaSimplificadoSeleccionado = reader.GetBoolean("modulo_iva_seleccionado"),
-                                FechaCreacion = reader.GetDateTime("fecha_creacion"),
-                                FechaUltimaModificacion = reader.GetDateTime("fecha_ultima_modificacion"),
-                                ContribuyenteId = reader.GetInt32("contribuyente_id"),
-                                ModuloIsrFisicasCompletado = reader.GetBoolean("modulo_isr_fisicas_completado"),
-                                ModuloIsrSalariosCompletado = reader.GetBoolean("modulo_isr_salarios_completado"),
-                                ModuloIvaSimplificadoCompletado = reader.GetBoolean("modulo_iva_completado"),
-                                MontoIsrFisicas = reader.GetDecimal("monto_isr_fisicas"),
-                                MontoIsrSalarios = reader.GetDecimal("monto_isr_salarios"),
-                                MontoIva = reader.GetDecimal("monto_iva"),
+                                Ejercicio = Convert.ToInt32(reader["ejercicio"]),
+                                Periocidad = reader["periodicidad"].ToString(),
+                                Periodo = reader["periodo"].ToString(),
+                                TipoDeclaracion = reader["tipo_declaracion"].ToString(),
+                                ModuloIsrFisicasSeleccionado = Convert.ToBoolean(reader["modulo_isr_fisicas_seleccionado"]),
+                                ModuloIsrSalariosSeleccionado = Convert.ToBoolean(reader["modulo_isr_salarios_seleccionado"]),
+                                ModuloIvaSimplificadoSeleccionado = Convert.ToBoolean(reader["modulo_iva_seleccionado"]),
+                                FechaCreacion = Convert.ToDateTime(reader["fecha_creacion"]),
+                                FechaUltimaModificacion = Convert.ToDateTime(reader["fecha_ultima_modificacion"]),
+                                ContribuyenteId = Convert.ToInt32(reader["contribuyente_id"]),
+                                ModuloIsrFisicasCompletado = Convert.ToBoolean(reader["modulo_isr_fisicas_completado"]),
+                                ModuloIsrSalariosCompletado = Convert.ToBoolean(reader["modulo_isr_salarios_completado"]),
+                                ModuloIvaSimplificadoCompletado = Convert.ToBoolean(reader["modulo_iva_completado"]),
+                                MontoIsrFisicas = Convert.ToDecimal(reader["monto_isr_fisicas"]),
+                                MontoIsrSalarios = Convert.ToDecimal(reader["monto_isr_salarios"]),
+                                MontoIva = Convert.ToDecimal(reader["monto_iva"]),
                             };
                         }
                     }
@@ -154,6 +180,7 @@ namespace SimuladorSAT
             }
             return null;
         }
+
         public void ObtenerModulosCompletados(int ejercicio, int periodoId, int tipoDeclaracionNormalId, int contribuyenteId, out bool isrFisicas, out bool isrSalarios, out bool iva)
         {
             isrFisicas = false;
@@ -171,7 +198,7 @@ namespace SimuladorSAT
                           ORDER BY id DESC
                           LIMIT 1";
 
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@ejercicio", ejercicio);
                     cmd.Parameters.AddWithValue("@periodoId", periodoId);
@@ -182,18 +209,17 @@ namespace SimuladorSAT
                     {
                         if (reader.Read())
                         {
-                            isrFisicas = reader.GetBoolean("modulo_isr_fisicas_completado");
-                            isrSalarios = reader.GetBoolean("modulo_isr_salarios_completado");
-                            iva = reader.GetBoolean("modulo_iva_completado");
+                            isrFisicas = Convert.ToBoolean(reader["modulo_isr_fisicas_completado"]);
+                            isrSalarios = Convert.ToBoolean(reader["modulo_isr_salarios_completado"]);
+                            iva = Convert.ToBoolean(reader["modulo_iva_completado"]);
                         }
                     }
                 }
             }
         }
+
         public void MarcarModuloCompletado(int declaracionId, string columnaModulo)
         {
-            // Whitelist de columnas válidas — evita inyección SQL en el nombre de columna,
-            // ya que los nombres de columna no se pueden parametrizar como los valores.
             var columnasValidas = new HashSet<string>
             {
               "modulo_isr_fisicas_completado",
@@ -207,15 +233,16 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = $@"UPDATE declaraciones 
-                           SET {columnaModulo} = 1, fecha_ultima_modificacion = NOW() 
+                           SET {columnaModulo} = 1, fecha_ultima_modificacion = datetime('now', 'localtime') 
                            WHERE id = @id";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", declaracionId);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+
         public List<ModeloDeclaracion> ObtenerDeclaracionesPendientes(int contribuyenteId)
         {
             var lista = new List<ModeloDeclaracion>();
@@ -235,7 +262,7 @@ namespace SimuladorSAT
                         WHERE d.contribuyente_id = @contribuyenteId AND d.concluida = 0
                         ORDER BY d.fecha_ultima_modificacion DESC";
 
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@contribuyenteId", contribuyenteId);
 
@@ -245,23 +272,23 @@ namespace SimuladorSAT
                         {
                             lista.Add(new ModeloDeclaracion
                             {
-                                Id = reader.GetInt32("id"),
-                                Ejercicio = reader.GetInt32("ejercicio"),
-                                Periocidad = reader.GetString("periodicidad"),
-                                Periodo = reader.GetString("periodo"),
-                                TipoDeclaracion = reader.GetString("tipo_declaracion"),
-                                ModuloIsrFisicasSeleccionado = reader.GetBoolean("modulo_isr_fisicas_seleccionado"),
-                                ModuloIsrSalariosSeleccionado = reader.GetBoolean("modulo_isr_salarios_seleccionado"),
-                                ModuloIvaSimplificadoSeleccionado = reader.GetBoolean("modulo_iva_seleccionado"),
-                                ModuloIsrFisicasCompletado = reader.GetBoolean("modulo_isr_fisicas_completado"),
-                                ModuloIsrSalariosCompletado = reader.GetBoolean("modulo_isr_salarios_completado"),
-                                ModuloIvaSimplificadoCompletado = reader.GetBoolean("modulo_iva_completado"),
-                                FechaCreacion = reader.GetDateTime("fecha_creacion"),
-                                FechaUltimaModificacion = reader.GetDateTime("fecha_ultima_modificacion"),
-                                ContribuyenteId = reader.GetInt32("contribuyente_id"),
-                                MontoIsrFisicas = reader.GetDecimal("monto_isr_fisicas"),
-                                MontoIsrSalarios = reader.GetDecimal("monto_isr_salarios"),
-                                MontoIva = reader.GetDecimal("monto_iva"),
+                                Id = Convert.ToInt32(reader["id"]),
+                                Ejercicio = Convert.ToInt32(reader["ejercicio"]),
+                                Periocidad = reader["periodicidad"].ToString(),
+                                Periodo = reader["periodo"].ToString(),
+                                TipoDeclaracion = reader["tipo_declaracion"].ToString(),
+                                ModuloIsrFisicasSeleccionado = Convert.ToBoolean(reader["modulo_isr_fisicas_seleccionado"]),
+                                ModuloIsrSalariosSeleccionado = Convert.ToBoolean(reader["modulo_isr_salarios_seleccionado"]),
+                                ModuloIvaSimplificadoSeleccionado = Convert.ToBoolean(reader["modulo_iva_seleccionado"]),
+                                ModuloIsrFisicasCompletado = Convert.ToBoolean(reader["modulo_isr_fisicas_completado"]),
+                                ModuloIsrSalariosCompletado = Convert.ToBoolean(reader["modulo_isr_salarios_completado"]),
+                                ModuloIvaSimplificadoCompletado = Convert.ToBoolean(reader["modulo_iva_completado"]),
+                                FechaCreacion = Convert.ToDateTime(reader["fecha_creacion"]),
+                                FechaUltimaModificacion = Convert.ToDateTime(reader["fecha_ultima_modificacion"]),
+                                ContribuyenteId = Convert.ToInt32(reader["contribuyente_id"]),
+                                MontoIsrFisicas = Convert.ToDecimal(reader["monto_isr_fisicas"]),
+                                MontoIsrSalarios = Convert.ToDecimal(reader["monto_isr_salarios"]),
+                                MontoIva = Convert.ToDecimal(reader["monto_iva"]),
                                 Concluida = false
                             });
                         }
@@ -276,14 +303,15 @@ namespace SimuladorSAT
         {
             using (var conexion = AbrirConexion())
             {
-                string query = "UPDATE declaraciones SET fecha_ultima_modificacion = NOW() WHERE id = @id";
-                using (var cmd = new MySqlCommand(query, conexion))
+                string query = "UPDATE declaraciones SET fecha_ultima_modificacion = datetime('now', 'localtime') WHERE id = @id";
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", declaracionId);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+
         public string FinalizarDeclaracion(int declaracionId)
         {
             string folio = GenerarFolio();
@@ -291,9 +319,9 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = @"UPDATE declaraciones 
-                          SET concluida = 1, fecha_envio = NOW(), numero_operacion = @folio
+                          SET concluida = 1, fecha_envio = datetime('now', 'localtime'), numero_operacion = @folio
                           WHERE id = @id";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@folio", folio);
                     cmd.Parameters.AddWithValue("@id", declaracionId);
@@ -306,29 +334,30 @@ namespace SimuladorSAT
 
         private string GenerarFolio()
         {
-            // Folio numérico de 9 dígitos, similar al "Número de operación" real del SAT
             var rnd = new Random();
             return rnd.Next(100000000, 999999999).ToString();
         }
+
         public (string matricula, string nombre) ObtenerDatosContribuyente(int contribuyenteId)
         {
             using (var conexion = AbrirConexion())
             {
                 string query = "SELECT matricula, nombre FROM contribuyentes WHERE id = @id";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", contribuyenteId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            return (reader.GetString("matricula"), reader.GetString("nombre"));
+                            return (reader["matricula"].ToString(), reader["nombre"].ToString());
                         }
                     }
                 }
             }
             return ("", "");
         }
+
         public void GuardarIsrFisicas(int declaracionId, int contribuyenteId, int periodoMes, int periodoAnio, int tipoDeclaracionId, ModeloIsrPersonasFisicas modelo)
         {
             int ingresosIsrId;
@@ -353,7 +382,7 @@ namespace SimuladorSAT
                 compensaciones_aplicadas = @compensaciones,
                 estimulos_aplicados = @estimulos
                 WHERE id = @id";
-                    using (var cmd = new MySqlCommand(queryUpdate, conexion))
+                    using (var cmd = new SQLiteCommand(queryUpdate, conexion))
                     {
                         AgregarParametrosIsrFisicas(cmd, modelo);
                         cmd.Parameters.AddWithValue("@id", idExistente);
@@ -372,8 +401,8 @@ namespace SimuladorSAT
                  @totalIngresosCobrados, @descuentos, @ingresosADisminuir,
                  @ingresosAdicionales, @totalIngresosPercibidos, @tasaAplicable, @impuestoMensual,
                  @isrRetenidoPm, @impuestoACargo, @subsidioEmpleo, @compensaciones, @estimulos);
-                SELECT LAST_INSERT_ID();";
-                    using (var cmd = new MySqlCommand(queryInsert, conexion))
+                SELECT last_insert_rowid();";
+                    using (var cmd = new SQLiteCommand(queryInsert, conexion))
                     {
                         cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
                         cmd.Parameters.AddWithValue("@contribuyenteId", contribuyenteId);
@@ -386,14 +415,13 @@ namespace SimuladorSAT
                 }
             }
 
-            // Guarda las 3 listas de detalle contra el id real de ingresos_isr
             GuardarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId, modelo.ListaTotalPercibidosDetalle);
             GuardarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId, modelo.ListaIngresosADisminuir);
             GuardarDetalleIngresos("ingresos_adicionales", ingresosIsrId, modelo.ListaIngresosAdicionales);
             GuardarDetalleEgresos(ingresosIsrId, modelo);
         }
 
-        private void AgregarParametrosIsrFisicas(MySqlCommand cmd, ModeloIsrPersonasFisicas modelo)
+        private void AgregarParametrosIsrFisicas(SQLiteCommand cmd, ModeloIsrPersonasFisicas modelo)
         {
             cmd.Parameters.AddWithValue("@totalIngresosCobrados", modelo.TotalIngresosCobrados);
             cmd.Parameters.AddWithValue("@descuentos", modelo.Descuentos);
@@ -411,13 +439,13 @@ namespace SimuladorSAT
 
         public void GuardarIva(int declaracionId, int contribuyenteId, int periodoMes, int periodoAnio, int tipoDeclaracionId, ModeloIva modelo)
         {
-            int ivaSimplificadoId;   // ← LÍNEA NUEVA: declarada aquí, fuera del if/else
+            int ivaSimplificadoId;
             using (var conexion = AbrirConexion())
             {
                 int idExistente = ObtenerIdModulo(conexion, "iva_simplificado", declaracionId);
                 if (idExistente > 0)
                 {
-                    ivaSimplificadoId = idExistente;   // ← LÍNEA NUEVA
+                    ivaSimplificadoId = idExistente;
                     string queryUpdate = @"UPDATE iva_simplificado SET
         actividades_16 = @actividades16,
         actividades_0 = @actividades0,
@@ -431,7 +459,7 @@ namespace SimuladorSAT
         compensaciones_aplicadas = @compensaciones,
         estimulos_aplicados = @estimulos
         WHERE id = @id";
-                    using (var cmd = new MySqlCommand(queryUpdate, conexion))
+                    using (var cmd = new SQLiteCommand(queryUpdate, conexion))
                     {
                         AgregarParametrosIva(cmd, modelo);
                         cmd.Parameters.AddWithValue("@id", idExistente);
@@ -450,8 +478,8 @@ namespace SimuladorSAT
          @actividades16, @actividades0, @actividadesExentas, @actividadesNoObjeto,
          @ivaDevolucionesVentas, @ivaRetenido, @ivaAcreditable, @ivaDevolucionesGastos,
          @saldoFavorAnterior, @compensaciones, @estimulos);
-        SELECT LAST_INSERT_ID();";   // ← LÍNEA NUEVA: para obtener el id recién creado
-                    using (var cmd = new MySqlCommand(queryInsert, conexion))
+        SELECT last_insert_rowid();";
+                    using (var cmd = new SQLiteCommand(queryInsert, conexion))
                     {
                         cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
                         cmd.Parameters.AddWithValue("@contribuyenteId", contribuyenteId);
@@ -459,14 +487,14 @@ namespace SimuladorSAT
                         cmd.Parameters.AddWithValue("@periodoAnio", periodoAnio);
                         cmd.Parameters.AddWithValue("@tipoDeclaracionId", tipoDeclaracionId);
                         AgregarParametrosIva(cmd, modelo);
-                        ivaSimplificadoId = Convert.ToInt32(cmd.ExecuteScalar());   // ← CAMBIO: antes era ExecuteNonQuery
+                        ivaSimplificadoId = Convert.ToInt32(cmd.ExecuteScalar());
                     }
                 }
                 GuardarDetalleDevolucionesIva(ivaSimplificadoId, modelo);
             }
         }
 
-        private void AgregarParametrosIva(MySqlCommand cmd, ModeloIva modelo)
+        private void AgregarParametrosIva(SQLiteCommand cmd, ModeloIva modelo)
         {
             cmd.Parameters.AddWithValue("@actividades16", modelo.ActividadesGravadas16);
             cmd.Parameters.AddWithValue("@actividades0", modelo.ActividadesGravadas0);
@@ -498,7 +526,7 @@ namespace SimuladorSAT
                 subsidio_empleo = @subsidioEmpleo,
                 estimulos_aplicados = @estimulos
                 WHERE id = @id";
-                    using (var cmd = new MySqlCommand(queryUpdate, conexion))
+                    using (var cmd = new SQLiteCommand(queryUpdate, conexion))
                     {
                         AgregarParametrosIsrSalarios(cmd, modelo);
                         cmd.Parameters.AddWithValue("@id", idExistente);
@@ -515,7 +543,7 @@ namespace SimuladorSAT
                 (@declaracionId, @contribuyenteId, @periodoMes, @periodoAnio, @tipoDeclaracionId,
                  @cantTrabajadores, @totalSueldosPagados, @totalSueldosExentos,
                  @isrRetenidoSat, @isrRetenidoContribuyente, @subsidioEmpleo, @estimulos)";
-                    using (var cmd = new MySqlCommand(queryInsert, conexion))
+                    using (var cmd = new SQLiteCommand(queryInsert, conexion))
                     {
                         cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
                         cmd.Parameters.AddWithValue("@contribuyenteId", contribuyenteId);
@@ -529,7 +557,7 @@ namespace SimuladorSAT
             }
         }
 
-        private void AgregarParametrosIsrSalarios(MySqlCommand cmd, ModeloIsrRetencionesSalarios modelo)
+        private void AgregarParametrosIsrSalarios(SQLiteCommand cmd, ModeloIsrRetencionesSalarios modelo)
         {
             cmd.Parameters.AddWithValue("@cantTrabajadores", modelo.NumeroTrabajadores);
             cmd.Parameters.AddWithValue("@totalSueldosPagados", modelo.PagoSueldos);
@@ -540,15 +568,14 @@ namespace SimuladorSAT
             cmd.Parameters.AddWithValue("@estimulos", modelo.Estimulos);
         }
 
-        // Helper compartido por los 3 métodos de guardado — busca si ya existe fila para esta declaración
-        private int ObtenerIdModulo(MySqlConnection conexion, string tabla, int declaracionId)
+        private int ObtenerIdModulo(SQLiteConnection conexion, string tabla, int declaracionId)
         {
             var tablasValidas = new HashSet<string> { "ingresos_isr", "iva_simplificado", "declaraciones_retenciones_salarios" };
             if (!tablasValidas.Contains(tabla))
                 throw new ArgumentException("Tabla de módulo no válida: " + tabla);
 
             string query = $"SELECT id FROM {tabla} WHERE declaracion_id = @declaracionId LIMIT 1";
-            using (var cmd = new MySqlCommand(query, conexion))
+            using (var cmd = new SQLiteCommand(query, conexion))
             {
                 cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
                 object resultado = cmd.ExecuteScalar();
@@ -556,7 +583,6 @@ namespace SimuladorSAT
             }
         }
 
-        // Guarda los 3 módulos de un jalón — úsalo en Guardar, Administración de la declaración, Inicio y Cerrar
         public void GuardarTodosLosModulos(ModeloDeclaracion declaracion)
         {
             if (declaracion == null || declaracion.Id <= 0) return;
@@ -574,7 +600,7 @@ namespace SimuladorSAT
 
             ActualizarFechaModificacion(declaracion.Id);
         }
-        // Convierte "Enero".."Diciembre" a 1-12. Reutiliza la misma lista que ModeloDeclaracion.CalcularVencimiento()
+
         public int ObtenerNumeroMes(string nombreMes)
         {
             string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -585,11 +611,6 @@ namespace SimuladorSAT
             return indice + 1;
         }
 
-
-
-        // ====================================================================
-        // CARGA INVERSA — repuebla los 3 modelos en memoria desde la BD
-        // ====================================================================
         public void CargarModulosEnMemoria(int declaracionId)
         {
             CargarIsrFisicas(declaracionId);
@@ -605,35 +626,35 @@ namespace SimuladorSAT
             {
                 ingresosIsrId = ObtenerIdModulo(conexion, "ingresos_isr", declaracionId);
                 string query = "SELECT * FROM ingresos_isr WHERE declaracion_id = @declaracionId LIMIT 1";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            m.TotalIngresosCobrados = reader.GetDecimal("total_ingresos_cobrados");
-                            m.Descuentos = reader.GetDecimal("descuentos_devoluciones_bonificaciones");
+                            m.TotalIngresosCobrados = Convert.ToDecimal(reader["total_ingresos_cobrados"]);
+                            m.Descuentos = Convert.ToDecimal(reader["descuentos_devoluciones_bonificaciones"]);
                             m.DescuentosCapturado = m.Descuentos != 0;
-                            m.IngresosADisminuir = reader.GetDecimal("ingresos_a_disminuir");
+                            m.IngresosADisminuir = Convert.ToDecimal(reader["ingresos_a_disminuir"]);
                             m.TieneIngresosADisminuir = m.IngresosADisminuir != 0;
                             m.IngresosADisminuirCapturado = m.TieneIngresosADisminuir;
-                            m.IngresosAdicionales = reader.GetDecimal("ingresos_adicionales");
+                            m.IngresosAdicionales = Convert.ToDecimal(reader["ingresos_adicionales"]);
                             m.TieneIngresosAdicionales = m.IngresosAdicionales != 0;
                             m.IngresosAdicionalesCapturado = m.TieneIngresosAdicionales;
-                            m.TotalIngresosPercibidos = reader.GetDecimal("total_ingresos_percibidos");
+                            m.TotalIngresosPercibidos = Convert.ToDecimal(reader["total_ingresos_percibidos"]);
                             m.TotalPercibidosCapturado = m.TotalIngresosPercibidos != 0;
-                            m.TasaAplicable = reader.GetDecimal("tasa_aplicable");
-                            m.ImpuestoMensual = reader.GetDecimal("impuesto_mensual");
-                            m.IsrRetenidoPersonasMorales = reader.GetDecimal("isr_retenido_pm");
+                            m.TasaAplicable = Convert.ToDecimal(reader["tasa_aplicable"]);
+                            m.ImpuestoMensual = Convert.ToDecimal(reader["impuesto_mensual"]);
+                            m.IsrRetenidoPersonasMorales = Convert.ToDecimal(reader["isr_retenido_pm"]);
                             m.IsrRetenidoCapturado = m.IsrRetenidoPersonasMorales != 0;
-                            m.ImpuestoACargo = reader.GetDecimal("impuesto_a_cargo");
+                            m.ImpuestoACargo = Convert.ToDecimal(reader["impuesto_a_cargo"]);
                             m.DeterminacionCompleta = m.IsrRetenidoCapturado;
-                            m.SubsidioParaElEmpleo = reader.GetDecimal("subsidio_empleo");
-                            m.Compensaciones = reader.GetDecimal("compensaciones_aplicadas");
+                            m.SubsidioParaElEmpleo = Convert.ToDecimal(reader["subsidio_empleo"]);
+                            m.Compensaciones = Convert.ToDecimal(reader["compensaciones_aplicadas"]);
                             m.TieneCompensaciones = m.Compensaciones != 0;
                             m.CompensacionesCapturado = m.TieneCompensaciones;
-                            m.Estimulos = reader.GetDecimal("estimulos_aplicados");
+                            m.Estimulos = Convert.ToDecimal(reader["estimulos_aplicados"]);
                             m.TieneEstimulos = m.Estimulos != 0;
                             m.EstimulosCapturado = m.TieneEstimulos;
                             m.CantidadAPagar = m.ImpuestoACargo - m.SubsidioParaElEmpleo - m.Compensaciones - m.Estimulos;
@@ -642,7 +663,7 @@ namespace SimuladorSAT
                     }
                 }
             }
-            if (ingresosIsrId > 0)   
+            if (ingresosIsrId > 0)
             {
                 m.ListaTotalPercibidosDetalle = CargarDetalleIngresos("ingresos_detalles_cobrados", ingresosIsrId);
                 m.ListaIngresosADisminuir = CargarDetalleIngresos("ingresos_detalles_disminuir", ingresosIsrId);
@@ -655,32 +676,32 @@ namespace SimuladorSAT
         private void CargarIva(int declaracionId)
         {
             var m = new ModeloIva();
-            int ivaId = 0;   // ← LÍNEA NUEVA
+            int ivaId = 0;
             using (var conexion = AbrirConexion())
             {
-                ivaId = ObtenerIdModulo(conexion, "iva_simplificado", declaracionId);   // ← LÍNEA NUEVA
+                ivaId = ObtenerIdModulo(conexion, "iva_simplificado", declaracionId);
                 string query = "SELECT * FROM iva_simplificado WHERE declaracion_id = @declaracionId LIMIT 1";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            m.ActividadesGravadas16 = reader.GetDecimal("actividades_16");
-                            m.ActividadesGravadas0 = reader.GetDecimal("actividades_0");
+                            m.ActividadesGravadas16 = Convert.ToDecimal(reader["actividades_16"]);
+                            m.ActividadesGravadas0 = Convert.ToDecimal(reader["actividades_0"]);
                             m.ActividadesGravadas0Capturado = m.ActividadesGravadas0 != 0;
-                            m.ActividadesExentas = reader.GetDecimal("actividades_exentas");
-                            m.ActividadesNoObjeto = reader.GetDecimal("actividades_no_objeto");
-                            m.IvaNoCobradoDevoluciones = reader.GetDecimal("iva_devoluciones_ventas");
-                            m.IvaRetenido = reader.GetDecimal("iva_retenido");
-                            m.IvaAcreditablePeriodo = reader.GetDecimal("iva_acreditable");
+                            m.ActividadesExentas = Convert.ToDecimal(reader["actividades_exentas"]);
+                            m.ActividadesNoObjeto = Convert.ToDecimal(reader["actividades_no_objeto"]);
+                            m.IvaNoCobradoDevoluciones = Convert.ToDecimal(reader["iva_devoluciones_ventas"]);
+                            m.IvaRetenido = Convert.ToDecimal(reader["iva_retenido"]);
+                            m.IvaAcreditablePeriodo = Convert.ToDecimal(reader["iva_acreditable"]);
                             m.IvaAcreditablePeriodoCapturado = m.IvaAcreditablePeriodo != 0;
-                            m.IvaPorDevolucionesGastos = reader.GetDecimal("iva_devoluciones_gastos");
-                            m.AcreditamientoSaldoFavorAnterior = reader.GetDecimal("saldo_favor_anterior");
-                            m.Compensaciones = reader.GetDecimal("compensaciones_aplicadas");
+                            m.IvaPorDevolucionesGastos = Convert.ToDecimal(reader["iva_devoluciones_gastos"]);
+                            m.AcreditamientoSaldoFavorAnterior = Convert.ToDecimal(reader["saldo_favor_anterior"]);
+                            m.Compensaciones = Convert.ToDecimal(reader["compensaciones_aplicadas"]);
                             m.TieneCompensaciones = m.Compensaciones != 0;
-                            m.Estimulos = reader.GetDecimal("estimulos_aplicados");
+                            m.Estimulos = Convert.ToDecimal(reader["estimulos_aplicados"]);
                             m.TieneEstimulos = m.Estimulos != 0;
                             m.IvaACargo16 = Math.Round(m.ActividadesGravadas16 * 0.16m, 2);
                             m.TotalIvaACargo = m.IvaACargo16;
@@ -708,8 +729,7 @@ namespace SimuladorSAT
                     }
                 }
             }
-            if (ivaId > 0)   
-
+            if (ivaId > 0)
             {
                 CargarDetalleDevolucionesIva(ivaId, m);
             }
@@ -722,23 +742,23 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = "SELECT * FROM declaraciones_retenciones_salarios WHERE declaracion_id = @declaracionId LIMIT 1";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@declaracionId", declaracionId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            m.NumeroTrabajadores = reader.GetInt32("cant_trabajadores");
-                            m.PagoSueldos = reader.GetDecimal("total_sueldos_pagados");
-                            m.PagosExentos = reader.GetDecimal("total_sueldos_exentos");
-                            m.IsrRetenidoSueldos = reader.GetDecimal("isr_retenido_sat");
-                            m.IsrRetenidoRegistroContribuyente = reader.GetDecimal("isr_retenido_contribuyente");
+                            m.NumeroTrabajadores = Convert.ToInt32(reader["cant_trabajadores"]);
+                            m.PagoSueldos = Convert.ToDecimal(reader["total_sueldos_pagados"]);
+                            m.PagosExentos = Convert.ToDecimal(reader["total_sueldos_exentos"]);
+                            m.IsrRetenidoSueldos = Convert.ToDecimal(reader["isr_retenido_sat"]);
+                            m.IsrRetenidoRegistroContribuyente = Convert.ToDecimal(reader["isr_retenido_contribuyente"]);
                             m.IsrRetenidoRegistroCapturado = m.IsrRetenidoRegistroContribuyente != 0;
                             m.ImpuestoACargo = m.IsrRetenidoRegistroContribuyente;
                             m.DeterminacionCompleta = m.IsrRetenidoRegistroCapturado;
-                            m.SubsidioParaElEmpleo = reader.GetDecimal("subsidio_empleo");
-                            m.Estimulos = reader.GetDecimal("estimulos_aplicados");
+                            m.SubsidioParaElEmpleo = Convert.ToDecimal(reader["subsidio_empleo"]);
+                            m.Estimulos = Convert.ToDecimal(reader["estimulos_aplicados"]);
                             m.TieneEstimulos = m.Estimulos != 0;
                             m.TotalAplicaciones = m.SubsidioParaElEmpleo;
                             m.CantidadACargo = Math.Max(0, m.ImpuestoACargo - m.TotalAplicaciones);
@@ -750,7 +770,6 @@ namespace SimuladorSAT
             Program.modeloIsrSalarios = m;
         }
 
-        // Guarda los montos finales por módulo directamente en declaraciones (para el Total a pagar de Administración)
         public void GuardarMontosDeclaracion(int declaracionId, decimal montoIsrFisicas, decimal montoIsrSalarios, decimal montoIva)
         {
             using (var conexion = AbrirConexion())
@@ -760,7 +779,7 @@ namespace SimuladorSAT
             monto_isr_salarios = @montoIsrSalarios,
             monto_iva = @montoIva
             WHERE id = @id";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@montoIsrFisicas", montoIsrFisicas);
                     cmd.Parameters.AddWithValue("@montoIsrSalarios", montoIsrSalarios);
@@ -770,8 +789,7 @@ namespace SimuladorSAT
                 }
             }
         }
-        // Guarda una lista de renglones (concepto/importe) en una tabla de detalle de ingresos.
-        // Borra todo lo existente para ese ingresos_isr_id y vuelve a insertar (más simple y confiable que hacer diff).
+
         public void GuardarDetalleIngresos(string tabla, int ingresosIsrId, List<(string Concepto, decimal Importe)> lista)
         {
             var tablasValidas = new HashSet<string> { "ingresos_adicionales", "ingresos_detalles_disminuir", "ingresos_detalles_cobrados" };
@@ -780,22 +798,40 @@ namespace SimuladorSAT
 
             using (var conexion = AbrirConexion())
             {
-                string queryDelete = $"DELETE FROM {tabla} WHERE ingresos_isr_id = @ingresosIsrId";
-                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                // Inicia la transacción
+                using (var transaccion = conexion.BeginTransaction())
                 {
-                    cmdDelete.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
-                    cmdDelete.ExecuteNonQuery();
-                }
-
-                foreach (var renglon in lista)
-                {
-                    string queryInsert = $"INSERT INTO {tabla} (ingresos_isr_id, concepto, importe) VALUES (@ingresosIsrId, @concepto, @importe)";
-                    using (var cmdInsert = new MySqlCommand(queryInsert, conexion))
+                    try
                     {
-                        cmdInsert.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
-                        cmdInsert.Parameters.AddWithValue("@concepto", renglon.Concepto);
-                        cmdInsert.Parameters.AddWithValue("@importe", renglon.Importe);
-                        cmdInsert.ExecuteNonQuery();
+                        string queryDelete = $"DELETE FROM {tabla} WHERE ingresos_isr_id = @ingresosIsrId";
+                        // Pasa 'transaccion' como tercer parámetro al comando
+                        using (var cmdDelete = new SQLiteCommand(queryDelete, conexion, transaccion))
+                        {
+                            cmdDelete.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                            cmdDelete.ExecuteNonQuery();
+                        }
+
+                        foreach (var renglon in lista)
+                        {
+                            string queryInsert = $"INSERT INTO {tabla} (ingresos_isr_id, concepto, importe) VALUES (@ingresosIsrId, @concepto, @importe)";
+                            // Pasa 'transaccion' como tercer parámetro al comando
+                            using (var cmdInsert = new SQLiteCommand(queryInsert, conexion, transaccion))
+                            {
+                                cmdInsert.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
+                                cmdInsert.Parameters.AddWithValue("@concepto", renglon.Concepto);
+                                cmdInsert.Parameters.AddWithValue("@importe", renglon.Importe);
+                                cmdInsert.ExecuteNonQuery();
+                            }
+                        }
+
+                        // Guarda todo en disco de un solo golpe
+                        transaccion.Commit();
+                    }
+                    catch
+                    {
+                        // Si algo falla, revierte los cambios para no dejar datos corruptos
+                        transaccion.Rollback();
+                        throw;
                     }
                 }
             }
@@ -811,26 +847,27 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = $"SELECT concepto, importe FROM {tabla} WHERE ingresos_isr_id = @ingresosIsrId";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@ingresosIsrId", ingresosIsrId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            lista.Add((reader.GetString("concepto"), reader.GetDecimal("importe")));
+                            lista.Add((reader["concepto"].ToString(), Convert.ToDecimal(reader["importe"])));
                         }
                     }
                 }
             }
             return lista;
         }
+
         public void GuardarDetalleEgresos(int ingresosIsrId, ModeloIsrPersonasFisicas modelo)
         {
             using (var conexion = AbrirConexion())
             {
                 string queryDelete = "DELETE FROM ingresos_detalles_egresos WHERE ingresos_isr_id = @id";
-                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                using (var cmdDelete = new SQLiteCommand(queryDelete, conexion))
                 {
                     cmdDelete.Parameters.AddWithValue("@id", ingresosIsrId);
                     cmdDelete.ExecuteNonQuery();
@@ -838,11 +875,11 @@ namespace SimuladorSAT
 
                 string queryInsert = @"INSERT INTO ingresos_detalles_egresos
             (ingresos_isr_id, mes_nombre, facturas_canceladas_cant, facturas_vigentes_cant,
-             facturas_subtotal, facturas_descuento, facturas_neto, total_egresos_sat,
+             facturas_subtotal, facturas_descuento, total_egresos_sat,
              descuentos_copropiedad, total_descuentos_aplicados)
             VALUES
-            (@id, @mes, @canceladas, @vigentes, @subtotal, @descuento, @neto, @neto, @copropiedad, @total)";
-                using (var cmd = new MySqlCommand(queryInsert, conexion))
+            (@id, @mes, @canceladas, @vigentes, @subtotal, @descuento, @neto, @copropiedad, @total)";
+                using (var cmd = new SQLiteCommand(queryInsert, conexion))
                 {
                     decimal neto = modelo.DetalleEgresosSubtotal - modelo.DetalleEgresosDescuento;
                     if (neto < 0) neto = 0;
@@ -866,29 +903,30 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = "SELECT * FROM ingresos_detalles_egresos WHERE ingresos_isr_id = @id LIMIT 1";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", ingresosIsrId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            modelo.DetalleEgresosFacturasCanceladas = reader.GetInt32("facturas_canceladas_cant");
-                            modelo.DetalleEgresosFacturasVigentes = reader.GetInt32("facturas_vigentes_cant");
-                            modelo.DetalleEgresosSubtotal = reader.GetDecimal("facturas_subtotal");
-                            modelo.DetalleEgresosDescuento = reader.GetDecimal("facturas_descuento");
-                            modelo.DescuentosCopropiedad = reader.GetDecimal("descuentos_copropiedad");
+                            modelo.DetalleEgresosFacturasCanceladas = Convert.ToInt32(reader["facturas_canceladas_cant"]);
+                            modelo.DetalleEgresosFacturasVigentes = Convert.ToInt32(reader["facturas_vigentes_cant"]);
+                            modelo.DetalleEgresosSubtotal = Convert.ToDecimal(reader["facturas_subtotal"]);
+                            modelo.DetalleEgresosDescuento = Convert.ToDecimal(reader["facturas_descuento"]);
+                            modelo.DescuentosCopropiedad = Convert.ToDecimal(reader["descuentos_copropiedad"]);
                         }
                     }
                 }
             }
         }
+
         public void GuardarDetalleDevolucionesIva(int ivaSimplificadoId, ModeloIva modelo)
         {
             using (var conexion = AbrirConexion())
             {
                 string queryDelete = "DELETE FROM iva_detalles_devoluciones WHERE iva_simplificado_id = @id";
-                using (var cmdDelete = new MySqlCommand(queryDelete, conexion))
+                using (var cmdDelete = new SQLiteCommand(queryDelete, conexion))
                 {
                     cmdDelete.Parameters.AddWithValue("@id", ivaSimplificadoId);
                     cmdDelete.ExecuteNonQuery();
@@ -899,7 +937,7 @@ namespace SimuladorSAT
              facturas_subtotal, facturas_descuento, iva_8_egresos, iva_16_egresos, total_iva_no_cobrado)
             VALUES
             (@id, @mes, @canceladas, @vigentes, @subtotal, @descuento, @iva8, @iva16, @total)";
-                using (var cmd = new MySqlCommand(queryInsert, conexion))
+                using (var cmd = new SQLiteCommand(queryInsert, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", ivaSimplificadoId);
                     cmd.Parameters.AddWithValue("@mes", Program.declaracionActual?.Periodo ?? "");
@@ -920,19 +958,19 @@ namespace SimuladorSAT
             using (var conexion = AbrirConexion())
             {
                 string query = "SELECT * FROM iva_detalles_devoluciones WHERE iva_simplificado_id = @id LIMIT 1";
-                using (var cmd = new MySqlCommand(query, conexion))
+                using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@id", ivaSimplificadoId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            modelo.DetalleDevolucionesFacturasCanceladas = reader.GetInt32("facturas_canceladas_cant");
-                            modelo.DetalleDevolucionesFacturasVigentes = reader.GetInt32("facturas_vigentes_cant");
-                            modelo.DetalleDevolucionesSubtotal = reader.GetDecimal("facturas_subtotal");
-                            modelo.DetalleDevolucionesDescuento = reader.GetDecimal("facturas_descuento");
-                            modelo.Iva8PorcentoEgresos = reader.GetDecimal("iva_8_egresos");
-                            modelo.Iva16PorcentoEgresos = reader.GetDecimal("iva_16_egresos");
+                            modelo.DetalleDevolucionesFacturasCanceladas = Convert.ToInt32(reader["facturas_canceladas_cant"]);
+                            modelo.DetalleDevolucionesFacturasVigentes = Convert.ToInt32(reader["facturas_vigentes_cant"]);
+                            modelo.DetalleDevolucionesSubtotal = Convert.ToDecimal(reader["facturas_subtotal"]);
+                            modelo.DetalleDevolucionesDescuento = Convert.ToDecimal(reader["facturas_descuento"]);
+                            modelo.Iva8PorcentoEgresos = Convert.ToDecimal(reader["iva_8_egresos"]);
+                            modelo.Iva16PorcentoEgresos = Convert.ToDecimal(reader["iva_16_egresos"]);
                         }
                     }
                 }

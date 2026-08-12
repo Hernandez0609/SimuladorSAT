@@ -106,6 +106,7 @@ namespace SimuladorSAT
                     if (dialogoDetalle.ShowDialog(cortinaOcursa) == DialogResult.OK)
                     {
                         Program.modeloIsrFisicas.IsrRetenidoPersonasMorales = dialogoDetalle.MontoCapturado;
+                        Program.modeloIsrFisicas.IsrRetenido = dialogoDetalle.MontoCapturado;
                         Program.modeloIsrFisicas.IsrRetenidoCapturado = true;
 
                         var m = Program.modeloIsrFisicas;

@@ -19,9 +19,11 @@ namespace SimuladorSAT
             txtCampo2.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtCampo3.KeyPress += clsValidacionNumerica.SoloNumeros;
 
-            txtCampo1.Text = "0";
-            txtCampo2.Text = "0";
-            txtCampo3.Text = "0";
+            // Cargar datos previos desde el modelo
+            txtCampo1.Text = Program.modeloIsrFisicas.IsrRetenidoFacturas.ToString("N0");
+            txtCampo2.Text = Program.modeloIsrFisicas.IsrRetenidoAdicional.ToString("N0");
+            txtCampo3.Text = Program.modeloIsrFisicas.IsrRetenidoDisminuir.ToString("N0");
+
             txtCampo2.TextChanged += (s, e) => RecalcularTotal();
             txtCampo3.TextChanged += (s, e) => RecalcularTotal();
         }
@@ -87,6 +89,13 @@ namespace SimuladorSAT
         {
             RecalcularTotal();
             MontoCapturado = ParsearMonto(txtCampo4.Text);
+
+            // Guardar valores desglosados y total en el modelo global
+            Program.modeloIsrFisicas.IsrRetenidoFacturas = ParsearMonto(txtCampo1.Text);
+            Program.modeloIsrFisicas.IsrRetenidoAdicional = ParsearMonto(txtCampo2.Text);
+            Program.modeloIsrFisicas.IsrRetenidoDisminuir = ParsearMonto(txtCampo3.Text);
+            Program.modeloIsrFisicas.IsrRetenido = MontoCapturado;
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using MySql.Data.MySqlClient;
+using System.Data.SQLite;
 
 namespace SimuladorSAT
 {
@@ -10,34 +10,58 @@ namespace SimuladorSAT
         public string Nombre { get; set; }
         public string Matricula { get; set; }
 
-        // Cadena de conexión a MySQL (ajusta el usuario/contraseña si es necesario)
-        private static readonly string CadenaConexion = "Server=localhost;Database=satcontaduria;Uid=root;Pwd=;";
-
-        // Ruta en AppData para la persistencia local
         private static readonly string RutaCarpeta = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "SimuladorSAT_Datos"
         );
-        private static readonly string RutaArchivo = Path.Combine(RutaCarpeta, "alumno.txt");
+
+        private static readonly string RutaArchivoTxt = Path.Combine(RutaCarpeta, "alumno.txt");
+        private static readonly string RutaBD = Path.Combine(RutaCarpeta, "satcontaduria.db");
+
+        // Ruta de la base de datos original que viene con el ejecutable
+        private static readonly string RutaBDSemilla = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "satcontaduria.db");
+
+        private static readonly string CadenaConexion = $"Data Source={RutaBD};Version=3;";
 
         public static bool ExisteRegistroLocal()
         {
-            return File.Exists(RutaArchivo);
+            return File.Exists(RutaArchivoTxt);
         }
 
-        // Procesa el registro en la BD de MySQL y genera la copia local en disco
+        public static void InicializarBaseDatos()
+        {
+            if (!Directory.Exists(RutaCarpeta))
+            {
+                Directory.CreateDirectory(RutaCarpeta);
+            }
+
+            // Si no existe la BD en AppData del usuario, copiamos el archivo completo que viene con el programa
+            if (!File.Exists(RutaBD))
+            {
+                if (File.Exists(RutaBDSemilla))
+                {
+                    File.Copy(RutaBDSemilla, RutaBD, true);
+                }
+                else
+                {
+                    throw new FileNotFoundException("No se encontró el archivo base de la base de datos 'satcontaduria.db' en la carpeta del ejecutable.");
+                }
+            }
+        }
+
         public static bool RegistrarOObtener(string nombre, string matricula, out int idGenerado)
         {
             idGenerado = 0;
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(CadenaConexion))
+                InicializarBaseDatos();
+
+                using (SQLiteConnection conn = new SQLiteConnection(CadenaConexion))
                 {
                     conn.Open();
 
-                    // 1. Verificar si la matrícula ya existe en la tabla contribuyentes
-                    string sqlBuscar = "SELECT id FROM contribuyentes WHERE matricula = @matricula LIMIT 1";
-                    using (MySqlCommand cmdBuscar = new MySqlCommand(sqlBuscar, conn))
+                    string sqlBuscar = "SELECT id FROM contribuyentes WHERE matricula = @matricula LIMIT 1;";
+                    using (SQLiteCommand cmdBuscar = new SQLiteCommand(sqlBuscar, conn))
                     {
                         cmdBuscar.Parameters.AddWithValue("@matricula", matricula);
                         object result = cmdBuscar.ExecuteScalar();
@@ -48,11 +72,10 @@ namespace SimuladorSAT
                         }
                     }
 
-                    // 2. Si no existe en la BD, la inserta
                     if (idGenerado == 0)
                     {
-                        string sqlInsert = "INSERT INTO contribuyentes (matricula, nombre) VALUES (@matricula, @nombre); SELECT LAST_INSERT_ID();";
-                        using (MySqlCommand cmdInsert = new MySqlCommand(sqlInsert, conn))
+                        string sqlInsert = "INSERT INTO contribuyentes (matricula, nombre) VALUES (@matricula, @nombre); SELECT last_insert_rowid();";
+                        using (SQLiteCommand cmdInsert = new SQLiteCommand(sqlInsert, conn))
                         {
                             cmdInsert.Parameters.AddWithValue("@matricula", matricula);
                             cmdInsert.Parameters.AddWithValue("@nombre", nombre);
@@ -61,30 +84,23 @@ namespace SimuladorSAT
                     }
                 }
 
-                // 3. Crear carpeta y archivo local en AppData con (ID, Nombre, Matricula)
-                if (!Directory.Exists(RutaCarpeta))
-                {
-                    Directory.CreateDirectory(RutaCarpeta);
-                }
-
                 string[] datos = { idGenerado.ToString(), nombre, matricula };
-                File.WriteAllLines(RutaArchivo, datos);
+                File.WriteAllLines(RutaArchivoTxt, datos);
 
                 return true;
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Error de conexión a la BD: " + ex.Message, "Error MySQL", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Error al conectar con la base de datos local: " + ex.Message, "Error SQLite", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return false;
             }
         }
 
-        // Carga los datos locales guardados previamente
         public static clsUsuario CargarLocal()
         {
             if (!ExisteRegistroLocal()) return null;
 
-            string[] lineas = File.ReadAllLines(RutaArchivo);
+            string[] lineas = File.ReadAllLines(RutaArchivoTxt);
             if (lineas.Length >= 3)
             {
                 return new clsUsuario
@@ -95,6 +111,17 @@ namespace SimuladorSAT
                 };
             }
             return null;
+        }
+
+        // Devuelve la cadena formateada "RFC: MATRICULA | NOMBRE" para usar en los encabezados
+        public static string ObtenerTextoEncabezado()
+        {
+            var usuario = Program.usuarioActual;
+            if (usuario != null)
+            {
+                return $"RFC: {usuario.Matricula.ToUpper()} | {usuario.Nombre.ToUpper()}";
+            }
+            return "RFC: XXXXXXXXX | ALUMNO NO REGISTRADO";
         }
     }
 }

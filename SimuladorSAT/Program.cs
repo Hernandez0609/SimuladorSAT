@@ -29,8 +29,11 @@ namespace SimuladorSAT
         public static fmConfiguracionDeclaracion formConfiguracionDeclaracion;
         public static fmDeclaracionesPendientes formDeclaracionesPendientes;
 
-        // Se actualiza automáticamente con el ID real de MySQL
+        // Se actualiza automáticamente con el ID real de MySQL / SQLite
         public static int contribuyenteId = 1;
+
+        // Variable global para acceder al usuario en cualquier formulario
+        public static clsUsuario usuarioActual;
 
         public static ModeloIsrRetencionesSalarios modeloIsrSalarios = new ModeloIsrRetencionesSalarios();
 
@@ -46,10 +49,10 @@ namespace SimuladorSAT
             if (clsUsuario.ExisteRegistroLocal())
             {
                 // Si la carpeta existe, recupera los datos y asigna el contribuyenteId real
-                clsUsuario usuario = clsUsuario.CargarLocal();
-                if (usuario != null)
+                usuarioActual = clsUsuario.CargarLocal();
+                if (usuarioActual != null)
                 {
-                    contribuyenteId = usuario.Id;
+                    contribuyenteId = usuarioActual.Id;
                 }
             }
             else
@@ -61,6 +64,13 @@ namespace SimuladorSAT
                     {
                         return; // Si cierra sin guardar, se cancela la ejecución
                     }
+                }
+
+                // Carga el usuario recién guardado tras cerrar el formulario de datos
+                usuarioActual = clsUsuario.CargarLocal();
+                if (usuarioActual != null)
+                {
+                    contribuyenteId = usuarioActual.Id;
                 }
             }
 

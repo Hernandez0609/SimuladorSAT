@@ -535,7 +535,7 @@
             this.btnCapturarCompensaciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapturarCompensaciones.Location = new System.Drawing.Point(751, 187);
             this.btnCapturarCompensaciones.Name = "btnCapturarCompensaciones";
-            this.btnCapturarCompensaciones.Size = new System.Drawing.Size(137, 28);
+            this.btnCapturarCompensaciones.Size = new System.Drawing.Size(137, 1);
             this.btnCapturarCompensaciones.TabIndex = 12;
             this.btnCapturarCompensaciones.Text = "Capturar";
             this.btnCapturarCompensaciones.Visible = false;
@@ -609,7 +609,7 @@
             this.btnCapturarEstimulos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapturarEstimulos.Location = new System.Drawing.Point(751, 233);
             this.btnCapturarEstimulos.Name = "btnCapturarEstimulos";
-            this.btnCapturarEstimulos.Size = new System.Drawing.Size(137, 28);
+            this.btnCapturarEstimulos.Size = new System.Drawing.Size(137, 1);
             this.btnCapturarEstimulos.TabIndex = 18;
             this.btnCapturarEstimulos.Text = "Capturar";
             this.btnCapturarEstimulos.Visible = false;

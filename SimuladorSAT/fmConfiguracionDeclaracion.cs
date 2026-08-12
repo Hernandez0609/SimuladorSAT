@@ -432,7 +432,7 @@ namespace SimuladorSAT
                 int nuevoId = conexion.InsertarDeclaracion(
                     Program.contribuyenteId, ejercicio, periodicidadId, periodoId, tipoDeclaracionId,
                     _isrFisicasSel, _isrSalariosSel, _ivaSel);
-
+                    
                 nueva = new ModeloDeclaracion
                 {
                     Id = nuevoId,

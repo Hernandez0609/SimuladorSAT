@@ -182,5 +182,15 @@ namespace SimuladorSAT
                 ventanaDetalle.ShowDialog(this);
             }
         }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (_debounceTimer != null)
+            {
+                _debounceTimer.Stop();
+                _debounceTimer.Dispose();
+                _debounceTimer = null;
+            }
+            base.OnFormClosing(e);
+        }
     }
 }

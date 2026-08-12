@@ -15,6 +15,7 @@ namespace SimuladorSAT
         public int DetalleEgresosFacturasVigentes { get; set; }
         public decimal DetalleEgresosSubtotal { get; set; }
         public decimal DetalleEgresosDescuento { get; set; }
+
         // Apartado: Ingresos
         public decimal DescuentosCopropiedad { get; set; }
         public bool EsCopropiedad { get; set; } = false;
@@ -24,6 +25,7 @@ namespace SimuladorSAT
         public decimal IngresosADisminuir { get; set; }
         public bool TieneIngresosAdicionales { get; set; } = false;
         public decimal IngresosAdicionales { get; set; }
+
         // Banderas de captura — indican si el usuario ya abrió y confirmó el diálogo correspondiente
         public bool DescuentosCapturado { get; set; } = false;
         public bool IngresosADisminuirCapturado { get; set; } = false;
@@ -43,6 +45,12 @@ namespace SimuladorSAT
         public decimal IsrRetenidoPersonasMorales { get; set; }
         public decimal ImpuestoACargo { get; set; }
 
+        // CAMPOS AGREGADOS PARA EL DESGLOSE DE ISR RETENIDO
+        public decimal IsrRetenidoFacturas { get; set; }
+        public decimal IsrRetenidoAdicional { get; set; }
+        public decimal IsrRetenidoDisminuir { get; set; }
+        public decimal IsrRetenido { get; set; }
+
         // NUEVO — Apartado: Pago
         public decimal SubsidioParaElEmpleo { get; set; }
         public bool TieneCompensaciones { get; set; } = false;
@@ -52,6 +60,5 @@ namespace SimuladorSAT
         public decimal TotalAplicaciones { get; set; }
         public decimal CantidadACargo { get; set; }
         public decimal CantidadAPagar { get; set; }
-        // Aquí se irán agregando propiedades de Datos adicionales
     }
 }
