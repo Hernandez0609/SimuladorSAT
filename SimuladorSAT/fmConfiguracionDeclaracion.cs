@@ -22,12 +22,13 @@ namespace SimuladorSAT
         public fmConfiguracionDeclaracion()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
             ConfigurarCirculos();
             CargarAnios();
-            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         public void ReiniciarFormulario()

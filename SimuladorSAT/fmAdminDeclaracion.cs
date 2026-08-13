@@ -16,6 +16,14 @@ namespace SimuladorSAT
         public fmAdminDeclaracion()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+
+            // 2. Evento Load para forzar la pantalla completa respetando la barra de tareas
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
+            NavegacionHelper.CargarEncabezadoUsuario(this.lblInfoIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
@@ -32,6 +40,7 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(this.lblInfoIzquierda);
         }
 
         private void ConfigurarModulosCirculares()
@@ -49,7 +58,7 @@ namespace SimuladorSAT
         {
             var d = Program.declaracionActual;
             if (d == null) return;
-
+            ActualizarInfoDeclaracion();
             // Configurar visibilidad de ISR Físicas
             btnIsrFisicas.Visible = d.ModuloIsrFisicasSeleccionado;
             btnIsrFisicas.Tag = "isrFisicas";

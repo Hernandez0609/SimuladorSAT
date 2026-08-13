@@ -10,21 +10,21 @@ namespace SimuladorSAT
         public Form1()
         {
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;
-
-            // Doble búfer
+            this.FormBorderStyle = FormBorderStyle.None;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
             AsignarEfectoHover(lblMenuInicio);
             AsignarEfectoHover(lblMenuPersonas);
             AsignarEfectoHover(lblMenuEmpresa);
-            this.FormBorderStyle = FormBorderStyle.None;
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Asigna el ícono renderizado
+            this.WindowState = FormWindowState.Normal;
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.WindowState = FormWindowState.Maximized;
             picUserIcon.Image = CrearIconoUsuario(60, 60);
             AjustarPosicionesResponsivas();
         }

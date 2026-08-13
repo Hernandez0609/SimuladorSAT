@@ -9,6 +9,7 @@ namespace SimuladorSAT
         public fmDeclaracionesPendientes()
         {
             InitializeComponent();
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
@@ -17,6 +18,9 @@ namespace SimuladorSAT
 
         private void fmDeclaracionesPendientes_Load(object sender, EventArgs e)
         {
+            this.WindowState = FormWindowState.Normal;
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.WindowState = FormWindowState.Maximized;
             ActualizarLista();
         }
 

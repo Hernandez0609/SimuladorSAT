@@ -305,12 +305,14 @@ namespace SimuladorSAT
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             if (_esDevoluciones) GuardarDevolucionesYCerrar();
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         private void btnCerrarX_Click(object sender, EventArgs e)
         {
             if (_esDevoluciones) GuardarDevolucionesYCerrar();
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
     }

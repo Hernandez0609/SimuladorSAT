@@ -10,19 +10,20 @@
             base.Dispose(disposing);
         }
 
+        #region Windows Form Designer generated code
+
         private void InitializeComponent()
         {
             this.pnlNavbar = new System.Windows.Forms.Panel();
             this.btnNavInicio = new System.Windows.Forms.Label();
             this.btnNavPersonas = new System.Windows.Forms.Label();
             this.btnNavEmpresa = new System.Windows.Forms.Label();
+            this.btnCerrar = new System.Windows.Forms.Button();
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.lblBienvenida = new System.Windows.Forms.Label();
             this.picLogoCentral = new System.Windows.Forms.PictureBox();
-            this.picUserIcon = new System.Windows.Forms.PictureBox();
             this.pnlNavbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoCentral)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picUserIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlNavbar
@@ -31,7 +32,7 @@
             this.pnlNavbar.Controls.Add(this.btnNavInicio);
             this.pnlNavbar.Controls.Add(this.btnNavPersonas);
             this.pnlNavbar.Controls.Add(this.btnNavEmpresa);
-            this.pnlNavbar.Controls.Add(this.picUserIcon);
+            this.pnlNavbar.Controls.Add(this.btnCerrar);
             this.pnlNavbar.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlNavbar.Location = new System.Drawing.Point(0, 0);
             this.pnlNavbar.Name = "pnlNavbar";
@@ -76,6 +77,23 @@
             this.btnNavEmpresa.Text = "Empresa";
             this.btnNavEmpresa.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnCerrar
+            // 
+            this.btnCerrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCerrar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCerrar.FlatAppearance.BorderSize = 0;
+            this.btnCerrar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(17)))), ((int)(((byte)(35)))));
+            this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCerrar.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.btnCerrar.ForeColor = System.Drawing.Color.White;
+            this.btnCerrar.Location = new System.Drawing.Point(1860, 0);
+            this.btnCerrar.Name = "btnCerrar";
+            this.btnCerrar.Size = new System.Drawing.Size(60, 45);
+            this.btnCerrar.TabIndex = 3;
+            this.btnCerrar.Text = "✕";
+            this.btnCerrar.UseVisualStyleBackColor = true;
+            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
+            // 
             // pnlFooter
             // 
             this.pnlFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(78)))), ((int)(((byte)(92)))));
@@ -108,18 +126,6 @@
             this.picLogoCentral.TabIndex = 3;
             this.picLogoCentral.TabStop = false;
             // 
-            // picUserIcon
-            // 
-            this.picUserIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.picUserIcon.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picUserIcon.Location = new System.Drawing.Point(1800, 20);
-            this.picUserIcon.Name = "picUserIcon";
-            this.picUserIcon.Size = new System.Drawing.Size(60, 60);
-            this.picUserIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picUserIcon.TabIndex = 3;
-            this.picUserIcon.TabStop = false;
-            this.picUserIcon.Click += new System.EventHandler(this.picUserIcon_Click);
-            // 
             // fmInicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -130,24 +136,26 @@
             this.Controls.Add(this.lblBienvenida);
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlNavbar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "fmInicio";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Simulador SAT - Inicio";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
             this.Load += new System.EventHandler(this.fmInicio_Load);
             this.Resize += new System.EventHandler(this.fmInicio_Resize);
             this.pnlNavbar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogoCentral)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picUserIcon)).EndInit();
             this.ResumeLayout(false);
 
         }
+
+        #endregion
 
         private System.Windows.Forms.Panel pnlNavbar;
         private System.Windows.Forms.Label btnNavInicio;
         private System.Windows.Forms.Label btnNavPersonas;
         private System.Windows.Forms.Label btnNavEmpresa;
-        private System.Windows.Forms.PictureBox picUserIcon;
+        private System.Windows.Forms.Button btnCerrar;
         private System.Windows.Forms.Panel pnlFooter;
         private System.Windows.Forms.Label lblBienvenida;
         private System.Windows.Forms.PictureBox picLogoCentral;

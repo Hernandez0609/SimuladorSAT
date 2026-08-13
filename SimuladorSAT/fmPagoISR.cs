@@ -10,6 +10,13 @@ namespace SimuladorSAT
         public fmPagoISR()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
@@ -24,8 +31,9 @@ namespace SimuladorSAT
             };
             txtSubsidio.Enter += SeleccionarTextoAlEntrar;
             CargarValoresDesdeModelo();
-            this.FormBorderStyle = FormBorderStyle.None;
+            
         }
+       
         private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
         {
             if (sender is TextBox txt)
@@ -42,10 +50,12 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
         }
 
         public void ActualizarDesdeModelo()
         {
+            ActualizarInfoDeclaracion();
             CargarValoresDesdeModelo();
         }
 
@@ -161,7 +171,7 @@ namespace SimuladorSAT
             {
                 Program.formAdmin = new fmAdminDeclaracion();
             }
-            Program.formAdmin.WindowState = FormWindowState.Maximized;
+            
             NavegacionHelper.MostrarSinParpadeo(Program.formAdmin, this);
         }
 
@@ -174,7 +184,7 @@ namespace SimuladorSAT
             {
                 Program.formPresentar = new fmPresentarDeclaracion(TipoRegimen.RegimenSimplificado);
             }
-            Program.formPresentar.WindowState = FormWindowState.Maximized;
+           
             NavegacionHelper.MostrarSinParpadeo(Program.formPresentar, this);
         }
 

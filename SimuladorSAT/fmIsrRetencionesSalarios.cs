@@ -8,6 +8,12 @@ namespace SimuladorSAT
         public fmIsrRetencionesSalarios()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
@@ -32,7 +38,6 @@ namespace SimuladorSAT
             txtImpuestoCargo.KeyPress += clsValidacionNumerica.SoloNumeros;
 
             CargarValoresDesdeModelo();
-            this.FormBorderStyle = FormBorderStyle.None;
         }
         private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
         {
@@ -50,10 +55,12 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
         }
 
         public void ActualizarDesdeModelo()
         {
+            ActualizarInfoDeclaracion();
             CargarValoresDesdeModelo();
         }
 

@@ -8,6 +8,7 @@ namespace SimuladorSAT
         public fmIsrFisicasDeterminacion()
         {
             InitializeComponent();
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
@@ -18,6 +19,13 @@ namespace SimuladorSAT
             txtImpuestoMensual.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtImpuestoACargo.KeyPress += clsValidacionNumerica.SoloNumeros;
             this.FormBorderStyle = FormBorderStyle.None;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Bounds = Screen.PrimaryScreen.WorkingArea;
+
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
         }
 
         public void ActualizarInfoDeclaracion()
@@ -29,10 +37,12 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
         }
 
         public void ActualizarDesdeModelo()
         {
+            ActualizarInfoDeclaracion();
             CargarValoresDesdeModelo();
         }
 
@@ -187,6 +197,11 @@ namespace SimuladorSAT
         {
             GuardarProgreso();
             NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
+        }
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            base.OnHandleCreated(e);
         }
     }
 }

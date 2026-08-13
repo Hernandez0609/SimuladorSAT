@@ -9,6 +9,7 @@ namespace SimuladorSAT
         public fmIsrFisicasPago()
         {
             InitializeComponent();
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
@@ -17,6 +18,13 @@ namespace SimuladorSAT
             txtSubsidio.Enter += SeleccionarTextoAlEntrar;
             txtSubsidio.KeyPress += clsValidacionNumerica.SoloNumeros;
             this.FormBorderStyle = FormBorderStyle.None;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Bounds = Screen.PrimaryScreen.WorkingArea;
+
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
         }
 
         public void ActualizarInfoDeclaracion()
@@ -28,12 +36,14 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
         }
 
         private Form _overlayForm;
 
         public void ActualizarDesdeModelo()
         {
+            ActualizarInfoDeclaracion();
             CargarValoresDesdeModelo();
         }
         private void SeleccionarTextoAlEntrar(object sender, EventArgs e)
@@ -337,6 +347,11 @@ namespace SimuladorSAT
 
             Program.formAdmin.AplicarModulosDeclaracionActual();
             MessageBox.Show("Datos guardados correctamente.", "Guardar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            base.OnHandleCreated(e);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace SimuladorSAT
         public fmIsrFisicasIngresos()
         {
             InitializeComponent();
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint, true);
@@ -20,6 +21,13 @@ namespace SimuladorSAT
             txtIngresosDisminuirValor.KeyPress += clsValidacionNumerica.SoloNumeros;
             txtIngresosAdicionalesValor.KeyPress += clsValidacionNumerica.SoloNumeros;
             this.FormBorderStyle = FormBorderStyle.None;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Bounds = Screen.PrimaryScreen.WorkingArea;
+
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
         }
     
         private void GuardarTotalCobradosDesdeTexto()
@@ -43,10 +51,12 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
         }
         private Form _overlayForm;
         public void ActualizarDesdeModelo()
         {
+            ActualizarInfoDeclaracion();
             CargarValoresDesdeModelo();
         }
         private void CargarValoresDesdeModelo()
@@ -363,6 +373,11 @@ namespace SimuladorSAT
         {
             GuardarProgreso();
             NavegacionHelper.MostrarSinParpadeo(Program.formInicio, this);
+        }
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            base.OnHandleCreated(e);
         }
     }
 }

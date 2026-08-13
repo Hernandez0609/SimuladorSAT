@@ -825,6 +825,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1445, 778);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Controls.Add(this.pnlContenedorPrincipal);
             this.Controls.Add(this.pnlNavbarAzul);
             this.Controls.Add(this.pnlFranjaGrisDatos);

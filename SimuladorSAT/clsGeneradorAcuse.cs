@@ -151,7 +151,8 @@ namespace SimuladorSAT
                 "Es recomendable verificar que el importe calculado de la parte actualizada esté correcto, en virtud de que puede haber cambiado el índice nacional de precios al consumidor y el cálculo debe estar basado en el último publicado.",
                 "Los datos personales son incorporados y protegidos en los sistemas del SAT, de conformidad con las disposiciones legales en la materia.",
                 "Para modificar o corregir datos personales visita sat.gob.mx.",
-                "Este acuse es emitido sin prejuzgar la veracidad de los datos asentados ni el cumplimiento dentro de los plazos establecidos. Quedan a salvo las facultades de revisión de la autoridad fiscal."
+                "Este acuse es emitido sin prejuzgar la veracidad de los datos asentados ni el cumplimiento dentro de los plazos establecidos. Quedan a salvo las facultades de revisión de la autoridad fiscal.",
+                "ESTE DOCUMENTO ES UN COMPROBANTE GENERADO EN UN SIMULADOR EDUCATIVO Y NO TIENE VALIDEZ OFICIAL ANTE EL SAT NI ANTE NINGUNA AUTORIDAD FISCAL."
             };
 
             var rectTexto = new XRect(margenIzq, y, margenDer - margenIzq, 400);

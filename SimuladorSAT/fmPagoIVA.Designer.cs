@@ -506,7 +506,7 @@
             this.btnCapturarComp.Location = new System.Drawing.Point(867, 105);
             this.btnCapturarComp.Margin = new System.Windows.Forms.Padding(30, 0, 0, 0);
             this.btnCapturarComp.Name = "btnCapturarComp";
-            this.btnCapturarComp.Size = new System.Drawing.Size(130, 1);
+            this.btnCapturarComp.Size = new System.Drawing.Size(130, 28);
             this.btnCapturarComp.TabIndex = 10;
             this.btnCapturarComp.Text = "Capturar";
             this.btnCapturarComp.UseVisualStyleBackColor = false;
@@ -584,7 +584,7 @@
             this.btnCapturarEst.Location = new System.Drawing.Point(867, 140);
             this.btnCapturarEst.Margin = new System.Windows.Forms.Padding(30, 0, 0, 0);
             this.btnCapturarEst.Name = "btnCapturarEst";
-            this.btnCapturarEst.Size = new System.Drawing.Size(130, 1);
+            this.btnCapturarEst.Size = new System.Drawing.Size(130, 28);
             this.btnCapturarEst.TabIndex = 16;
             this.btnCapturarEst.Text = "Capturar";
             this.btnCapturarEst.UseVisualStyleBackColor = false;

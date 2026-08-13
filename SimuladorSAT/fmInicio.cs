@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace SimuladorSAT
@@ -15,12 +14,11 @@ namespace SimuladorSAT
         {
             InitializeComponent();
 
-            // Doble buffer — evita el parpadeo al navegar entre fmInicio y Form1
+            // Optimización de renderizado para evitar parpadeos sin desactivar el pintado de Windows
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.UserPaint, true);
+                          ControlStyles.AllPaintingInWmPaint, true);
 
-            this.WindowState = FormWindowState.Maximized;
+            //this.WindowState = FormWindowState.Maximized;
 
             AsignarEfectoHover(btnNavInicio);
             AsignarEfectoHover(btnNavPersonas);
@@ -29,7 +27,9 @@ namespace SimuladorSAT
 
         private void fmInicio_Load(object sender, EventArgs e)
         {
-            picUserIcon.Image = CrearIconoUsuario(60, 60);
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.WindowState = FormWindowState.Maximized;
+
             AjustarPosicionesResponsivas();
         }
 
@@ -38,9 +38,6 @@ namespace SimuladorSAT
             AjustarPosicionesResponsivas();
         }
 
-        // ====================================================================
-        // Efecto hover: al pasar el cursor, el texto cambia de color
-        // ====================================================================
         private void AsignarEfectoHover(Label lbl)
         {
             Font fontNormal = lbl.Font;
@@ -54,24 +51,6 @@ namespace SimuladorSAT
             };
         }
 
-        private Bitmap CrearIconoUsuario(int width, int height)
-        {
-            Bitmap bmp = new Bitmap(width, height);
-            using (Graphics g = Graphics.FromImage(bmp))
-            {
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.Clear(Color.Transparent);
-                using (Pen pen = new Pen(Color.White, 3.0f))
-                {
-                    g.DrawEllipse(pen, 18, 8, 24, 24);
-                    GraphicsPath path = new GraphicsPath();
-                    path.AddArc(10, 38, 40, 26, 180, 180);
-                    g.DrawPath(pen, path);
-                }
-            }
-            return bmp;
-        }
-
         private void AjustarPosicionesResponsivas()
         {
             if (this.ClientSize.Width == 0 || this.ClientSize.Height == 0) return;
@@ -82,23 +61,22 @@ namespace SimuladorSAT
             int espacioDisponible = this.ClientSize.Height - pnlNavbar.Height - pnlFooter.Height;
             lblBienvenida.Top = pnlNavbar.Height + (int)(espacioDisponible * 0.08);
             picLogoCentral.Top = lblBienvenida.Bottom + 15;
+        }
 
-            picUserIcon.Left = this.ClientSize.Width - picUserIcon.Width - 60;
+        // Evento Click del botón Cerrar (✕)
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         private void btnNavInicio_Click(object sender, EventArgs e)
         {
-            // Ya nos encontramos en Inicio
+            // Pantalla actual
         }
 
         private void btnNavPersonas_Click(object sender, EventArgs e)
         {
             NavegacionHelper.MostrarSinParpadeo(Program.form1, this);
-        }
-
-        private void picUserIcon_Click(object sender, EventArgs e)
-        {
-            // Abre pantalla flotante de login/registro
         }
     }
 }

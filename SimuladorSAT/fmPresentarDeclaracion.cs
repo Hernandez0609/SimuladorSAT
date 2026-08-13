@@ -18,16 +18,26 @@ namespace SimuladorSAT
         public fmPresentarDeclaracion(TipoRegimen regimen)
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+
+            // 2. Suscripción al evento Load para forzar la pantalla completa respetando la barra de tareas
+            this.Load += (s, e) =>
+            {
+                this.WindowState = FormWindowState.Normal;
+                this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+                this.WindowState = FormWindowState.Maximized;
+            };
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzq);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                   ControlStyles.AllPaintingInWmPaint |
                   ControlStyles.UserPaint, true);
             _regimen = regimen;
-            this.WindowState = FormWindowState.Maximized;
+           
             ConfigurarSegunRegimen();
             btnPresentar.Click += BtnPresentar_Click;
             btnInicio.Click += BtnInicio_Click;
             btnCerrar.Click += BtnCerrar_Click;
-            this.FormBorderStyle = FormBorderStyle.None;
+           
         }
 
         private void ConfigurarSegunRegimen()

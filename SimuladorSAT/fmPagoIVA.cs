@@ -11,20 +11,23 @@ namespace SimuladorSAT
         public fmPagoIVA()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                   ControlStyles.AllPaintingInWmPaint |
                   ControlStyles.UserPaint, true);
-
             cmbCompensaciones.SelectedIndexChanged += (s, e) => { Program.modeloIva.TieneCompensaciones = cmbCompensaciones.SelectedIndex == 1; RecalcularPago(); };
             cmbEstimulos.SelectedIndexChanged += (s, e) => { Program.modeloIva.TieneEstimulos = cmbEstimulos.SelectedIndex == 1; RecalcularPago(); };
             btnTabDeterminacion.Click += btnTabDeterminacion_Click;
             btnCapturarComp.Click += InterfazCapturaCompensacion;
             btnCapturarEst.Click += InterfazCapturaEstimulo;
-
             CargarValoresDesdeModelo();
-            this.FormBorderStyle = FormBorderStyle.None;
         }
-
+   
         public void ActualizarInfoDeclaracion()
         {
             if (Program.declaracionActual == null) return;
@@ -34,10 +37,12 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
         }
 
         public void ActualizarDesdeModelo()
         {
+            ActualizarInfoDeclaracion();
             CargarValoresDesdeModelo();
         }
 

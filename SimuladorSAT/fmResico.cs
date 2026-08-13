@@ -8,12 +8,15 @@ namespace SimuladorSAT
     {
         private Form _ventanaAnterior;
         private Form _overlayForm;
+        private bool _sincronizandoTxt7 = false;
         private System.Windows.Forms.Timer _debounceTimer;
         public fmResico()
         {
             InitializeComponent();
-            this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
             this.FormBorderStyle = FormBorderStyle.None;
+            this.Load += (s, e) => ActualizarInfoDeclaracion();
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
+            this.txtAcreditamiento.TextChanged += (s, e) => RecalcularDeterminacion();
             txt1.KeyPress += clsValidacionNumerica.SoloNumeros;
             txt2.KeyPress += clsValidacionNumerica.SoloNumeros;
             txt3.KeyPress += clsValidacionNumerica.SoloNumeros;
@@ -29,11 +32,17 @@ namespace SimuladorSAT
         public fmResico(Form ventanaAnterior)
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+
+            this.Load += (s, e) =>
+            {
+                ActualizarInfoDeclaracion();
+            };
+
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                   ControlStyles.AllPaintingInWmPaint |
                   ControlStyles.UserPaint, true);
             _ventanaAnterior = ventanaAnterior;
-
             AumentarFuentes();
             WirearEventos();
             CargarValoresDesdeModelo();
@@ -67,6 +76,7 @@ namespace SimuladorSAT
             txt3.TextChanged += reiniciarTimer;
             txt4.TextChanged += reiniciarTimer;
             txt7.TextChanged += reiniciarTimer;
+            txt7.TextChanged += Txt7_TextChanged_Manual;
             txt8.TextChanged += reiniciarTimer;
             txt10.TextChanged += reiniciarTimer;
             txtAcreditamiento.TextChanged += reiniciarTimer;
@@ -89,10 +99,12 @@ namespace SimuladorSAT
                 $"Ejercicio: {d.Ejercicio} / periodo: {d.Periodo}\r\n" +
                 $"Declaración: {d.TipoDeclaracion}\r\n" +
                 $"Vencimiento: {vencimiento:dd/MM/yy}";
+            NavegacionHelper.CargarEncabezadoUsuario(lblDatosIzquierda);
         }
 
         public void ActualizarDesdeModelo()
         {
+            ActualizarInfoDeclaracion();
             CargarValoresDesdeModelo();
         }
 
@@ -111,16 +123,18 @@ namespace SimuladorSAT
         private void CargarValoresDesdeModelo()
         {
             var m = Program.modeloIva;
-
             txt1.Text = m.ActividadesGravadas16.ToString("N0");
             txt2.Text = m.ActividadesGravadas0.ToString("N0");
             txt3.Text = m.ActividadesExentas.ToString("N0");
             txt4.Text = m.ActividadesNoObjeto.ToString("N0");
+
+            _sincronizandoTxt7 = true;
             txt7.Text = m.IvaNoCobradoDevoluciones.ToString("N0");
+            _sincronizandoTxt7 = false;
+
             txt8.Text = m.IvaRetenido.ToString("N0");
             txt9.Text = m.IvaAcreditablePeriodoCapturado ? m.IvaAcreditablePeriodo.ToString("N0") : "0";
             txt10.Text = m.IvaPorDevolucionesGastos.ToString("N0");
-
             RecalcularDeterminacion();
         }
 
@@ -249,12 +263,26 @@ namespace SimuladorSAT
                 {
                     if (dlg.ShowDialog(_overlayForm) == DialogResult.OK)
                     {
-                        txt7.Text = Program.modeloIva.IvaNoCobradoDevoluciones.ToString("N0");   
+                        _sincronizandoTxt7 = true;
+                        txt7.Text = Program.modeloIva.IvaNoCobradoDevoluciones.ToString("N0");
+                        _sincronizandoTxt7 = false;
                         RecalcularDeterminacion();
                     }
                 }
             }
             finally { DesactivarCortinaOscura(); }
+        }
+        private void Txt7_TextChanged_Manual(object sender, EventArgs e)
+        {
+            if (_sincronizandoTxt7) return; 
+
+            var m = Program.modeloIva;
+            m.DetalleDevolucionesFacturasCanceladas = 0;
+            m.DetalleDevolucionesFacturasVigentes = 0;
+            m.DetalleDevolucionesSubtotal = 0;
+            m.DetalleDevolucionesDescuento = 0;
+            m.Iva8PorcentoEgresos = 0;
+            m.Iva16PorcentoEgresos = 0;
         }
         private void btn8_Click(object sender, EventArgs e)
         {
