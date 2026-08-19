@@ -22,9 +22,7 @@ namespace SimuladorSAT
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Normal;
-            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
-            this.WindowState = FormWindowState.Maximized;
+          
             picUserIcon.Image = CrearIconoUsuario(60, 60);
             AjustarPosicionesResponsivas();
         }
@@ -73,15 +71,12 @@ namespace SimuladorSAT
             }
             return bmp;
         }
-        // ====================================================================
-        // Efecto hover: al pasar el cursor aplica Negrita (sin la línea de subrayado)
-        // ====================================================================
         private void AsignarEfectoHover(Label lbl)
         {
             if (lbl == null) return;
 
             Font fontNormal = lbl.Font;
-            Font fontHover = new Font(lbl.Font, FontStyle.Bold); // Sin FontStyle.Underline
+            Font fontHover = new Font(lbl.Font, FontStyle.Bold); 
 
             lbl.MouseEnter += (s, e) => {
                 lbl.Font = fontHover;

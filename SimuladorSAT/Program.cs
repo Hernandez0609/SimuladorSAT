@@ -44,8 +44,6 @@ namespace SimuladorSAT
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            // --- VERIFICACIÓN DE REGISTRO PERSISTENTE ---
             if (clsUsuario.ExisteRegistroLocal())
             {
                 // Si la carpeta existe, recupera los datos y asigna el contribuyenteId real
@@ -57,12 +55,12 @@ namespace SimuladorSAT
             }
             else
             {
-                // Si es la primera vez, solicita los datos al alumno antes de cargar la aplicación
+               
                 using (fmDatos formDatos = new fmDatos())
                 {
                     if (formDatos.ShowDialog() != DialogResult.OK)
                     {
-                        return; // Si cierra sin guardar, se cancela la ejecución
+                        return; 
                     }
                 }
 
@@ -105,7 +103,8 @@ namespace SimuladorSAT
             ForzarCreacionHandle(formIsrFisicasPago);
             ForzarCreacionHandle(formConfiguracionDeclaracion);
             ForzarCreacionHandle(formDeclaracionesPendientes);
-
+           
+            ResponsiveHelper.Aplicar(formInicio);
             Application.Run(formInicio);
         }
 

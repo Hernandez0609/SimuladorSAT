@@ -103,34 +103,133 @@ namespace SimuladorSAT
         private void PosicionarCirculosVisibles()
         {
             var visibles = new System.Collections.Generic.List<(Button btn, Label nombre, Label monto)>();
-            if (btnIsrFisicas.Visible) visibles.Add((btnIsrFisicas, lblIsrFisicas, lblMontoIsrFisicas));
-            if (btnIsrSalarios.Visible) visibles.Add((btnIsrSalarios, lblIsrSalarios, lblMontoIsrSalarios));
-            if (btnIvaSimplificado.Visible) visibles.Add((btnIvaSimplificado, lblIvaSimplificado, lblMontoIva));
 
-            if (visibles.Count == 0) return;
+            if (btnIsrFisicas.Visible)
+                visibles.Add((btnIsrFisicas, lblIsrFisicas, lblMontoIsrFisicas));
 
-            int circleWidth = 80;
-            int gap = 180;
-            int totalWidth = (visibles.Count * circleWidth) + ((visibles.Count - 1) * gap);
-            int startX = (pnlIconosSecciones.Width - totalWidth) / 2;
+            if (btnIsrSalarios.Visible)
+                visibles.Add((btnIsrSalarios, lblIsrSalarios, lblMontoIsrSalarios));
+
+            if (btnIvaSimplificado.Visible)
+                visibles.Add((btnIvaSimplificado, lblIvaSimplificado, lblMontoIva));
+
+            if (visibles.Count == 0)
+                return;
+
+           
+            float escala = Math.Min(
+                (float)pnlIconosSecciones.Width / 900f,
+                (float)pnlIconosSecciones.Height / 350f
+            );
+
+            escala = Math.Max(0.65f, Math.Min(escala, 1f));
+
+            int circleWidth = Math.Max(
+                55,
+                (int)Math.Round(80 * escala)
+            );
+
+            int gap;
+
+            if (visibles.Count == 1)
+            {
+                gap = 0;
+            }
+            else
+            {
+                int espacioDisponible = pnlIconosSecciones.Width -
+                                        (visibles.Count * circleWidth);
+
+                gap = espacioDisponible / (visibles.Count + 1);
+
+                gap = Math.Max(20, Math.Min(gap, 180));
+            }
+
+            int totalWidth;
+
+            if (visibles.Count == 1)
+            {
+                totalWidth = circleWidth;
+            }
+            else
+            {
+                totalWidth =
+                    (visibles.Count * circleWidth) +
+                    ((visibles.Count - 1) * gap);
+            }
+
+            int startX =
+                Math.Max(
+                    0,
+                    (pnlIconosSecciones.Width - totalWidth) / 2
+                );
+
             int y = btnIsrFisicas.Top;
 
+            // ------------------------------------------------------------
+            // COLOCACIÓN DE CONTROLES
+            // ------------------------------------------------------------
             for (int i = 0; i < visibles.Count; i++)
             {
-                int x = startX + i * (circleWidth + gap);
+                int x;
+
+                if (visibles.Count == 1)
+                {
+                    x = startX;
+                }
+                else
+                {
+                    x = startX + i * (circleWidth + gap);
+                }
+
+                // Botón circular
                 visibles[i].btn.Left = x;
                 visibles[i].btn.Top = y;
+                visibles[i].btn.Width = circleWidth;
+                visibles[i].btn.Height = circleWidth;
 
-                // Centrar nombres y montos respecto al botón horizontalmente
-                visibles[i].nombre.Left = x - (visibles[i].nombre.Width - circleWidth) / 2;
-                visibles[i].monto.Left = x - (visibles[i].monto.Width - circleWidth) / 2;
+                // --------------------------------------------------------
+                // CENTRAR NOMBRE
+                // --------------------------------------------------------
+                visibles[i].nombre.Left =
+                    x - (visibles[i].nombre.Width - circleWidth) / 2;
 
-                // POSICIONAMIENTO VERTICAL RESPONSIVO:
-                // Coloca la etiqueta del monto a exactamente 2px por debajo de donde finaliza el texto del nombre
-                visibles[i].monto.Top = visibles[i].nombre.Top + visibles[i].nombre.Height + 2;
+                // Evitamos que el label se vaya fuera del panel.
+                if (visibles[i].nombre.Left < 0)
+                    visibles[i].nombre.Left = 0;
 
-                // Nos aseguramos que el control esté visible por encima
+                if (visibles[i].nombre.Right > pnlIconosSecciones.Width)
+                {
+                    visibles[i].nombre.Left =
+                        pnlIconosSecciones.Width -
+                        visibles[i].nombre.Width;
+                }
+
+                // --------------------------------------------------------
+                // MONTO
+                // --------------------------------------------------------
+                visibles[i].monto.Left =
+                    x - (visibles[i].monto.Width - circleWidth) / 2;
+
+                if (visibles[i].monto.Left < 0)
+                    visibles[i].monto.Left = 0;
+
+                if (visibles[i].monto.Right > pnlIconosSecciones.Width)
+                {
+                    visibles[i].monto.Left =
+                        pnlIconosSecciones.Width -
+                        visibles[i].monto.Width;
+                }
+
+                // El monto queda debajo del nombre.
+                visibles[i].monto.Top =
+                    visibles[i].nombre.Top +
+                    visibles[i].nombre.Height +
+                    2;
+
                 visibles[i].monto.BringToFront();
+                visibles[i].nombre.BringToFront();
+                visibles[i].btn.BringToFront();
             }
         }
 
@@ -213,11 +312,23 @@ namespace SimuladorSAT
                 using (Brush brush = new SolidBrush(fondo))
                     e.Graphics.FillEllipse(brush, 0, 0, btn.Width - 1, btn.Height - 1);
 
-                using (Font font = new Font("Arial", 16F, FontStyle.Bold))
+                float tamanoFuente = Math.Max(8f, btn.Width * 0.20f);
+
+                using (Font font = new Font(
+                    "Arial",
+                    tamanoFuente,
+                    FontStyle.Bold))
                 using (Brush brushText = new SolidBrush(Color.White))
                 {
                     SizeF size = e.Graphics.MeasureString("✓", font);
-                    e.Graphics.DrawString("✓", font, brushText, (btn.Width - size.Width) / 2, (btn.Height - size.Height) / 2);
+
+                    e.Graphics.DrawString(
+                        "✓",
+                        font,
+                        brushText,
+                        (btn.Width - size.Width) / 2,
+                        (btn.Height - size.Height) / 2
+                    );
                 }
             };
 

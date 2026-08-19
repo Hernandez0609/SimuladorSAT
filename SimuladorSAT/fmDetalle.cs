@@ -285,7 +285,7 @@ namespace SimuladorSAT
         private void dgvTabla1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             System.Drawing.Color grisFigma = System.Drawing.Color.FromArgb(238, 238, 238);
-            if (e.RowIndex >= 0 && !_esDevoluciones)   // ← en devoluciones NO forzamos el gris, para que se vea editable
+            if (e.RowIndex >= 0 && !_esDevoluciones)   
             {
                 e.CellStyle.BackColor = grisFigma;
                 e.CellStyle.SelectionBackColor = grisFigma;

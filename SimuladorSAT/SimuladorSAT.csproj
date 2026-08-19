@@ -285,6 +285,7 @@
     <Compile Include="NavegacionHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponsiveHelper.cs" />
     <EmbeddedResource Include="fmAdminDeclaracion.resx">
       <DependentUpon>fmAdminDeclaracion.cs</DependentUpon>
     </EmbeddedResource>

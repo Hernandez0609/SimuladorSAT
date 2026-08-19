@@ -111,38 +111,42 @@ namespace SimuladorSAT
             };
 
             int numeroConcepto = 1;
+            decimal totalAPagar = 0;   // <-- NUEVO: acumulador del total
             foreach (var c in conceptos)
             {
                 if (!c.seleccionado) continue;
-
                 string etiquetaSaldo = c.monto >= 0 ? "A cargo:" : "A favor:";
                 decimal montoAbsoluto = Math.Abs(c.monto);
-
                 gfx.DrawString($"Concepto de pago {numeroConcepto}:", fontLabel, XBrushes.Black, new XPoint(margenIzq, y));
                 gfx.DrawString(c.nombre, fontValor, XBrushes.Black, new XPoint(colDerLabel - 30, y));
                 y += 14;
-
                 gfx.DrawString(etiquetaSaldo, fontLabel, XBrushes.Black, new XPoint(margenIzq, y));
                 gfx.DrawString(montoAbsoluto.ToString("N0"), fontValor, XBrushes.Black,
                     new XRect(margenIzq, y, margenDer - margenIzq, 14), XStringFormats.TopRight);
                 y += 14;
-
                 gfx.DrawString("Cantidad a cargo:", fontLabel, XBrushes.Black, new XPoint(margenIzq, y));
                 gfx.DrawString(c.monto > 0 ? c.monto.ToString("N0") : "0", fontValor, XBrushes.Black,
                     new XRect(margenIzq, y, margenDer - margenIzq, 14), XStringFormats.TopRight);
                 y += 14;
-
                 gfx.DrawString("Cantidad a pagar:", fontLabel, XBrushes.Black, new XPoint(margenIzq, y));
                 gfx.DrawString(c.monto > 0 ? c.monto.ToString("N0") : "0", fontValor, XBrushes.Black,
                     new XRect(margenIzq, y, margenDer - margenIzq, 14), XStringFormats.TopRight);
                 y += 18;
-
+                if (c.monto > 0) totalAPagar += c.monto;   // <-- NUEVO: solo suma lo que es "a cargo"
                 numeroConcepto++;
             }
 
-            y += 10;
+            // ===== NUEVO: Total a pagar (suma de todos los módulos declarados) =====
+            y += 6;
+            gfx.DrawLine(XPens.Black, margenIzq, y, margenDer, y);
+            y += 12;
+            var fontTotal = new XFont("Arial", 10, XFontStyle.Bold);
+            gfx.DrawString("Total a pagar:", fontTotal, XBrushes.Black, new XPoint(margenIzq, y));
+            gfx.DrawString(totalAPagar.ToString("N0"), fontTotal, XBrushes.Black,
+                new XRect(margenIzq, y, margenDer - margenIzq, 14), XStringFormats.TopRight);
+            y += 20;
 
-            // ===== Textos legales =====
+            y += 10;
             string[] textosLegales = new[]
             {
                 "Es responsabilidad del contribuyente verificar la información de los importes de las facturas emitidas y recibidas. En caso de diferencias deberá de realizar las correcciones correspondientes.",
